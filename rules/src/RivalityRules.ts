@@ -1,4 +1,4 @@
-import { HidingStrategy, MaterialItem, HiddenMaterialRules, PositiveSequenceStrategy } from '@gamepark/rules-api'
+import { FillGapStrategy, HidingStrategy, MaterialItem, HiddenMaterialRules, PositiveSequenceStrategy } from '@gamepark/rules-api'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { PlayerColor } from './PlayerColor'
@@ -35,7 +35,7 @@ export class RivalityRules extends HiddenMaterialRules<PlayerColor, MaterialType
     },
     [MaterialType.Golem]: {
       [LocationType.Board]: new PositiveSequenceStrategy(),
-      [LocationType.PlayerGolemStack]: new PositiveSequenceStrategy()
+      [LocationType.PlayerGolemStack]: new FillGapStrategy()
     }
   }
 

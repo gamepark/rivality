@@ -19,7 +19,7 @@ export class PlayerGolemStackDescription extends LocationDescription {
     const { rules } = context
     const locations : Location[] = []
 
-    for (let i=1; i<=30; i++){
+    for (let i=0; i<30; i++){
       rules.players.forEach(p => {
         locations.push({
           type: LocationType.PlayerGolemStack,
@@ -35,9 +35,8 @@ export class PlayerGolemStackDescription extends LocationDescription {
     const baseCoordinates = tableDesign.playerGolemStackCoordinates(location, context)
     const nbGolemsPerLine=10
     const nbGolemsLines=3
-    const indexX=Math.floor((location.x!-1)%nbGolemsPerLine)
-    const indexY=Math.floor((location.x!-1)/nbGolemsPerLine)
-    console.log(indexX+" - "+indexY)
+    const indexX=Math.floor(location.x!%nbGolemsPerLine)
+    const indexY=Math.floor(location.x!/nbGolemsPerLine)
     const deltaX=indexX*(golemDescription.width+spaceBetweenGolems)
     const deltaY=indexY*(golemDescription.height+spaceBetweenGolems)
     return {
