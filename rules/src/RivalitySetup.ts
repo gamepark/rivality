@@ -91,7 +91,8 @@ export class RivalitySetup extends MaterialGameSetup<PlayerId, MaterialType, Loc
           id: golem,
           location: {
             type: LocationType.PlayerGolemStack,
-            player: 1
+            player: 1,
+            x: i+1
           }
         })))
     }
@@ -104,7 +105,8 @@ export class RivalitySetup extends MaterialGameSetup<PlayerId, MaterialType, Loc
           id: golem,
           location: {
             type: LocationType.PlayerGolemStack,
-            player: 2
+            player: 2,
+            x: i+1
           }
         })))
     }
@@ -117,7 +119,8 @@ export class RivalitySetup extends MaterialGameSetup<PlayerId, MaterialType, Loc
           id: golem,
           location: {
             type: LocationType.PlayerGolemStack,
-            player: 3
+            player: 3,
+            x: i+1
           }
         })))
     }

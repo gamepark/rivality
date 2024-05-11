@@ -72,6 +72,27 @@ export class TableDesign {
     }
     return {x:x, y:y, z:0}
   }
+
+  playerGolemStackCoordinates(location: Location, context: LocationContext){
+    const locationPlayer = location.player
+    const { rules } = context
+    let nbPlayers=this.nbPlayers(rules)
+
+    let x=0
+    let y=0
+    if (nbPlayers===2){
+        if (locationPlayer===1){
+          x=20
+          y=25
+        } else if (locationPlayer===2){
+          x=20
+          y=-25
+        }
+    } else {
+      console.log("*** ERROR - Unsupported nb of players")
+    }
+    return {x:x, y:y, z:0}
+  }
 }
 
 export const tableDesign = new TableDesign()
