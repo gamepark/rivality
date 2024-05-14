@@ -1,8 +1,12 @@
-import { FillGapStrategy, HidingStrategy, MaterialItem, HiddenMaterialRules, PositiveSequenceStrategy } from '@gamepark/rules-api'
+import { FillGapStrategy, hideItemId, hideItemIdToOthers, HidingStrategy, MaterialItem, SecretMaterialRules, PositiveSequenceStrategy } from '@gamepark/rules-api'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
-import { PlayerColor } from './PlayerColor'
-import { PlayerTurn } from './rules/PlayerTurn'
+import { PlayerId } from './PlayerId'
+import { CastSpellNorthRule } from './rules/CastSpellNorthRule'
+import { CastSpellEastRule } from './rules/CastSpellEastRule'
+import { CastSpellSouthRule } from './rules/CastSpellSouthRule'
+import { CastSpellWestRule } from './rules/CastSpellWestRule'
+import { ChooseTileRule } from './rules/ChooseTileRule'
 import { RuleId } from './rules/RuleId'
 
 export const hideCardWhenNotRotated: HidingStrategy = (
@@ -22,9 +26,13 @@ export const alwaysShow: HidingStrategy = () => {
  * This class implements the rules of the board game.
  * It must follow Game Park "Rules" API so that the Game Park server can enforce the rules.
  */
-export class RivalityRules extends HiddenMaterialRules<PlayerColor, MaterialType, LocationType> {
+export class RivalityRules extends SecretMaterialRules<PlayerId, MaterialType, LocationType> {
   rules = {
-    [RuleId.PlayerTurn]: PlayerTurn
+    [RuleId.ChooseTile]: ChooseTileRule,
+    [RuleId.CastSpellNorth]: CastSpellNorthRule,
+    [RuleId.CastSpellEast]: CastSpellEastRule,
+    [RuleId.CastSpellSouth]: CastSpellSouthRule,
+    [RuleId.CastSpellWest]: CastSpellWestRule
   }
 
   locationsStrategies = {
@@ -34,15 +42,15 @@ export class RivalityRules extends HiddenMaterialRules<PlayerColor, MaterialType
     [MaterialType.Wizard]: {
     },
     [MaterialType.Golem]: {
-      [LocationType.Board]: new PositiveSequenceStrategy(),
+      [LocationType.Board]: new PositiveSequenceStrategy('z'), // sequence on Z
       [LocationType.PlayerGolemStack]: new FillGapStrategy()
     }
   }
 
   hidingStrategies = {
     [MaterialType.Tile]: {
-      [LocationType.PlayerDeck]: hideCardWhenNotRotated, // alwaysHide,
-      [LocationType.PlayerHand]: alwaysShow, // TODO - hide opponents' cards
+      [LocationType.PlayerDeck]: hideItemId, // alwaysHide,
+      [LocationType.PlayerHand]: hideItemIdToOthers,
       [LocationType.Board]: alwaysShow
     }
   }

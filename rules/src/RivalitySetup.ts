@@ -8,7 +8,7 @@ import { tiles, Tile } from './material/Tile'
 import { golems, Golem } from './material/Golem'
 import { wizards, Wizard } from './material/Wizard'
 import { tileTools } from './logic/TileTools'
-// import { PlayerColor } from './PlayerColor'
+import { Orientation } from './Orientation'
 import { PlayerId } from './PlayerId'
 import { RuleId } from './rules/RuleId'
 
@@ -36,7 +36,8 @@ export class RivalitySetup extends MaterialGameSetup<PlayerId, MaterialType, Loc
           type: LocationType.Board,
           id: BoardSpace.Tile,
           x: 0,
-          y: 0
+          y: 0,
+          rotation: Orientation.North
         }
       })))
 
@@ -166,12 +167,17 @@ export class RivalitySetup extends MaterialGameSetup<PlayerId, MaterialType, Loc
     for (let player=1; player<=nbPlayers; player++){
       const deck = this.material(MaterialType.Tile).location(LocationType.PlayerDeck).player(player).deck()
       for (let i=1; i<=2; i++){
-        deck.deal({ type: LocationType.PlayerHand, player:player, x:i }, 1)
+        deck.deal({
+          type:LocationType.PlayerHand,
+          player:player,
+          x:i,
+          rotation: Orientation.North
+        }, 1)
       }
     }
   }
 
   start() {
-    this.startPlayerTurn(RuleId.PlayerTurn, this.game.players[0])
+    this.startPlayerTurn(RuleId.ChooseTile, this.game.players[0])
   }
 }

@@ -1,5 +1,7 @@
 //import { LocationType } from '../material/LocationType'
 //import { MaterialType } from '../material/MaterialType'
+import { MaterialItem, XYCoordinates } from '@gamepark/rules-api'
+import { Orientation } from '../Orientation'
 import { Tile } from '../material/Tile'
 
 export class Spell {
@@ -9,6 +11,31 @@ export class Spell {
   constructor(nbGolems:number, distance:number){
     this.nbGolems=nbGolems
     this.distance=distance
+  }
+}
+
+export enum Direction {
+  Left   = 1,
+  Top    = 2,
+  Right  = 3,
+  Bottom = 4
+}
+
+class CoordSet {
+  coords:XYCoordinates[]=[]
+
+  contains(x:number, y:number){
+    for (let i=0; i<this.coords.length; i++){
+      if (this.coords[i].x===x && this.coords[i].y===y)
+        return true;
+    }
+    return false
+  }
+
+  add(x:number, y:number){
+    if (this.contains(x,y))
+      return
+    this.coords.push({x:x, y:y})
   }
 }
 
@@ -116,6 +143,67 @@ export class TileTools {
 
     console.log("*** ERROR - Unsupported tile")
     return false
+  }
+
+  possibleTileLocations(boardTiles:MaterialItem[]):XYCoordinates[]{
+    let candidates=new CoordSet()
+    let occupied=new CoordSet()
+
+    for (let i=0; i<boardTiles.length; i++){
+      let coord=boardTiles[i].location
+      let coordX=coord.x!
+      let coordY=coord.y!
+      occupied.add(coordX, coordY)
+      candidates.add(coordX-1, coordY)
+      candidates.add(coordX,   coordY-1)
+      candidates.add(coordX+1, coordY)
+      candidates.add(coordX,   coordY+1)
+    }
+
+    let res:XYCoordinates[]=[]
+    for (let i=0; i<candidates.coords.length; i++){
+      let coord:XYCoordinates=candidates.coords[i]
+      if (!occupied.contains(coord.x, coord.y))
+        res.push(coord)
+    }
+    return res
+  }
+
+  tileSideFromOrientations(spellOrientation:Orientation, tileOrientation:Orientation):Direction {
+    switch (tileOrientation){
+      case Orientation.North:
+        switch (spellOrientation){
+          case Orientation.North: return Direction.Top
+          case Orientation.East:  return Direction.Right
+          case Orientation.South: return Direction.Bottom
+          case Orientation.West:  return Direction.Left
+        }
+        break
+      case Orientation.East:
+        switch (spellOrientation){
+          case Orientation.North: return Direction.Left
+          case Orientation.East:  return Direction.Top
+          case Orientation.South: return Direction.Right
+          case Orientation.West:  return Direction.Bottom
+        }
+        break
+      case Orientation.South:
+        switch (spellOrientation){
+          case Orientation.North: return Direction.Bottom
+          case Orientation.East:  return Direction.Left
+          case Orientation.South: return Direction.Top
+          case Orientation.West:  return Direction.Right
+        }
+        break
+      case Orientation.West:
+        switch (spellOrientation){
+          case Orientation.North: return Direction.Right
+          case Orientation.East:  return Direction.Bottom
+          case Orientation.South: return Direction.Left
+          case Orientation.West:  return Direction.Top
+        }
+        break
+    }
   }
 }
 

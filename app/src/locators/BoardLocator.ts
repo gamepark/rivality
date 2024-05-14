@@ -2,6 +2,7 @@
 import { GridLocator, ItemContext } from '@gamepark/react-game'
 import { MaterialItem } from '@gamepark/rules-api'
 import { BoardSpace } from '@gamepark/rivality/material/BoardSpace'
+import { Orientation } from '@gamepark/rivality/Orientation'
 import { Wizard } from '@gamepark/rivality/material/Wizard'
 import { BoardDescription } from './description/BoardDescription'
 import { tileDescription, spaceBetweenTiles } from '../material/TileDescription'
@@ -43,11 +44,26 @@ export class BoardLocator extends GridLocator {
   }
 
   getRotateZ(item: MaterialItem, _context: ItemContext): number {
-    if (item.id===Wizard.Wizard1)
-      return 0
-    if (item.id===Wizard.Wizard2)
-      return 180
-    return 90
+    if (item.location.id===BoardSpace.Tile){
+      if (item.location.rotation===Orientation.North)
+        return 0
+      if (item.location.rotation===Orientation.East)
+        return 90
+      if (item.location.rotation===Orientation.South)
+        return 180
+      if (item.location.rotation===Orientation.West)
+        return 270
+    }
+    if (item.location.id===BoardSpace.Wizard){
+      if (item.id===Wizard.Wizard1)
+        return 0
+      if (item.id===Wizard.Wizard2)
+        return 180
+      return 90
+    }
+
+    // Default: no rotation
+    return 0
   }
 }
 

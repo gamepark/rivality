@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { LocationType } from '@gamepark/rivality/material/LocationType'
+import { MaterialType } from '@gamepark/rivality/material/MaterialType'
 import { LocationContext, LocationDescription, MaterialContext } from '@gamepark/react-game'
 import { Coordinates, Location } from '@gamepark/rules-api'
 import { spaceBetweenTiles, tileDescription } from '../../material/TileDescription'
@@ -11,8 +12,27 @@ export class BoardDescription extends LocationDescription {
   width = tileDescription.width
   borderRadius = tileDescription.borderRadius
 
-  alwaysVisible = true
+//  alwaysVisible = true
   extraCss = css`border: 0.05em solid lightgrey`
+
+  isAlwaysVisible(location:Location, context: MaterialContext) : boolean {
+    // TODO - Set as visible the locations around the tiles on the board
+    let boardTiles=context.rules.material(MaterialType.Tile).location(LocationType.Board)
+    let isOccupied=boardTiles
+      .filter(item => item.location.x===location.x && item.location.y===location.y)
+      .length > 0
+    if (isOccupied)
+      return false
+    let hasOccupiedNeighboors=boardTiles
+      .filter(item =>
+        (item.location.x===location.x!-1 && item.location.y===location.y) ||
+        (item.location.x===location.x    && item.location.y===location.y!-1) ||
+        (item.location.x===location.x!+1 && item.location.y===location.y) ||
+        (item.location.x===location.x    && item.location.y===location.y!+1)
+      )
+      .length > 0
+    return hasOccupiedNeighboors
+  }
 
   getLocations(_context: MaterialContext) : Location[]  {
     const locations : Location[] = []

@@ -40,10 +40,10 @@ export class TableDesign {
     let y=0
     if (nbPlayers===2){
         if (locationPlayer===1){
-          x=-20
+          x=-19
           y=25
         } else if (locationPlayer===2){
-          x=-20
+          x=19
           y=-25
         }
     } else {
@@ -85,7 +85,7 @@ export class TableDesign {
           x=20
           y=25
         } else if (locationPlayer===2){
-          x=20
+          x=-18
           y=-25
         }
     } else {
