@@ -1,25 +1,7 @@
-//import { LocationType } from '../material/LocationType'
-//import { MaterialType } from '../material/MaterialType'
 import { MaterialItem, XYCoordinates } from '@gamepark/rules-api'
+import { Direction } from './Direction'
 import { Orientation } from '../Orientation'
 import { Tile } from '../material/Tile'
-
-export class Spell {
-  nbGolems:number
-  distance:number
-
-  constructor(nbGolems:number, distance:number){
-    this.nbGolems=nbGolems
-    this.distance=distance
-  }
-}
-
-export enum Direction {
-  Left   = 1,
-  Top    = 2,
-  Right  = 3,
-  Bottom = 4
-}
 
 class CoordSet {
   coords:XYCoordinates[]=[]
@@ -76,7 +58,8 @@ export class TileTools {
   // 1 means 1st deck
   // 2 means 2nd deck
   tileDeck(tile:Tile){
-    if ((tile==Tile.StoneCircle_22_22) ||
+    if (
+        (tile==Tile.StoneCircle_22_22) ||
         (tile==Tile.StoneCircle_x_41)
       ) return -1
     if (tile==Tile.WellOfMana)
@@ -114,15 +97,50 @@ export class TileTools {
     return 0
   }
 
+  isCottage(tile:Tile){
+    if (
+        (tile==Tile.Cottage_11_23B_22) ||
+        (tile==Tile.Cottage_23B_31_x) ||
+        (tile==Tile.Cottage_23B_32_x) ||
+        (tile==Tile.Cottage_23B_12_21) ||
+        (tile==Tile.Cottage_32_23B_x) ||
+        (tile==Tile.Cottage_12_21_23B) ||
+        (tile==Tile.Cottage_22_23B_11) ||
+        (tile==Tile.Cottage_31_23B_x)
+      ) return true
+    if (
+        (tile==Tile.Fortress_22_22_23B) ||
+        (tile==Tile.Fortress_31_22_13B) ||
+        (tile==Tile.Fortress_21_23B_22) ||
+        (tile==Tile.Fortress_22_13B_31) ||
+        (tile==Tile.Fortress_23B_22_22) ||
+        (tile==Tile.Fortress_22_23B_21) ||
+        (tile==Tile.StoneCircle_22_22) ||
+        (tile==Tile.StoneCircle_x_41) ||
+        (tile==Tile.WellOfMana) ||
+        (tile==Tile.StoneCircle_32_11) ||
+        (tile==Tile.StoneCircle_31_12) ||
+        (tile==Tile.StoneCircle_31_11) ||
+        (tile==Tile.StoneCircle_11_32) ||
+        (tile==Tile.StoneCircle_12_31) ||
+        (tile==Tile.StoneCircle_11_31)
+      ) return false
+
+    console.log("*** ERROR - Unsupported tile")
+    return false
+  }
+
   isFortress(tile:Tile){
-    if ((tile==Tile.Fortress_22_22_23B) ||
+    if (
+        (tile==Tile.Fortress_22_22_23B) ||
         (tile==Tile.Fortress_31_22_13B) ||
         (tile==Tile.Fortress_21_23B_22) ||
         (tile==Tile.Fortress_22_13B_31) ||
         (tile==Tile.Fortress_23B_22_22) ||
         (tile==Tile.Fortress_22_23B_21)
       ) return true
-    if ((tile==Tile.StoneCircle_22_22) ||
+    if (
+        (tile==Tile.StoneCircle_22_22) ||
         (tile==Tile.StoneCircle_x_41) ||
         (tile==Tile.WellOfMana) ||
         (tile==Tile.StoneCircle_32_11) ||

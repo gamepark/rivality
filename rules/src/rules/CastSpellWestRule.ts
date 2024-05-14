@@ -1,15 +1,16 @@
-import { MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
+import { MaterialMove } from '@gamepark/rules-api'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { RuleId } from '../rules/RuleId'
 import { Orientation } from '../Orientation'
+import { CastSpellRule } from './CastSpellRule'
 
-export class CastSpellWestRule extends PlayerTurnRule {
+export class CastSpellWestRule extends CastSpellRule {
   onRuleStart(): MaterialMove[] {
     let moves:MaterialMove[]=[]
 
-    // Apply effects of spell North
-    // TODO
+    // Apply effects of spell West
+    moves.push(...this.castEffects(Orientation.West))
 
     // Find current hand orientation
     let handTilesItems=this

@@ -6,6 +6,8 @@ import { Orientation } from '@gamepark/rivality/Orientation'
 import { Wizard } from '@gamepark/rivality/material/Wizard'
 import { BoardDescription } from './description/BoardDescription'
 import { tileDescription, spaceBetweenTiles } from '../material/TileDescription'
+import { LocationType } from '@gamepark/rivality/material/LocationType'
+import { MaterialType } from '@gamepark/rivality/material/MaterialType'
 
 export class BoardLocator extends GridLocator {
   itemsPerLine = 4
@@ -22,15 +24,30 @@ export class BoardLocator extends GridLocator {
     if (item.location.id===BoardSpace.Tile){
       // The tile is centered
     } else if (item.location.id===BoardSpace.Golem){
-      deltaX=0
-      deltaY=0
+      let indexOnCard=context.rules
+        .material(MaterialType.Golem)
+        .location(LocationType.Board)
+        .filter(a => a.location.x==item.location.x && a.location.y==item.location.y && a.location.z!<=item.location.z!)
+        .length
+
+      let nbGolemsOnCard=context.rules
+        .material(MaterialType.Golem)
+        .location(LocationType.Board)
+        .filter(a => a.location.x==item.location.x && a.location.y==item.location.y)
+        .length
+
+      let radius=2
+      deltaX=-radius*Math.cos(2*Math.PI/nbGolemsOnCard*indexOnCard+(Math.PI/2))
+      deltaY=-radius*Math.sin(2*Math.PI/nbGolemsOnCard*indexOnCard+(Math.PI/2))
       deltaZ=1
     } else if (item.location.id===BoardSpace.Wizard){
       deltaX=0
       if (item.id===Wizard.Wizard1)
-        deltaY=1.5
+//        deltaY=1.5
+        deltaY=0
       else if (item.id===Wizard.Wizard2)
-        deltaY=-1.5
+//        deltaY=-1.5
+        deltaY=0
       else
         deltaY=0
       deltaZ=1
