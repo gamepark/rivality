@@ -34,10 +34,11 @@ export class BoardDescription extends LocationDescription {
     return hasOccupiedNeighboors
   }
 
-  getLocations(_context: MaterialContext) : Location[]  {
+  getLocations(context: MaterialContext) : Location[]  {
     const locations : Location[] = []
-    for (let i=-5; i<=5; i++){
-      for (let j=-5; j<=5; j++){
+    let boardDimensions=tableDesign.getBoardDimensions(context.rules)
+    for (let i=boardDimensions.boardXMin-1; i<=boardDimensions.boardXMax+1; i++){
+      for (let j=boardDimensions.boardYMin-1; j<=boardDimensions.boardYMax+1; j++){
         locations.push({
           type: LocationType.Board,
           x: i,

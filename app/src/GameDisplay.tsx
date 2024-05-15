@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react'
+//import { css } from '@emotion/react'
 import { GameTable, GameTableNavigation, usePlayers, useRules } from '@gamepark/react-game'
 import { RivalityRules } from '@gamepark/rivality/RivalityRules'
 import { FC } from 'react'
@@ -19,7 +19,7 @@ export const GameDisplay: FC<GameDisplayProps> = () => {
   return <>
     <GameTable { ...tableSize }
                verticalCenter
-               css={css`background-color: rgba(255, 255, 255, 0.4)`}
+               //css={css`background-color: rgba(255, 255, 255, 0.4)`}
                margin={{ top: 7, left: 0, right: 30, bottom: 0 }}>
       <GameTableNavigation/>
       <PlayerPanels/>
