@@ -138,8 +138,8 @@ export class RivalitySetup extends MaterialGameSetup<PlayerId, MaterialType, Loc
           location: {
             type: LocationType.Board,
             id: BoardSpace.Wizard,
-            x: 0,
-            y: 2
+            x: -1,
+            y: 1
           }
         })))
 
@@ -151,8 +151,8 @@ export class RivalitySetup extends MaterialGameSetup<PlayerId, MaterialType, Loc
           location: {
             type: LocationType.Board,
             id: BoardSpace.Wizard,
-            x: 0,
-            y: -2
+            x: -1,
+            y: -1
           }
         })))
     } else {

@@ -36,10 +36,11 @@ export class ChooseTileRule extends PlayerTurnRule {
       .filter(item => item.id==Golem.Golem3)
       .length
       */
-
+/*
     console.log(nbUnplayedTiles)
     console.log(nbUnplayedGolems1)
     console.log(nbUnplayedGolems2)
+*/
 //    console.log(nbUnplayedGolems3)
 
     if (nbUnplayedTiles==0

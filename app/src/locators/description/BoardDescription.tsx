@@ -51,8 +51,8 @@ export class BoardDescription extends LocationDescription {
   getCoordinates(location: Location, context: LocationContext): Coordinates  {
     const baseCoordinates = this.getRegionCoordinates(location, context)
     return {
-      x: baseCoordinates.x + (tileDescription.width +spaceBetweenTiles) * ((location.x!-0.5)),
-      y: baseCoordinates.y + (tileDescription.height+spaceBetweenTiles) * ((location.y!-0.5)),
+      x: baseCoordinates.x + (tileDescription.width +spaceBetweenTiles) * location.x!,
+      y: baseCoordinates.y + (tileDescription.height+spaceBetweenTiles) * location.y!,
       z: 0
     }
   }
