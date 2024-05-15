@@ -8,6 +8,7 @@ import { CastSpellSouthRule } from './rules/CastSpellSouthRule'
 import { CastSpellWestRule } from './rules/CastSpellWestRule'
 import { ChooseTileRule } from './rules/ChooseTileRule'
 import { RuleId } from './rules/RuleId'
+import { score } from './logic/Score'
 
 export const hideCardWhenNotRotated: HidingStrategy = (
   item: MaterialItem
@@ -57,5 +58,14 @@ export class RivalityRules extends SecretMaterialRules<PlayerId, MaterialType, L
 
   itemsCanMerge() {
     return false
+  }
+
+  getScore(player: PlayerId) {
+    return score.playerScore(
+      player,
+      this.material(MaterialType.Tile).location(LocationType.Board),
+      this.material(MaterialType.Golem).location(LocationType.Board),
+      this.material(MaterialType.Wizard).location(LocationType.Board)
+    )
   }
 }

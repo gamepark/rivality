@@ -2,6 +2,7 @@ import { CustomMove, isMoveItem, ItemMove, MaterialMove, PlayerTurnRule } from '
 import { tileTools } from '../logic/TileTools'
 import { wizardTools } from '../logic/WizardTools'
 import { BoardSpace } from '../material/BoardSpace'
+import { Golem } from '../material/Golem'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { RuleId } from '../rules/RuleId'
@@ -9,6 +10,48 @@ import { Orientation } from '../Orientation'
 import { CustomMoveType } from './CustomMoveType'
 
 export class ChooseTileRule extends PlayerTurnRule {
+  onRuleStart(): MaterialMove[] {
+    // End of game ?
+    let nbUnplayedTiles=this
+      .material(MaterialType.Tile)
+      .filter(item => item.location.type!=LocationType.Board)
+      .length
+
+    let nbUnplayedGolems1=this
+      .material(MaterialType.Golem)
+      .location(LocationType.PlayerGolemStack)
+      .filter(item => item.id==Golem.Golem1)
+      .length
+
+    let nbUnplayedGolems2=this
+      .material(MaterialType.Golem)
+      .location(LocationType.PlayerGolemStack)
+      .filter(item => item.id==Golem.Golem2)
+      .length
+
+    /*
+    let nbUnplayedGolems3=this
+      .material(MaterialType.Golem)
+      .location(LocationType.PlayerGolemStack)
+      .filter(item => item.id==Golem.Golem3)
+      .length
+      */
+
+    console.log(nbUnplayedTiles)
+    console.log(nbUnplayedGolems1)
+    console.log(nbUnplayedGolems2)
+//    console.log(nbUnplayedGolems3)
+
+    if (nbUnplayedTiles==0
+      || nbUnplayedGolems1==0
+      || nbUnplayedGolems2==0)
+//      || nbUnplayedGolems3==0)
+      return [ this.rules().endGame() ]
+
+    // The game goes on
+    return []
+  }
+
   getPlayerMoves(): MaterialMove[] {
     let moves:MaterialMove[]=[]
 

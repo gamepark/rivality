@@ -142,9 +142,9 @@ export class CastSpellRule extends PlayerTurnRule {
         ||(nbGolems2OnTarget > nbGolems1OnTarget) && (nbGolems2OnTarget > nbGolems3OnTarget))
     }
 
-    // TODO - Missing break shield rule
+    // Manage shields
     let nbActiveShields=0
-    if (isTileControlledByOpponent){
+    if (isTileControlledByOpponent && !spell.breakShields){
       if (tileTools.isCottage(targetTile))
         nbActiveShields=1
       else if (tileTools.isFortress(targetTile))
