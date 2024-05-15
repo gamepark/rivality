@@ -1,7 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { LocationContext } from '@gamepark/react-game'
 import { MaterialRules, Location } from '@gamepark/rules-api'
-//import { RivalityRules } from '@gamepark/rivality/RivalityRules'
 import { LocationType } from '@gamepark/rivality/material/LocationType'
 import { MaterialType } from '@gamepark/rivality/material/MaterialType'
 import { tileDescription, spaceBetweenTiles } from '../../material/TileDescription'
@@ -18,7 +17,6 @@ export class TableDesign {
     return rules.players.length
   }
 
-//  getBoardDimensions(rules:RivalityRules){
   getBoardDimensions(rules:MaterialRules){
     let boardXMin=0
     let boardXMax=0
@@ -53,11 +51,6 @@ export class TableDesign {
     let xMax=xMin+width
     let yMax=yMin+height
 
-/*
-    if (xMin>tableThresholdXMin) xMin=tableThresholdXMin
-    if (yMin>tableThresholdYMin) yMin=tableThresholdYMin
-*/
-
     return {xMin, xMax, yMin, yMax}
   }
 
@@ -65,17 +58,8 @@ export class TableDesign {
     let boardSize=this.getBoardSize(rules)
     let boardDim=this.getBoardDimensions(rules)
 
-//    const nbSurroundingSquares=2
     let xCenter=boardSize.xMin+(1-boardDim.boardXMin)*(tileDescription.width+spaceBetweenTiles)+(tileDescription.width)/2
     let yCenter=boardSize.yMin+(1-boardDim.boardYMin)*(tileDescription.height+spaceBetweenTiles)+(tileDescription.height)/2
-
-/*
-    console.log("boardDim")
-    console.log(boardDim)
-    console.log("boardSize")
-    console.log(boardSize)
-    console.log("x:"+xCenter+" - y:"+yCenter)
-*/
 
     return {x:xCenter, y:yCenter}
   }
@@ -100,8 +84,6 @@ export class TableDesign {
         if (yMin>tableThresholdYMin) yMin=tableThresholdYMin
         if (yMax<tableThresholdYMax) yMax=tableThresholdYMax
 
-        console.log("Table size")
-        console.log({ xMin, xMax, yMin, yMax })
         return { xMin, xMax, yMin, yMax }
       }
       case 3:
@@ -180,11 +162,8 @@ export class TableDesign {
     if (nbPlayers===2){
         if (locationPlayer===1){
           x=17
-//          y=25
         } else if (locationPlayer===2){
-//          x=-23
           x=-15.5
-//          y=-25
         }
     } else {
       console.log("*** ERROR - Unsupported nb of players")

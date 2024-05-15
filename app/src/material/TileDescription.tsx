@@ -24,7 +24,7 @@ import Fortress_23B_22_22 from '../images/Fortress_23b_22_22.jpg'
 import Fortress_31_22_13B from '../images/Fortress_31_22_13b.jpg'
 import Fortress_22_23B_21 from '../images/Fortress_22_23b_21.jpg'
 import Fortress_22_22_23B from '../images/Fortress_22_22_23b.jpg'
-//import { KingdomCardHelp } from './help/KingdomCardHelp'
+import { TileHelp } from './help/TileHelp'
 
 export class TileDescription extends CardDescription {
   height = 7
@@ -32,7 +32,7 @@ export class TileDescription extends CardDescription {
   borderRadius = 0.5
 
   backImage = TileBack
-//  help = KingdomCardHelp
+  help = TileHelp
 
   images = {
     [Tile.WellOfMana]: WellOfMana,
