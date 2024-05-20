@@ -7,10 +7,11 @@ import { tileDescription, spaceBetweenTiles } from '../../material/TileDescripti
 
 const spaceBetweenBoardAndHand=2
 const spaceBetweenHandAndBoard=2
-const tableThresholdXMin=-30
-const tableThresholdXMax=30
+const tableThresholdXMin=-32
+const tableThresholdXMax=32
 const tableThresholdYMin=0
 const tableThresholdYMax=0
+const playerLeftThresholdXMin=-25
 
 class TableDimensions {
   xMin:number=0
@@ -132,14 +133,14 @@ export class TableDesign {
       } else if (locationPlayer===2){
         x=12
       }
-    } else if (nbPlayers==3){
+    } else if (nbPlayers===3){
       if (locationPlayer===1){
-        x=-17
+        x=-12
       } else if (locationPlayer===2){
-        x=-30 // TODO
-        y=-17
+        x=handCoords.x
+        y=-12
       } else if (locationPlayer===3){
-        x=17
+        x=12
       }
     } else {
       console.log("*** ERROR - Unsupported nb of players")
@@ -165,13 +166,17 @@ export class TableDesign {
           y=boardSize.yMin-tileDescription.height/2-spaceBetweenBoardAndHand
         }
     } else if (nbPlayers===3){
+      x=0
       if (locationPlayer===1){
         y=boardSize.yMax+tileDescription.height/2+spaceBetweenBoardAndHand
       } else if (locationPlayer===2){
-        x=-30 // TODO
+//        x=boardSize.xMin+tileDescription.height/2+spaceBetweenBoardAndHand
+        x=boardSize.xMin-tileDescription.height/2-spaceBetweenBoardAndHand
+        if (x>playerLeftThresholdXMin)
+          x=playerLeftThresholdXMin
         y=0
       } else if (locationPlayer===3){
-        x=-x
+//        x=-x
         y=boardSize.yMin-tileDescription.height/2-spaceBetweenBoardAndHand
       }
     } else {
@@ -193,16 +198,16 @@ export class TableDesign {
         if (locationPlayer===1){
           x=20
         } else if (locationPlayer===2){
-          x=-18
+          x=-20
         }
     } else if (nbPlayers===3){
       if (locationPlayer===1){
-        x=17
+        x=14
       } else if (locationPlayer===2){
         x=handCoords.x
         y=17 // TODO
       } else if (locationPlayer===3){
-        x=-15.5
+        x=-14
       }
     } else {
       console.log("*** ERROR - Unsupported nb of players")

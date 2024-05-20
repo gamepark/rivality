@@ -32,16 +32,23 @@ export class PlayerGolemStackDescription extends LocationDescription {
   }
 
   getCoordinates(location: Location, context: LocationContext) {
+    const nbPlayers=context.rules.game.players.length
+    const golemPlayer=location.player
     const baseCoordinates = tableDesign.playerGolemStackCoordinates(location, context)
-    const nbGolemsPerLine=10
-    const nbGolemsLines=3
+    let nbGolemsPerLine=(nbPlayers===2 ? 10 : 5)
+    let nbGolemsLines=(nbPlayers===2 ? 3 : 4)
+    if (nbPlayers===3 && golemPlayer===2){
+      let tmp=nbGolemsPerLine
+      nbGolemsPerLine=nbGolemsLines
+      nbGolemsLines=tmp
+    }
     const indexX=Math.floor(location.x!%nbGolemsPerLine)
     const indexY=Math.floor(location.x!/nbGolemsPerLine)
     const deltaX=indexX*(golemDescription.width+spaceBetweenGolems)
     const deltaY=indexY*(golemDescription.height+spaceBetweenGolems)
     return {
-      x: baseCoordinates.x + deltaX - (nbGolemsPerLine/2)*(golemDescription.width+spaceBetweenGolems),
-      y: baseCoordinates.y + deltaY - (nbGolemsLines/2)*(golemDescription.height+spaceBetweenGolems),
+      x: baseCoordinates.x + deltaX - (nbGolemsPerLine/2)*(golemDescription.width+spaceBetweenGolems)+spaceBetweenGolems*1.5,
+      y: baseCoordinates.y + deltaY - (nbGolemsLines/2)*(golemDescription.height+spaceBetweenGolems)+spaceBetweenGolems*1.5,
       z: location.x!+1
     }
   }

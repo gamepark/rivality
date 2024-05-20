@@ -13,39 +13,59 @@ export class PlayerHandLocator extends HandLocator {
 
   getCoordinates(location: Location, context: ItemContext) {
     const baseCoordinates=this.locationDescription.getCoordinates(location, context)
-    let deltaX=this.locationDescription.width/2
-    let x=0
-    if (location.player===1){
-      x=baseCoordinates.x+deltaX
-    } else {
-      x=baseCoordinates.x-deltaX
-    }
-    return { x:x, y:baseCoordinates.y, z: 1 }
+    return { x:baseCoordinates.x, y:baseCoordinates.y, z: 1 }
   }
 
   getRadius(_item: MaterialItem, _context: ItemContext): number {
     return 125
   }
 
-  getBaseAngle(item: MaterialItem, _context: ItemContext): number {
+  getBaseAngle(item: MaterialItem, context: ItemContext): number {
     let res=3
-    if (item.location.player!==1){
-      res+=180
+    const nbPlayers=context.rules.game.players.length
+    if (nbPlayers===2){
+      if (item.location.player===1){
+        res=0
+      }
+      if (item.location.player===2){
+        res=180
+      }
+    } else if (nbPlayers===3){
+      if (item.location.player===1){
+        res=0
+      }
+      if (item.location.player===2){
+        res=90
+      }
+      if (item.location.player===3){
+        res=180
+      }
     }
     return res
   }
 
   getItemIndex(item: MaterialItem, _context: ItemContext): number {
-      return item.location.x!
+    return item.location.x!-1
   }
 
   getRotateZ(item: MaterialItem, context: ItemContext): number {
+    const nbPlayers=context.rules.game.players.length
+
     // Tiles in opponents'hand are not rotated
     if (item.location.player !== context.player){
-      if (item.location.player==1)
-        return 0
-      if (item.location.player==2)
-        return 180
+      if (nbPlayers===2){
+        if (item.location.player===1)
+          return 0
+        if (item.location.player===2)
+          return 180
+      } else if (nbPlayers===3){
+        if (item.location.player===1)
+          return 0
+        if (item.location.player===2)
+          return 90
+        if (item.location.player===3)
+          return 180
+      }
       return 0
     }
 

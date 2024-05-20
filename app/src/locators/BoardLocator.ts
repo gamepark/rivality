@@ -2,6 +2,7 @@
 import { GridLocator, ItemContext } from '@gamepark/react-game'
 import { MaterialItem } from '@gamepark/rules-api'
 import { BoardSpace } from '@gamepark/rivality/material/BoardSpace'
+import { Golem } from '@gamepark/rivality/material/Golem'
 import { Orientation } from '@gamepark/rivality/Orientation'
 import { Wizard } from '@gamepark/rivality/material/Wizard'
 import { BoardDescription } from './description/BoardDescription'
@@ -60,7 +61,8 @@ export class BoardLocator extends GridLocator {
     }
   }
 
-  getRotateZ(item: MaterialItem, _context: ItemContext): number {
+  getRotateZ(item: MaterialItem, context: ItemContext): number {
+    const nbPlayers=context.rules.game.players.length
     if (item.location.id===BoardSpace.Tile){
       if (item.location.rotation===Orientation.North)
         return 0
@@ -72,10 +74,39 @@ export class BoardLocator extends GridLocator {
         return 270
     }
     if (item.location.id===BoardSpace.Wizard){
-      if (item.id===Wizard.Wizard1)
-        return 0
-      if (item.id===Wizard.Wizard2)
-        return 180
+      if (nbPlayers==2){
+        if (item.id===Wizard.Wizard1)
+          return 0
+        if (item.id===Wizard.Wizard2)
+          return 180
+      } else if (nbPlayers==3){
+        if (item.id===Wizard.Wizard1)
+          return 0
+        if (item.id===Wizard.Wizard2)
+          return 90
+        if (item.id===Wizard.Wizard3)
+          return 180
+      } else {
+        console.log("*** Unsupported nb of players")
+      }
+      return 90
+    }
+    if (item.location.id===BoardSpace.Golem){
+      if (nbPlayers==2){
+        if (item.id===Golem.Golem1)
+          return 0
+        if (item.id===Golem.Golem2)
+          return 180
+      } else if (nbPlayers==3){
+        if (item.id===Golem.Golem1)
+          return 0
+        if (item.id===Golem.Golem2)
+          return 90
+        if (item.id===Golem.Golem3)
+          return 180
+      } else {
+        console.log("*** Unsupported nb of players")
+      }
       return 90
     }
 

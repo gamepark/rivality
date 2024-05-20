@@ -11,7 +11,7 @@ export class PlayerDeckDescription extends LocationDescription {
   width = tileDescription.width
   borderRadius = tileDescription.borderRadius
 
-  alwaysVisible = true
+//  alwaysVisible = true
   extraCss = css`border: 0.05em solid white`
 
   location = { type: LocationType.PlayerDeck }

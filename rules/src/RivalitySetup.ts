@@ -184,34 +184,63 @@ export class RivalitySetup extends MaterialGameSetup<PlayerId, MaterialType, Loc
   setupWizards(options: RivalityOptions) {
     const newWizards = []
 
-    if (options.players==2){
-      // Player 1
-      newWizards.push(...wizards
-        .filter(wizard => wizard==Wizard.Wizard1)
-        .map((wizard) => ({
-          id: wizard,
-          location: {
-            type: LocationType.Board,
-            id: BoardSpace.Wizard,
-            x: -1,
-            y: 1
-          }
-        })))
+    let wizard1X=-1
+    let wizard1Y=1
+    let wizard2X=-1
+    let wizard2Y=-1
+    let wizard3X:number|undefined=undefined
+    let wizard3Y:number|undefined=undefined
 
-      // Player 2
-      newWizards.push(...wizards
-        .filter(wizard => wizard==Wizard.Wizard2)
-        .map((wizard) => ({
-          id: wizard,
-          location: {
-            type: LocationType.Board,
-            id: BoardSpace.Wizard,
-            x: -1,
-            y: -1
-          }
-        })))
+    if (options.players==2){
+      // OK - default values
+    } else if (options.players==3){
+      wizard2X=-2
+      wizard2Y=0
+      wizard3X=-1
+      wizard3Y=-1
     } else {
       console.log("*** ERROR - Unsupported nb of players")
+    }
+
+    // Player 1
+    newWizards.push(...wizards
+      .filter(wizard => wizard==Wizard.Wizard1)
+      .map((wizard) => ({
+        id: wizard,
+        location: {
+          type: LocationType.Board,
+          id: BoardSpace.Wizard,
+          x: wizard1X,
+          y: wizard1Y
+        }
+      })))
+
+    // Player 2
+    newWizards.push(...wizards
+      .filter(wizard => wizard==Wizard.Wizard2)
+      .map((wizard) => ({
+        id: wizard,
+        location: {
+          type: LocationType.Board,
+          id: BoardSpace.Wizard,
+          x: wizard2X,
+          y: wizard2Y
+        }
+      })))
+
+    // Player 3
+    if (wizard3X!==undefined){
+      newWizards.push(...wizards
+        .filter(wizard => wizard==Wizard.Wizard3)
+        .map((wizard) => ({
+          id: wizard,
+          location: {
+            type: LocationType.Board,
+            id: BoardSpace.Wizard,
+            x: wizard3X,
+            y: wizard3Y
+          }
+        })))
     }
 
     this.material(MaterialType.Wizard).createItems(newWizards)
@@ -220,13 +249,30 @@ export class RivalitySetup extends MaterialGameSetup<PlayerId, MaterialType, Loc
   setupPlayers(options: RivalityOptions){
     let nbPlayers=options.players
     for (let player=1; player<=nbPlayers; player++){
+      let defaultOrientation=Orientation.North
+      if (nbPlayers==2){
+        if (player==1){
+          defaultOrientation=Orientation.North
+        } else if (player==2){
+          defaultOrientation=Orientation.South
+        }
+      } else if (nbPlayers==3){
+        if (player==1){
+          defaultOrientation=Orientation.North
+        } else if (player==2){
+          defaultOrientation=Orientation.East
+        } else if (player==3){
+          defaultOrientation=Orientation.South
+        }
+      }
+
       const deck = this.material(MaterialType.Tile).location(LocationType.PlayerDeck).player(player).deck()
       for (let i=1; i<=2; i++){
         deck.deal({
           type:LocationType.PlayerHand,
           player:player,
           x:i,
-          rotation: Orientation.North
+          rotation: defaultOrientation
         }, 1)
       }
     }

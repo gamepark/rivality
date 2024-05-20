@@ -11,10 +11,23 @@ export class PlayerDeckLocator extends DeckLocator {
     return tableDesign.playerDeckCoordinates(item.location, context)
   }
 
-  getRotateZ(item: MaterialItem, _context: ItemContext): number {
-    if (item.location.player==1)
-      return 0
-    return 180
+  getRotateZ(item: MaterialItem, context: ItemContext): number {
+    const nbPlayers=context.rules.game.players.length
+
+    if (nbPlayers==2){
+      if (item.location.player==1)
+        return 0
+      if (item.location.player==2)
+        return 180
+    } else if (nbPlayers==3){
+      if (item.location.player==1)
+        return 0
+      if (item.location.player==2)
+        return 90
+      if (item.location.player==3)
+        return 180
+    }
+    return 0
   }
 }
 
