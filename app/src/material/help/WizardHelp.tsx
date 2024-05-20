@@ -1,5 +1,4 @@
 /** @jsxImportSource @emotion/react */
-//import { css } from '@emotion/react'
 import { MaterialHelpProps } from '@gamepark/react-game'
 import { usePlayerId, usePlayerName } from '@gamepark/react-game'
 import { Wizard } from '@gamepark/rivality/material/Wizard'

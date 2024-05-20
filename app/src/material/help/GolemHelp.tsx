@@ -5,7 +5,6 @@ import { usePlayerId, usePlayerName } from '@gamepark/react-game'
 import { Golem } from '@gamepark/rivality/material/Golem'
 
 export const GolemHelp = (props: MaterialHelpProps) => {
-//  const rules = useRules<RivalityRules>()
   const playerId = usePlayerId()
 
   let owner=1
