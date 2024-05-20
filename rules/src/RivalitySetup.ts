@@ -28,20 +28,21 @@ export class RivalitySetup extends MaterialGameSetup<PlayerId, MaterialType, Loc
   setupTiles(options: RivalityOptions) {
     const newTiles = []
 
-    newTiles.push(...tiles
-      .filter(tile => tile==Tile.WellOfMana)
-      .map((tile) => ({
-        id: tile,
-        location: {
-          type: LocationType.Board,
-          id: BoardSpace.Tile,
-          x: 0,
-          y: 0,
-          rotation: Orientation.North
-        }
-      })))
-
     if (options.players==2){
+      newTiles.push(...tiles
+        .filter(tile => tile==Tile.WellOfMana)
+        .map((tile) => ({
+          id: tile,
+          location: {
+            type: LocationType.Board,
+            id: BoardSpace.Tile,
+            x: 0,
+            y: 0,
+            rotation: Orientation.North
+          }
+        })))
+
+      // In 2 players mode, the deck are predefined
       for (let player=1; player<=2; player++){
         newTiles.push(...tiles
           .filter(tile => tileTools.tileDeck(tile)==player)
@@ -49,8 +50,7 @@ export class RivalitySetup extends MaterialGameSetup<PlayerId, MaterialType, Loc
             id: tile,
             location: {
               type: LocationType.PlayerDeck,
-              player: player,
-              rotation: false
+              player: player
             }
           })))
       }
@@ -59,6 +59,55 @@ export class RivalitySetup extends MaterialGameSetup<PlayerId, MaterialType, Loc
 
       // Shuffle and ensure that the last card for each player is NOT a fortress
       for (let player=1; player<=2; player++){
+        let lastPlayerCardIsAFortress=true
+        do {
+          this.material(MaterialType.Tile).player(player).shuffle()
+          let cards=this.material(MaterialType.Tile).player(player).getItems()
+          lastPlayerCardIsAFortress=tileTools.isFortress(cards[cards.length-1].id)
+        } while (lastPlayerCardIsAFortress)
+      }
+    } else if (options.players==3){
+      // In 3 players mode, the fortress cards are fairly dispatched among players
+      // 1. Create all tiles and shuffle them
+      newTiles.push(...tiles
+        .map((tile) => ({
+          id: tile,
+          location: {
+            type: LocationType.Board,
+            id: BoardSpace.Tile,
+            x: 0,
+            y: 0,
+            rotation: Orientation.North
+          }
+        })))
+      this.material(MaterialType.Tile).createItems(newTiles)
+      this.material(MaterialType.Tile).shuffle()
+
+      // 2. Create a deck with all fortress tiles
+      let fortressDeck=this
+        .material(MaterialType.Tile)
+        .filter(tile => tileTools.isFortress(tile.id))
+        .deck()
+
+      // 3. Dispatch 2 fortress tile to each player
+      for (let player=1; player<=3; player++){
+        fortressDeck.deal({ type: LocationType.PlayerDeck, player:player }, 2)
+      }
+
+      // 4. Create a deck with all non-wellOfMana and non-fortress tiles
+      let nonWellNonFortressDeck=this
+        .material(MaterialType.Tile)
+        .filter(tile => tile.id!=Tile.WellOfMana && !tileTools.isFortress(tile.id))
+        .deck()
+
+      // 5. Dispatch those tiles into 3 decks - 1 per player
+      const nbTiles=nonWellNonFortressDeck.length
+      for (let player=1; player<=3; player++){
+        nonWellNonFortressDeck.deal({ type: LocationType.PlayerDeck, player:player }, nbTiles/3)
+      }
+
+      // 6. Shuffle each player's deck until their last card is not a fortress
+      for (let player=1; player<=3; player++){
         let lastPlayerCardIsAFortress=true
         do {
           this.material(MaterialType.Tile).player(player).shuffle()
@@ -82,6 +131,12 @@ export class RivalitySetup extends MaterialGameSetup<PlayerId, MaterialType, Loc
       nbGolemsPlayer1=30
       nbGolemsPlayer2=30
       nbGolemsPlayer3=0
+    } else if (options.players==3){
+      nbGolemsPlayer1=20
+      nbGolemsPlayer2=20
+      nbGolemsPlayer3=20
+    } else {
+      console.log("*** ERROR - Unsupported nb of players")
     }
 
     // Player 1

@@ -12,6 +12,13 @@ const tableThresholdXMax=28
 const tableThresholdYMin=0
 const tableThresholdYMax=0
 
+class TableDimensions {
+  xMin:number=0
+  xMax:number=0
+  yMin:number=0
+  yMax:number=0
+}
+
 export class TableDesign {
   nbPlayers(rules: MaterialRules){
     return rules.players.length
@@ -37,7 +44,7 @@ export class TableDesign {
     return {boardXMin, boardXMax, boardYMin, boardYMax}
   }
 
-  getBoardSize(rules:MaterialRules){
+  getBoardSize(rules:MaterialRules) : TableDimensions {
     let width=60
     let height=60
 
@@ -64,7 +71,7 @@ export class TableDesign {
     return {x:xCenter, y:yCenter}
   }
 
-  getTableSize(players:number, rules:MaterialRules){
+  getTableSize(players:number, rules:MaterialRules) : TableDimensions {
     switch (players) {
       case 1:
         return { xMin: -56, xMax: 12, yMin: -34, yMax: 17 }
@@ -86,8 +93,16 @@ export class TableDesign {
 
         return { xMin, xMax, yMin, yMax }
       }
-      case 3:
-        return { xMin: -55, xMax: 57, yMin: -37, yMax: 37 }
+      case 3: {
+        // Same dimensions as 2 player mode with extra space on the left
+        const twoPlayersDimensions=this.getTableSize(2, rules)
+        return {
+          xMin:twoPlayersDimensions.xMin-10,
+          xMax:twoPlayersDimensions.xMax,
+          yMin:twoPlayersDimensions.yMin,
+          yMax:twoPlayersDimensions.yMax
+        }
+      }
       case 4:
         return { xMin: -49, xMax: 54, yMin: -42, yMax: 42 }
       case 5:
@@ -117,11 +132,20 @@ export class TableDesign {
     let x=0
     let y=handCoords.y
     if (nbPlayers===2){
-        if (locationPlayer===1){
-          x=-17
-        } else if (locationPlayer===2){
-          x=17
-        }
+      if (locationPlayer===1){
+        x=-17
+      } else if (locationPlayer===2){
+        x=17
+      }
+    } else if (nbPlayers==3){
+      if (locationPlayer===1){
+        x=-17
+      } else if (locationPlayer===2){
+        x=-30 // TODO
+        y=-17
+      } else if (locationPlayer===3){
+        x=17
+      }
     } else {
       console.log("*** ERROR - Unsupported nb of players")
     }
@@ -144,6 +168,16 @@ export class TableDesign {
           x=-x
           y=boardSize.yMin-tileDescription.height/2-spaceBetweenBoardAndHand
         }
+    } else if (nbPlayers===3){
+      if (locationPlayer===1){
+        y=boardSize.yMax+tileDescription.height/2+spaceBetweenBoardAndHand
+      } else if (locationPlayer===2){
+        x=-30 // TODO
+        y=0
+      } else if (locationPlayer===3){
+        x=-x
+        y=boardSize.yMin-tileDescription.height/2-spaceBetweenBoardAndHand
+      }
     } else {
       console.log("*** ERROR - Unsupported nb of players")
     }
@@ -165,6 +199,15 @@ export class TableDesign {
         } else if (locationPlayer===2){
           x=-15.5
         }
+    } else if (nbPlayers===3){
+      if (locationPlayer===1){
+        x=17
+      } else if (locationPlayer===2){
+        x=handCoords.x
+        y=17 // TODO
+      } else if (locationPlayer===3){
+        x=-15.5
+      }
     } else {
       console.log("*** ERROR - Unsupported nb of players")
     }
