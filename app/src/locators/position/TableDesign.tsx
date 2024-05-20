@@ -7,8 +7,8 @@ import { tileDescription, spaceBetweenTiles } from '../../material/TileDescripti
 
 const spaceBetweenBoardAndHand=2
 const spaceBetweenHandAndBoard=2
-const tableThresholdXMin=-28
-const tableThresholdXMax=28
+const tableThresholdXMin=-30
+const tableThresholdXMax=30
 const tableThresholdYMin=0
 const tableThresholdYMax=0
 
@@ -53,22 +53,17 @@ export class TableDesign {
     width=(boardDim.boardXMax-boardDim.boardXMin+1+nbSurroundingSquares)*(tileDescription.width+spaceBetweenTiles)-spaceBetweenTiles
     height=(boardDim.boardYMax-boardDim.boardYMin+1+nbSurroundingSquares)*(tileDescription.height+spaceBetweenTiles)-spaceBetweenTiles
 
-    let xMin=-width/2
-    let yMin=-height/2
+    // The mana tile at (0,0) must never move
+    let xMin=-((1-boardDim.boardXMin)*(tileDescription.width+spaceBetweenTiles)+(tileDescription.width/2))
+    let yMin=-((1-boardDim.boardYMin)*(tileDescription.height+spaceBetweenTiles)+(tileDescription.height/2))
     let xMax=xMin+width
     let yMax=yMin+height
 
     return {xMin, xMax, yMin, yMax}
   }
 
-  getBoardCenter(rules:MaterialRules){
-    let boardSize=this.getBoardSize(rules)
-    let boardDim=this.getBoardDimensions(rules)
-
-    let xCenter=boardSize.xMin+(1-boardDim.boardXMin)*(tileDescription.width+spaceBetweenTiles)+(tileDescription.width)/2
-    let yCenter=boardSize.yMin+(1-boardDim.boardYMin)*(tileDescription.height+spaceBetweenTiles)+(tileDescription.height)/2
-
-    return {x:xCenter, y:yCenter}
+  getBoardCenter(_rules:MaterialRules){
+    return { x:0, y:0 }
   }
 
   getTableSize(players:number, rules:MaterialRules) : TableDimensions {
@@ -133,9 +128,9 @@ export class TableDesign {
     let y=handCoords.y
     if (nbPlayers===2){
       if (locationPlayer===1){
-        x=-17
+        x=-12
       } else if (locationPlayer===2){
-        x=17
+        x=12
       }
     } else if (nbPlayers==3){
       if (locationPlayer===1){
@@ -163,9 +158,10 @@ export class TableDesign {
     let y=0
     if (nbPlayers===2){
         if (locationPlayer===1){
+          x=0
           y=boardSize.yMax+tileDescription.height/2+spaceBetweenBoardAndHand
         } else if (locationPlayer===2){
-          x=-x
+          x=0
           y=boardSize.yMin-tileDescription.height/2-spaceBetweenBoardAndHand
         }
     } else if (nbPlayers===3){
@@ -195,9 +191,9 @@ export class TableDesign {
     let y=handCoords.y
     if (nbPlayers===2){
         if (locationPlayer===1){
-          x=17
+          x=20
         } else if (locationPlayer===2){
-          x=-15.5
+          x=-18
         }
     } else if (nbPlayers===3){
       if (locationPlayer===1){
