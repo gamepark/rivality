@@ -1,5 +1,3 @@
-//import { LocationType } from '../material/LocationType'
-//import { MaterialType } from '../material/MaterialType'
 import { Material } from '@gamepark/rules-api'
 import { Golem } from '../material/Golem'
 import { PlayerId } from '../PlayerId'

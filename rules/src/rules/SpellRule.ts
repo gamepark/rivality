@@ -5,29 +5,16 @@ import { RuleId } from '../rules/RuleId'
 
 export abstract class SpellRule extends PlayerTurnRule {
   spellAction(orientation:Orientation|undefined) : MaterialMove {
-    if (orientation==Orientation.North){
-      return this.rules()
-      .startPlayerTurn(RuleId.CastSpellSouth, this.getActivePlayer())
-    }
-    if (orientation==Orientation.East){
-      return this.rules()
-      .startPlayerTurn(RuleId.CastSpellEast, this.getActivePlayer())
-    }
-    if (orientation==Orientation.South){
-      return this.rules()
-      .startPlayerTurn(RuleId.CastSpellSouth, this.getActivePlayer())
-    }
-    if (orientation==Orientation.West){
-      return this.rules()
-      .startPlayerTurn(RuleId.CastSpellWest, this.getActivePlayer())
+    if (orientation===undefined){
+      this.forget(Memory.SpellOrientation)
+      return this.rules().startPlayerTurn(RuleId.EndTurn, this.getActivePlayer())
     }
 
-    return this.rules()
-    .startPlayerTurn(RuleId.EndTurn, this.getActivePlayer())
+    this.memorize(Memory.SpellOrientation, orientation)
+    return this.rules().startPlayerTurn(RuleId.CastSpell, this.getActivePlayer())
   }
 
-  // TODO - Rename as nextOrientation() after removal of such methods from CastSpellXXX rules
-  followingOrientation() : Orientation|undefined {
+  nextOrientation() : Orientation|undefined {
     const currentOrientation:Orientation = this.remind(Memory.SpellOrientation)
     if (currentOrientation==Orientation.North) return Orientation.East
     if (currentOrientation==Orientation.East) return Orientation.South

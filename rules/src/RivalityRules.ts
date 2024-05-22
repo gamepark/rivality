@@ -2,10 +2,7 @@ import { FillGapStrategy, hideItemId, hideItemIdToOthers, HidingStrategy, Materi
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { PlayerId } from './PlayerId'
-import { CastSpellNorthRule } from './rules/CastSpellNorthRule'
-import { CastSpellEastRule } from './rules/CastSpellEastRule'
-import { CastSpellSouthRule } from './rules/CastSpellSouthRule'
-import { CastSpellWestRule } from './rules/CastSpellWestRule'
+import { CastSpellRule } from './rules/CastSpellRule'
 import { ChooseTileRule } from './rules/ChooseTileRule'
 import { EndTurnRule } from './rules/EndTurnRule'
 import { RemoveGolemRule } from './rules/RemoveGolemRule'
@@ -32,10 +29,7 @@ export const alwaysShow: HidingStrategy = () => {
 export class RivalityRules extends SecretMaterialRules<PlayerId, MaterialType, LocationType> {
   rules = {
     [RuleId.ChooseTile]: ChooseTileRule,
-    [RuleId.CastSpellNorth]: CastSpellNorthRule,
-    [RuleId.CastSpellEast]: CastSpellEastRule,
-    [RuleId.CastSpellSouth]: CastSpellSouthRule,
-    [RuleId.CastSpellWest]: CastSpellWestRule,
+    [RuleId.CastSpell]: CastSpellRule,
     [RuleId.RemoveGolem]: RemoveGolemRule,
     [RuleId.EndTurn]: EndTurnRule
   }

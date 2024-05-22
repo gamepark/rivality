@@ -1,12 +1,18 @@
 import { MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
-import { RuleId } from '../rules/RuleId'
+import { Memory } from './Memory'
 import { Orientation } from '../Orientation'
+import { RuleId } from '../rules/RuleId'
 
 export class EndTurnRule extends PlayerTurnRule {
   onRuleStart(): MaterialMove[] {
     let moves:MaterialMove[]=[]
+
+    // Clean game state
+    this.forget(Memory.SpellOrientation)
+    this.forget(Memory.SpellTileX)
+    this.forget(Memory.SpellTileY)
 
     // Find current hand orientation
     let handTilesItems=this

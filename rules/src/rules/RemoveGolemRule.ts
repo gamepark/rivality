@@ -42,7 +42,7 @@ export class RemoveGolemRule extends SpellRule {
   }
 
   nextSpellAction() : MaterialMove {
-    return this.spellAction(this.followingOrientation())
+    return this.spellAction(this.nextOrientation())
   }
 
   removeGolems() : MaterialMove[] {

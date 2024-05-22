@@ -1,5 +1,4 @@
 import { isMoveItemTypeAtOnce, ItemMove, MaterialMove } from '@gamepark/rules-api'
-import { Golem } from '../material/Golem'
 import { BoardSpace } from '../material/BoardSpace'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
@@ -13,8 +12,18 @@ import { Memory } from './Memory'
 import { RuleId } from '../rules/RuleId'
 import { SpellRule } from './SpellRule'
 
-export abstract class CastSpellRule extends SpellRule {
-  abstract nextOrientation():Orientation|undefined
+export class CastSpellRule extends SpellRule {
+  onRuleStart(): MaterialMove[] {
+    // Default orientation is not set
+    let spellOrientation=this.remind(Memory.SpellOrientation)
+    if (spellOrientation===undefined){
+      spellOrientation=Orientation.North
+      this.memorize(Memory.SpellOrientation, spellOrientation)
+    }
+
+    // Apply spell effects
+    return this.castEffectsOrGoToNextOrientation(spellOrientation)
+  }
 
   castEffectsOrGoToNextOrientation(spellOrientation:Orientation):MaterialMove[] {
     let moves=this.castEffects(spellOrientation)
@@ -129,50 +138,16 @@ export abstract class CastSpellRule extends SpellRule {
       .location(LocationType.Board)
       .filter(item => item.location.x==targetX && item.location.y==targetY)
 
-    const tmp=golemTools.golemCount(golemsOnTarget, this.getActivePlayer())
-    console.log(tmp)
-
-    const nbGolems1OnTarget=golemsOnTarget.filter(item => item.id==Golem.Golem1).length
-    const nbGolems2OnTarget=golemsOnTarget.filter(item => item.id==Golem.Golem2).length
-    const nbGolems3OnTarget=golemsOnTarget.filter(item => item.id==Golem.Golem3).length
-
-//    const nbGolemsOnTargetByPlayer=[nbGolems1OnTarget, nbGolems2OnTarget, nbGolems3OnTarget]
-
-//    let nbPlayerGolems=0
-//    let nbOpponentGolems=0
-    let hasFiveGolemsOfASingleOpponent=false
-    let isTileControlledByOpponent=false
-    if (this.getActivePlayer()==1){
-//      nbPlayerGolems=nbGolems1OnTarget
-//      nbOpponentGolems=nbGolems2OnTarget+nbGolems3OnTarget
-      hasFiveGolemsOfASingleOpponent=(nbGolems2OnTarget==5)||(nbGolems3OnTarget==5)
-      isTileControlledByOpponent=
-        ((nbGolems2OnTarget > nbGolems1OnTarget) && (nbGolems2OnTarget > nbGolems3OnTarget)
-        ||(nbGolems3OnTarget > nbGolems1OnTarget) && (nbGolems3OnTarget > nbGolems2OnTarget))
-    } else if (this.getActivePlayer()==2){
-//      nbPlayerGolems=nbGolems2OnTarget
-//      nbOpponentGolems=nbGolems1OnTarget+nbGolems3OnTarget
-      hasFiveGolemsOfASingleOpponent=(nbGolems1OnTarget==5)||(nbGolems3OnTarget==5)
-      isTileControlledByOpponent=
-        ((nbGolems1OnTarget > nbGolems2OnTarget) && (nbGolems1OnTarget > nbGolems3OnTarget)
-        ||(nbGolems3OnTarget > nbGolems1OnTarget) && (nbGolems3OnTarget > nbGolems2OnTarget))
-    } else if (this.getActivePlayer()==3){
-//      nbPlayerGolems=nbGolems3OnTarget
-//      nbOpponentGolems=nbGolems1OnTarget+nbGolems2OnTarget
-      hasFiveGolemsOfASingleOpponent=(nbGolems1OnTarget==5)||(nbGolems2OnTarget==5)
-      isTileControlledByOpponent=
-        ((nbGolems1OnTarget > nbGolems2OnTarget) && (nbGolems1OnTarget > nbGolems3OnTarget)
-        ||(nbGolems2OnTarget > nbGolems1OnTarget) && (nbGolems2OnTarget > nbGolems3OnTarget))
-    }
+    const golemCount = golemTools.golemCount(golemsOnTarget, this.getActivePlayer())
 
     // Manage shields
     let nbActiveShields=0
-    if (isTileControlledByOpponent && !spell.breakShields){
+    if (golemCount.isTileControlledByOpponent && !spell.breakShields){
       if (tileTools.isCottage(targetTile))
         nbActiveShields=1
       else if (tileTools.isFortress(targetTile))
         nbActiveShields=2
-      if (hasFiveGolemsOfASingleOpponent)
+      if (golemCount.hasFiveGolemsOfASingleOpponent)
         nbActiveShields=nbActiveShields+1
     }
 
@@ -213,108 +188,14 @@ export abstract class CastSpellRule extends SpellRule {
       )
     )
 
-    console.log(moves)
     return moves
   }
 
   afterItemMove(move: ItemMove) {
-    console.log('move')
-    console.log(move)
     if (isMoveItemTypeAtOnce(MaterialType.Golem)(move)){
-      console.log('after golem move')
       return [this.rules()
         .startPlayerTurn(RuleId.RemoveGolem, this.getActivePlayer())]
     }
-    console.log('foo')
     return []
   }
-
-/*
-  removeGolems(){
-    nbPlayerGolems=nbPlayerGolems+nbAddedGolems
-
-    // Golem removal moves
-    // TODO - Implement removal for the 3 players mode
-    let nbGolems1ToBeRemoved=0
-    let nbGolems2ToBeRemoved=0
-    let nbGolems3ToBeRemoved=0
-    while (nbPlayerGolems+nbOpponentGolems > 5){
-      if (this.getActivePlayer()==1){
-        // Active player = 1
-        if (nbOpponentGolems>0){
-          nbOpponentGolems--
-          nbGolems2ToBeRemoved++
-        } else {
-          nbPlayerGolems--
-          nbGolems1ToBeRemoved++
-        }
-      } else {
-        // Active player = 2
-        if (nbOpponentGolems>0){
-          nbOpponentGolems--
-          nbGolems1ToBeRemoved++
-        } else {
-          nbPlayerGolems--
-          nbGolems2ToBeRemoved++
-        }
-      }
-    }
-
-    if (nbGolems1ToBeRemoved>0){
-      moves.push(this.
-        material(MaterialType.Golem)
-        .location(LocationType.Board)
-        .filter(item =>
-          item.location.x==targetX
-          && item.location.y==targetY
-          && item.id==Golem.Golem1
-        )
-        .limit(nbGolems1ToBeRemoved)
-        .moveItemsAtOnce(
-          {
-            type: LocationType.PlayerGolemStack,
-            player: 1
-          }
-        )
-      )
-    }
-    if (nbGolems2ToBeRemoved>0){
-      moves.push(this.
-        material(MaterialType.Golem)
-        .location(LocationType.Board)
-        .filter(item =>
-          item.location.x==targetX
-          && item.location.y==targetY
-          && item.id==Golem.Golem2
-        )
-        .limit(nbGolems2ToBeRemoved)
-        .moveItemsAtOnce(
-          {
-            type: LocationType.PlayerGolemStack,
-            player: 2
-          }
-        )
-      )
-    }
-    if (nbGolems3ToBeRemoved>0){
-      moves.push(this.
-        material(MaterialType.Golem)
-        .location(LocationType.Board)
-        .filter(item =>
-          item.location.x==targetX
-          && item.location.y==targetY
-          && item.id==Golem.Golem3
-        )
-        .limit(nbGolems3ToBeRemoved)
-        .moveItemsAtOnce(
-          {
-            type: LocationType.PlayerGolemStack,
-            player: 3
-          }
-        )
-      )
-    }
-    return moves
-  }
-*/
 }
