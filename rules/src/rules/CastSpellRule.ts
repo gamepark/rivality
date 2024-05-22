@@ -1,17 +1,32 @@
-import { MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
+import { isMoveItemTypeAtOnce, ItemMove, MaterialMove } from '@gamepark/rules-api'
 import { Golem } from '../material/Golem'
 import { BoardSpace } from '../material/BoardSpace'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
+import { Tile } from '../material/Tile'
+import { golemTools } from '../logic/GolemTools'
 import { wizardTools } from '../logic/WizardTools'
 import { Spell, tileSpells } from '../logic/TileSpells'
 import { tileTools } from '../logic/TileTools'
 import { Orientation } from '../Orientation'
-import { Tile } from '../material/Tile'
-// import { RuleId } from '../rules/RuleId'
+import { Memory } from './Memory'
+import { RuleId } from '../rules/RuleId'
+import { SpellRule } from './SpellRule'
 
-export class CastSpellRule extends PlayerTurnRule {
+export abstract class CastSpellRule extends SpellRule {
+  abstract nextOrientation():Orientation|undefined
+
+  castEffectsOrGoToNextOrientation(spellOrientation:Orientation):MaterialMove[] {
+    let moves=this.castEffects(spellOrientation)
+    if (moves.length>0)
+      return moves
+
+    return [this.spellAction(this.nextOrientation())]
+  }
+
   castEffects(spellOrientation:Orientation):MaterialMove[] {
+    this.memorize(Memory.SpellOrientation, spellOrientation)
+
     // Get the active tile coordinates
     const playerWizard=wizardTools.playerWizard(this.getActivePlayer())
     const wizardItem=this
@@ -79,6 +94,7 @@ export class CastSpellRule extends PlayerTurnRule {
       // No tile on the board
       return []
     }
+
     // Found target tile
     return this.applySpellOnTile(spell, targetX, targetY, targetTile.id)
   }
@@ -105,37 +121,44 @@ export class CastSpellRule extends PlayerTurnRule {
   // - The target tile is on the board
   // - There is no wizard on the target tile
   applySpellOnWizardFreeTile(spell:Spell, targetX:number, targetY:number, targetTile:Tile){
+    this.memorize(Memory.SpellTileX, targetX)
+    this.memorize(Memory.SpellTileY, targetY)
+
     const golemsOnTarget=this
       .material(MaterialType.Golem)
       .location(LocationType.Board)
       .filter(item => item.location.x==targetX && item.location.y==targetY)
+
+    const tmp=golemTools.golemCount(golemsOnTarget, this.getActivePlayer())
+    console.log(tmp)
+
     const nbGolems1OnTarget=golemsOnTarget.filter(item => item.id==Golem.Golem1).length
     const nbGolems2OnTarget=golemsOnTarget.filter(item => item.id==Golem.Golem2).length
     const nbGolems3OnTarget=golemsOnTarget.filter(item => item.id==Golem.Golem3).length
 
 //    const nbGolemsOnTargetByPlayer=[nbGolems1OnTarget, nbGolems2OnTarget, nbGolems3OnTarget]
 
-    let nbPlayerGolems=0
-    let nbOpponentGolems=0
+//    let nbPlayerGolems=0
+//    let nbOpponentGolems=0
     let hasFiveGolemsOfASingleOpponent=false
     let isTileControlledByOpponent=false
     if (this.getActivePlayer()==1){
-      nbPlayerGolems=nbGolems1OnTarget
-      nbOpponentGolems=nbGolems2OnTarget+nbGolems3OnTarget
+//      nbPlayerGolems=nbGolems1OnTarget
+//      nbOpponentGolems=nbGolems2OnTarget+nbGolems3OnTarget
       hasFiveGolemsOfASingleOpponent=(nbGolems2OnTarget==5)||(nbGolems3OnTarget==5)
       isTileControlledByOpponent=
         ((nbGolems2OnTarget > nbGolems1OnTarget) && (nbGolems2OnTarget > nbGolems3OnTarget)
         ||(nbGolems3OnTarget > nbGolems1OnTarget) && (nbGolems3OnTarget > nbGolems2OnTarget))
     } else if (this.getActivePlayer()==2){
-      nbPlayerGolems=nbGolems2OnTarget
-      nbOpponentGolems=nbGolems1OnTarget+nbGolems3OnTarget
+//      nbPlayerGolems=nbGolems2OnTarget
+//      nbOpponentGolems=nbGolems1OnTarget+nbGolems3OnTarget
       hasFiveGolemsOfASingleOpponent=(nbGolems1OnTarget==5)||(nbGolems3OnTarget==5)
       isTileControlledByOpponent=
         ((nbGolems1OnTarget > nbGolems2OnTarget) && (nbGolems1OnTarget > nbGolems3OnTarget)
         ||(nbGolems3OnTarget > nbGolems1OnTarget) && (nbGolems3OnTarget > nbGolems2OnTarget))
     } else if (this.getActivePlayer()==3){
-      nbPlayerGolems=nbGolems3OnTarget
-      nbOpponentGolems=nbGolems1OnTarget+nbGolems2OnTarget
+//      nbPlayerGolems=nbGolems3OnTarget
+//      nbOpponentGolems=nbGolems1OnTarget+nbGolems2OnTarget
       hasFiveGolemsOfASingleOpponent=(nbGolems1OnTarget==5)||(nbGolems2OnTarget==5)
       isTileControlledByOpponent=
         ((nbGolems1OnTarget > nbGolems2OnTarget) && (nbGolems1OnTarget > nbGolems3OnTarget)
@@ -189,6 +212,25 @@ export class CastSpellRule extends PlayerTurnRule {
         }
       )
     )
+
+    console.log(moves)
+    return moves
+  }
+
+  afterItemMove(move: ItemMove) {
+    console.log('move')
+    console.log(move)
+    if (isMoveItemTypeAtOnce(MaterialType.Golem)(move)){
+      console.log('after golem move')
+      return [this.rules()
+        .startPlayerTurn(RuleId.RemoveGolem, this.getActivePlayer())]
+    }
+    console.log('foo')
+    return []
+  }
+
+/*
+  removeGolems(){
     nbPlayerGolems=nbPlayerGolems+nbAddedGolems
 
     // Golem removal moves
@@ -274,4 +316,5 @@ export class CastSpellRule extends PlayerTurnRule {
     }
     return moves
   }
+*/
 }

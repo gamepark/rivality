@@ -7,6 +7,8 @@ import { CastSpellEastRule } from './rules/CastSpellEastRule'
 import { CastSpellSouthRule } from './rules/CastSpellSouthRule'
 import { CastSpellWestRule } from './rules/CastSpellWestRule'
 import { ChooseTileRule } from './rules/ChooseTileRule'
+import { EndTurnRule } from './rules/EndTurnRule'
+import { RemoveGolemRule } from './rules/RemoveGolemRule'
 import { RuleId } from './rules/RuleId'
 import { score } from './logic/Score'
 
@@ -33,7 +35,9 @@ export class RivalityRules extends SecretMaterialRules<PlayerId, MaterialType, L
     [RuleId.CastSpellNorth]: CastSpellNorthRule,
     [RuleId.CastSpellEast]: CastSpellEastRule,
     [RuleId.CastSpellSouth]: CastSpellSouthRule,
-    [RuleId.CastSpellWest]: CastSpellWestRule
+    [RuleId.CastSpellWest]: CastSpellWestRule,
+    [RuleId.RemoveGolem]: RemoveGolemRule,
+    [RuleId.EndTurn]: EndTurnRule
   }
 
   locationsStrategies = {

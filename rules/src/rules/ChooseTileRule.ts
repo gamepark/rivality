@@ -11,6 +11,8 @@ import { CustomMoveType } from './CustomMoveType'
 
 export class ChooseTileRule extends PlayerTurnRule {
   onRuleStart(): MaterialMove[] {
+    const nbPlayers=this.game.players.length
+
     // End of game ?
     let nbUnplayedTiles=this
       .material(MaterialType.Tile)
@@ -29,24 +31,18 @@ export class ChooseTileRule extends PlayerTurnRule {
       .filter(item => item.id==Golem.Golem2)
       .length
 
-    /*
     let nbUnplayedGolems3=this
       .material(MaterialType.Golem)
       .location(LocationType.PlayerGolemStack)
       .filter(item => item.id==Golem.Golem3)
       .length
-      */
-/*
-    console.log(nbUnplayedTiles)
-    console.log(nbUnplayedGolems1)
-    console.log(nbUnplayedGolems2)
-*/
-//    console.log(nbUnplayedGolems3)
 
-    if (nbUnplayedTiles==0
+    if (
+      nbUnplayedTiles==0
       || nbUnplayedGolems1==0
-      || nbUnplayedGolems2==0)
-//      || nbUnplayedGolems3==0)
+      || nbUnplayedGolems2==0
+      || (nbPlayers== 3 && nbUnplayedGolems3==0)
+    )
       return [ this.rules().endGame() ]
 
     // The game goes on
