@@ -39,9 +39,6 @@ export class Score {
           res+=1
       }
     })
-
-    console.log("Player "+playerId+": "+res)
-
     return res
   }
 
