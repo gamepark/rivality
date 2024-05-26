@@ -8,7 +8,6 @@ import { createPortal } from 'react-dom'
 
 export const PlayerPanels: FC<any> = () => {
   const players = usePlayers({ sortFromMe: true })
-//  const rules = useRules<RivalityRules>()!
   const root = document.getElementById('root')
   if (!root) {
     return null
@@ -32,7 +31,6 @@ const Score: FC<any> = (props) => {
 
   if (!rules?.isOver()) return <></>
   const score=rules.getScore(player)
-  console.log(score)
 
   return <div><span css={vpText(score)}>{score}</span></div>
 }

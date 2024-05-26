@@ -11,6 +11,11 @@ import { tileTools } from './logic/TileTools'
 import { Orientation } from './Orientation'
 import { PlayerId } from './PlayerId'
 import { RuleId } from './rules/RuleId'
+import { tests } from './RivalityTests'
+
+function isTest(options: RivalityOptions) : boolean {
+  return (options.test !==undefined && options.test>0)
+}
 
 /**
  * This class creates a new Game based on the game options
@@ -22,7 +27,15 @@ export class RivalitySetup extends MaterialGameSetup<PlayerId, MaterialType, Loc
     this.setupTiles(options)
     this.setupGolems(options)
     this.setupWizards(options)
-    this.setupPlayers(options)
+
+    // Tests
+    if (isTest(options)){
+      console.log("Test mode")
+      tests.setupMaterial(this, options.test!, options.players)
+      return
+    }
+
+    this.setupPlayerHands(options)
   }
 
   setupTiles(options: RivalityOptions) {
@@ -45,7 +58,7 @@ export class RivalitySetup extends MaterialGameSetup<PlayerId, MaterialType, Loc
       // In 2 players mode, the deck are predefined
       for (let player=1; player<=2; player++){
         newTiles.push(...tiles
-          .filter(tile => tileTools.tileDeck(tile)==player)
+          .filter(tile => tileTools.tileDeck(tile)==player || tileTools.tileDeck(tile)==-1)
           .map((tile) => ({
             id: tile,
             location: {
@@ -246,7 +259,7 @@ export class RivalitySetup extends MaterialGameSetup<PlayerId, MaterialType, Loc
     this.material(MaterialType.Wizard).createItems(newWizards)
   }
 
-  setupPlayers(options: RivalityOptions){
+  setupPlayerHands(options: RivalityOptions){
     let nbPlayers=options.players
     for (let player=1; player<=nbPlayers; player++){
       let defaultOrientation=Orientation.North
@@ -278,7 +291,11 @@ export class RivalitySetup extends MaterialGameSetup<PlayerId, MaterialType, Loc
     }
   }
 
-  start() {
+  start(options: RivalityOptions) {
+    if (isTest(options)){
+      tests.start(this, options.test!)
+      return
+    }
     this.startPlayerTurn(RuleId.ChooseTile, this.game.players[0])
   }
 }
