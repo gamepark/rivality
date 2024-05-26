@@ -28,13 +28,13 @@ export class BoardLocator extends GridLocator {
       let indexOnCard=context.rules
         .material(MaterialType.Golem)
         .location(LocationType.Board)
-        .filter(a => a.location.x==item.location.x && a.location.y==item.location.y && a.location.z!<=item.location.z!)
+        .filter(a => a.location.x===item.location.x && a.location.y===item.location.y && a.location.z!<=item.location.z!)
         .length
 
       let nbGolemsOnCard=context.rules
         .material(MaterialType.Golem)
         .location(LocationType.Board)
-        .filter(a => a.location.x==item.location.x && a.location.y==item.location.y)
+        .filter(a => a.location.x===item.location.x && a.location.y===item.location.y)
         .length
 
       let radius=2
@@ -74,12 +74,12 @@ export class BoardLocator extends GridLocator {
         return 270
     }
     if (item.location.id===BoardSpace.Wizard){
-      if (nbPlayers==2){
+      if (nbPlayers===2){
         if (item.id===Wizard.Wizard1)
           return 0
         if (item.id===Wizard.Wizard2)
           return 180
-      } else if (nbPlayers==3){
+      } else if (nbPlayers===3){
         if (item.id===Wizard.Wizard1)
           return 0
         if (item.id===Wizard.Wizard2)
@@ -92,12 +92,12 @@ export class BoardLocator extends GridLocator {
       return 90
     }
     if (item.location.id===BoardSpace.Golem){
-      if (nbPlayers==2){
+      if (nbPlayers===2){
         if (item.id===Golem.Golem1)
           return 0
         if (item.id===Golem.Golem2)
           return 180
-      } else if (nbPlayers==3){
+      } else if (nbPlayers===3){
         if (item.id===Golem.Golem1)
           return 0
         if (item.id===Golem.Golem2)
