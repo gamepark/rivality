@@ -71,6 +71,9 @@ export class RivalityTests {
       case 3:
         this.setupMaterial3(setup)
         break
+      case 4:
+        this.setupMaterial4(setup)
+        break
 
       default:
         console.log("*** Unknown test")
@@ -87,6 +90,9 @@ export class RivalityTests {
         break
       case 3:
         this.start3(setup)
+        break
+      case 4:
+        this.start4(setup)
         break
 
       default:
@@ -426,26 +432,69 @@ export class RivalityTests {
   setupMaterial3(setup: RivalitySetup) {
     this.texts(
       "Two active spells",
-      "xxx",
-      "1 golem + 1 wizard on active tile. xxx golems on xxx."
+      "Turn tiles left then move the first tile to the top right corner of the Well of Mana",
+      "1 golem + 1 wizard on active tile. 2 golems on top left tile. 3 golems on bottom right tile."
     )
 
     const squares=[
-      new Square(0, 0, Tile.WellOfMana, Orientation.North, 3, 0, 0),
-      new Square(0, 1, Tile.StoneCircle_31_12, Orientation.East, 1, 0, 0)
+      new Square(-2, -1, Tile.StoneCircle_x_41, Orientation.North, 1, 0, 0),
+      new Square(-1, -1, Tile.StoneCircle_31_11, Orientation.North, 1, 0, 0),
+      new Square( 0, -1, Tile.StoneCircle_11_31, Orientation.North, 0, 1, 0),
+
+      new Square( 0,  0, Tile.WellOfMana, Orientation.North, 1, 3, 0),
+      new Square( 1,  0, Tile.StoneCircle_31_12, Orientation.North, 1, 0, 0),
+
+      new Square( 0,  1, Tile.StoneCircle_12_31, Orientation.North, 0, 1, 0),
+      new Square( 1,  1, Tile.StoneCircle_11_32, Orientation.North, 1, 0, 0)
     ]
 
     this.prepareBoard_2players(setup, squares,
       Tile.Fortress_22_13B_31,
-      Tile.StoneCircle_31_11,
-      Tile.StoneCircle_11_31,
-      Tile.StoneCircle_22_22,
-      0, 1,
-      undefined, undefined
+      Tile.Cottage_23B_32_x,
+      Tile.Cottage_23B_31_x,
+      Tile.StoneCircle_32_11,
+      -2, -1,
+       0,  1
     )
   }
   start3(setup: RivalitySetup) {
-    setup.startPlayerTurn(RuleId.ChooseTile, 2)
+    setup.startPlayerTurn(RuleId.ChooseTile, 1)
+  }
+
+  // Test 4 - Three active spells
+  setupMaterial4(setup: RivalitySetup) {
+    this.texts(
+      "Three active spells",
+      "Turn tiles left then move the first tile to the top right corner of the Well of Mana",
+      "1 golem + 1 wizard on active tile. 2 golems on top left tile. 3 golems on bottom right tile. 3+1 golems on top right tile."
+    )
+
+    const squares=[
+      new Square( 0, -2, Tile.StoneCircle_32_11, Orientation.North, 1, 0, 0),
+      new Square( 1, -2, Tile.StoneCircle_22_22, Orientation.North, 0, 1, 0),
+
+      new Square(-2, -1, Tile.StoneCircle_x_41, Orientation.North, 1, 0, 0),
+      new Square(-1, -1, Tile.StoneCircle_31_11, Orientation.North, 1, 0, 0),
+      new Square( 0, -1, Tile.StoneCircle_11_31, Orientation.North, 0, 1, 0),
+
+      new Square( 0,  0, Tile.WellOfMana, Orientation.North, 1, 3, 0),
+      new Square( 1,  0, Tile.StoneCircle_31_12, Orientation.North, 1, 0, 0),
+
+      new Square( 0,  1, Tile.StoneCircle_12_31, Orientation.North, 0, 1, 0),
+      new Square( 1,  1, Tile.StoneCircle_11_32, Orientation.North, 1, 0, 0)
+    ]
+
+    this.prepareBoard_2players(setup, squares,
+      Tile.Fortress_22_13B_31,
+      Tile.Cottage_23B_32_x,
+      Tile.Cottage_23B_31_x,
+      Tile.Cottage_31_23B_x,
+      -2, -1,
+       0,  1
+    )
+  }
+  start4(setup: RivalitySetup) {
+    setup.startPlayerTurn(RuleId.ChooseTile, 1)
   }
 }
 
