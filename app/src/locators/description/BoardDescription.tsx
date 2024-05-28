@@ -19,12 +19,11 @@ export class BoardDescription extends LocationDescription {
   isHighlightedSquare(location:Location, context: MaterialContext){
     let spellX=context.rules.remind(Memory.SpellTileX)
     let spellY=context.rules.remind(Memory.SpellTileY)
-    return (spellX!==undefined && spellY!==undefined && location.x==spellX && location.y==spellY)
+    return (spellX!==undefined && spellY!==undefined && location.x===spellX && location.y===spellY)
   }
 
   getExtraCss(location:Location, context: MaterialContext){
     if (this.isHighlightedSquare(location, context)){
-      console.log('foo')
       return css`border: 0.2em solid darkred`
     }
     return css`border: 0.05em solid lightgrey`

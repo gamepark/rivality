@@ -1189,14 +1189,14 @@ export class RivalityTests {
     this.setupMaterialMoreThan5Golems(setup, 2, 4, 1, false)
   }
 
-  // +2 golems vs 3+2 -----------> TO DO
+  // +2 golems vs 3+2
   setupMaterial51(setup: RivalitySetup) {
     this.setupMaterialMoreThan5Golems(setup, 2, 3, 2, true)
   }
 
   // +2 golems vs 2+3
   setupMaterial52(setup: RivalitySetup) {
-    this.setupMaterialMoreThan5Golems(setup, 2, 2, 3, false)
+    this.setupMaterialMoreThan5Golems(setup, 2, 2, 3, true)
   }
 
   // +2 golems vs 1+4
@@ -1271,47 +1271,47 @@ export class RivalityTests {
 
   // +4 golems vs 3+2
   setupMaterial67(setup: RivalitySetup) {
-    this.setupMaterialMoreThan5Golems(setup, 4, 3, 2, false)
+    this.setupMaterialMoreThan5Golems(setup, 4, 3, 2, true)
   }
 
   // +4 golems vs 2+3
   setupMaterial68(setup: RivalitySetup) {
-    this.setupMaterialMoreThan5Golems(setup, 4, 2, 3, false)
+    this.setupMaterialMoreThan5Golems(setup, 4, 2, 3, true)
   }
 
   // +4 golems vs 1+4
   setupMaterial69(setup: RivalitySetup) {
-    this.setupMaterialMoreThan5Golems(setup, 4, 1, 4, false)
+    this.setupMaterialMoreThan5Golems(setup, 4, 1, 4, true)
   }
 
   // +4 golems vs 3+1
   setupMaterial70(setup: RivalitySetup) {
-    this.setupMaterialMoreThan5Golems(setup, 4, 3, 1, false)
+    this.setupMaterialMoreThan5Golems(setup, 4, 3, 1, true)
   }
 
   // +4 golems vs 2+2
   setupMaterial71(setup: RivalitySetup) {
-    this.setupMaterialMoreThan5Golems(setup, 4, 2, 2, false)
+    this.setupMaterialMoreThan5Golems(setup, 4, 2, 2, true)
   }
 
   // +4 golems vs 1+3
   setupMaterial72(setup: RivalitySetup) {
-    this.setupMaterialMoreThan5Golems(setup, 4, 1, 3, false)
+    this.setupMaterialMoreThan5Golems(setup, 4, 1, 3, true)
   }
 
   // +4 golems vs 2+1
   setupMaterial73(setup: RivalitySetup) {
-    this.setupMaterialMoreThan5Golems(setup, 4, 2, 1, false)
+    this.setupMaterialMoreThan5Golems(setup, 4, 2, 1, true)
   }
 
   // +4 golems vs 1+2
   setupMaterial74(setup: RivalitySetup) {
-    this.setupMaterialMoreThan5Golems(setup, 4, 1, 2, false)
+    this.setupMaterialMoreThan5Golems(setup, 4, 1, 2, true)
   }
 
   // +4 golems vs 1+1
   setupMaterial75(setup: RivalitySetup) {
-    this.setupMaterialMoreThan5Golems(setup, 4, 1, 1, false)
+    this.setupMaterialMoreThan5Golems(setup, 4, 1, 1, true)
   }
 }
 
