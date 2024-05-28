@@ -74,6 +74,66 @@ export class RivalityTests {
       case 4:
         this.setupMaterial4(setup)
         break
+      case 5:
+        this.setupMaterial5(setup)
+        break
+      case 6:
+        this.setupMaterial6(setup)
+        break
+      case 7:
+        this.setupMaterial7(setup)
+        break
+      case 8:
+        this.setupMaterial8(setup)
+        break
+      case 9:
+        this.setupMaterial9(setup)
+        break
+      case 10:
+        this.setupMaterial10(setup)
+        break
+      case 11:
+        this.setupMaterial11(setup)
+        break
+      case 12:
+        this.setupMaterial12(setup)
+        break
+      case 13:
+        this.setupMaterial13(setup)
+        break
+      case 14:
+        this.setupMaterial14(setup)
+        break
+      case 15:
+        this.setupMaterial15(setup)
+        break
+      case 16:
+        this.setupMaterial16(setup)
+        break
+      case 17:
+        this.setupMaterial17(setup)
+        break
+      case 18:
+        this.setupMaterial18(setup)
+        break
+      case 19:
+        this.setupMaterial19(setup)
+        break
+      case 20:
+        this.setupMaterial20(setup)
+        break
+      case 21:
+        this.setupMaterial21(setup)
+        break
+      case 22:
+        this.setupMaterial22(setup)
+        break
+      case 23:
+        this.setupMaterial23(setup)
+        break
+      case 24:
+        this.setupMaterial24(setup)
+        break
 
       default:
         console.log("*** Unknown test")
@@ -94,7 +154,66 @@ export class RivalityTests {
       case 4:
         this.start4(setup)
         break
-
+      case 5:
+        this.start5(setup)
+        break
+      case 6:
+        this.start6(setup)
+        break
+      case 7:
+        this.start7(setup)
+        break
+      case 8:
+        this.start8(setup)
+        break
+      case 9:
+        this.start9(setup)
+        break
+      case 10:
+        this.start10(setup)
+        break
+      case 11:
+        this.start11(setup)
+        break
+      case 12:
+        this.start12(setup)
+        break
+      case 13:
+        this.start13(setup)
+        break
+      case 14:
+        this.start14(setup)
+        break
+      case 15:
+        this.start15(setup)
+        break
+      case 16:
+        this.start16(setup)
+        break
+      case 17:
+        this.start17(setup)
+        break
+      case 18:
+        this.start18(setup)
+        break
+      case 19:
+        this.start19(setup)
+        break
+      case 20:
+        this.start20(setup)
+        break
+      case 21:
+        this.start21(setup)
+        break
+      case 22:
+        this.start22(setup)
+        break
+      case 23:
+        this.start23(setup)
+        break
+      case 24:
+        this.start24(setup)
+        break
       default:
         console.log("*** Unknown test")
     }
@@ -364,6 +483,11 @@ export class RivalityTests {
     - 2 golems vs 2 shields but controlled by player
     - 3 golems vs 2 shields but controlled by player
     - 4 golems vs 2 shields but controlled by player
+    - 1 golem vs 0 shield
+    - 2 golems vs 0 shield
+    - 3 golems vs 0 shield
+    - 4 golems vs 0 shield
+    
     - 4 golems vs wizard
     - golems with broken shields vs 1 shield
     - golems with broken shields vs 2 shields
@@ -494,6 +618,238 @@ export class RivalityTests {
     )
   }
   start4(setup: RivalitySetup) {
+    setup.startPlayerTurn(RuleId.ChooseTile, 1)
+  }
+
+  setupMaterialGolemsVsShields(
+    setup: RivalitySetup,
+    spellNbGolems: number,
+    nbShields: number,
+    expectedNbGolems: number,
+    tileControlledByPlayer: boolean
+    ){
+      let title=""+spellNbGolems+" golem"
+      if (spellNbGolems>1)
+        title+="s"
+      title+=" vs "+nbShields+" shield"
+      if (nbShields>1)
+        title+="s"
+
+      let expected=""
+      if (expectedNbGolems>0){
+        expected=expectedNbGolems+" extra golem"
+        if (expectedNbGolems>1)
+          expected+="s"
+        expected+=" (5 golems max)"
+      } else {
+        expected="No extra golem"
+      }
+
+      this.texts(
+        title,
+        "Move the first tile below the tile at the right of the Well of Mana",
+        expected
+      )
+
+      let targetTile=Tile.StoneCircle_22_22
+      if (nbShields==1){
+        targetTile=Tile.Cottage_23B_32_x
+      } else if (nbShields==2){
+        targetTile=Tile.Fortress_22_22_23B
+      }
+
+      let firstHandTile=Tile.StoneCircle_x_41
+      if (spellNbGolems==1){
+        firstHandTile=Tile.StoneCircle_31_11
+      } else if (spellNbGolems==2){
+        firstHandTile=Tile.Cottage_12_21_23B
+      } else if (spellNbGolems==3){
+        firstHandTile=Tile.StoneCircle_11_31
+      } else if (spellNbGolems==4){
+        firstHandTile=Tile.StoneCircle_x_41
+      }
+
+      let nbGolems1=0
+      let nbGolems2=0
+      if (tileControlledByPlayer){
+        nbGolems1=2
+        nbGolems2=1
+      } else {
+        nbGolems1=0
+        nbGolems2=2
+      }
+
+      const squares=[
+        new Square( 1,  0, targetTile, Orientation.North, nbGolems1, nbGolems2, 0)
+      ]
+
+      this.prepareBoard_2players(setup, squares,
+        firstHandTile,
+        Tile.Fortress_22_13B_31,
+        Tile.Fortress_23B_22_22,
+        Tile.Fortress_31_22_13B,
+        -1, -1,
+        -1,  1
+      )
+  }
+
+  // Test 5 - 1 golem vs 1 shield
+  setupMaterial5(setup: RivalitySetup) {
+    this.setupMaterialGolemsVsShields(setup, 1, 1, 0, false)
+  }
+  start5(setup: RivalitySetup) {
+    setup.startPlayerTurn(RuleId.ChooseTile, 1)
+  }
+
+  // Test 6 - 2 golems vs 1 shield
+  setupMaterial6(setup: RivalitySetup) {
+    this.setupMaterialGolemsVsShields(setup, 2, 1, 1, false)
+  }
+  start6(setup: RivalitySetup) {
+    setup.startPlayerTurn(RuleId.ChooseTile, 1)
+  }
+
+  // Test 7 - 3 golems vs 1 shield
+  setupMaterial7(setup: RivalitySetup) {
+    this.setupMaterialGolemsVsShields(setup, 3, 1, 2, false)
+  }
+  start7(setup: RivalitySetup) {
+    setup.startPlayerTurn(RuleId.ChooseTile, 1)
+  }
+
+  // Test 8 - 4 golems vs 1 shield
+  setupMaterial8(setup: RivalitySetup) {
+    this.setupMaterialGolemsVsShields(setup, 4, 1, 3, false)
+  }
+  start8(setup: RivalitySetup) {
+    setup.startPlayerTurn(RuleId.ChooseTile, 1)
+  }
+
+  // Test 9 - 1 golem vs 2 shields
+  setupMaterial9(setup: RivalitySetup) {
+    this.setupMaterialGolemsVsShields(setup, 1, 2, 0, false)
+  }
+  start9(setup: RivalitySetup) {
+    setup.startPlayerTurn(RuleId.ChooseTile, 1)
+  }
+
+  // Test 10 - 2 golems vs 2 shields
+  setupMaterial10(setup: RivalitySetup) {
+    this.setupMaterialGolemsVsShields(setup, 2, 2, 0, false)
+  }
+  start10(setup: RivalitySetup) {
+    setup.startPlayerTurn(RuleId.ChooseTile, 1)
+  }
+
+  // Test 11 - 3 golems vs 2 shields
+  setupMaterial11(setup: RivalitySetup) {
+    this.setupMaterialGolemsVsShields(setup, 3, 2, 1, false)
+  }
+  start11(setup: RivalitySetup) {
+    setup.startPlayerTurn(RuleId.ChooseTile, 1)
+  }
+
+  // Test 12 - 4 golems vs 2 shields
+  setupMaterial12(setup: RivalitySetup) {
+    this.setupMaterialGolemsVsShields(setup, 4, 2, 2, false)
+  }
+  start12(setup: RivalitySetup) {
+    setup.startPlayerTurn(RuleId.ChooseTile, 1)
+  }
+
+  // Test 13 - 1 golem vs 1 shield but controlled by player
+  setupMaterial13(setup: RivalitySetup) {
+    this.setupMaterialGolemsVsShields(setup, 1, 1, 1, true)
+  }
+  start13(setup: RivalitySetup) {
+    setup.startPlayerTurn(RuleId.ChooseTile, 1)
+  }
+
+  // Test 14 - 2 golems vs 1 shield but controlled by player
+  setupMaterial14(setup: RivalitySetup) {
+    this.setupMaterialGolemsVsShields(setup, 2, 1, 2, true)
+  }
+  start14(setup: RivalitySetup) {
+    setup.startPlayerTurn(RuleId.ChooseTile, 1)
+  }
+
+  // Test 15 - 3 golems vs 1 shield but controlled by player
+  setupMaterial15(setup: RivalitySetup) {
+    this.setupMaterialGolemsVsShields(setup, 3, 1, 3, true)
+  }
+  start15(setup: RivalitySetup) {
+    setup.startPlayerTurn(RuleId.ChooseTile, 1)
+  }
+
+  // Test 16 - 4 golems vs 1 shield but controlled by player
+  setupMaterial16(setup: RivalitySetup) {
+    this.setupMaterialGolemsVsShields(setup, 4, 1, 4, true)
+  }
+  start16(setup: RivalitySetup) {
+    setup.startPlayerTurn(RuleId.ChooseTile, 1)
+  }
+
+  // Test 17 - 1 golem vs 2 shields but controlled by player
+  setupMaterial17(setup: RivalitySetup) {
+    this.setupMaterialGolemsVsShields(setup, 1, 2, 1, true)
+  }
+  start17(setup: RivalitySetup) {
+    setup.startPlayerTurn(RuleId.ChooseTile, 1)
+  }
+
+  // Test 18 - 2 golems vs 2 shields but controlled by player
+  setupMaterial18(setup: RivalitySetup) {
+    this.setupMaterialGolemsVsShields(setup, 2, 2, 2, true)
+  }
+  start18(setup: RivalitySetup) {
+    setup.startPlayerTurn(RuleId.ChooseTile, 1)
+  }
+
+  // Test 19 - 3 golems vs 2 shields but controlled by player
+  setupMaterial19(setup: RivalitySetup) {
+    this.setupMaterialGolemsVsShields(setup, 3, 2, 3, true)
+  }
+  start19(setup: RivalitySetup) {
+    setup.startPlayerTurn(RuleId.ChooseTile, 1)
+  }
+
+  // Test 20 - 4 golems vs 2 shields but controlled by player
+  setupMaterial20(setup: RivalitySetup) {
+    this.setupMaterialGolemsVsShields(setup, 4, 2, 4, true)
+  }
+  start20(setup: RivalitySetup) {
+    setup.startPlayerTurn(RuleId.ChooseTile, 1)
+  }
+
+  // Test 21 - 1 golem vs 0 shield
+  setupMaterial21(setup: RivalitySetup) {
+    this.setupMaterialGolemsVsShields(setup, 1, 0, 1, false)
+  }
+  start21(setup: RivalitySetup) {
+    setup.startPlayerTurn(RuleId.ChooseTile, 1)
+  }
+
+  // Test 22 - 2 golems vs 0 shield
+  setupMaterial22(setup: RivalitySetup) {
+    this.setupMaterialGolemsVsShields(setup, 2, 0, 2, false)
+  }
+  start22(setup: RivalitySetup) {
+    setup.startPlayerTurn(RuleId.ChooseTile, 1)
+  }
+
+  // Test 23 - 3 golems vs 0 shield
+  setupMaterial23(setup: RivalitySetup) {
+    this.setupMaterialGolemsVsShields(setup, 3, 0, 3, false)
+  }
+  start23(setup: RivalitySetup) {
+    setup.startPlayerTurn(RuleId.ChooseTile, 1)
+  }
+
+  // Test 24 - 4 golems vs 0 shield
+  setupMaterial24(setup: RivalitySetup) {
+    this.setupMaterialGolemsVsShields(setup, 4, 0, 4, false)
+  }
+  start24(setup: RivalitySetup) {
     setup.startPlayerTurn(RuleId.ChooseTile, 1)
   }
 }
