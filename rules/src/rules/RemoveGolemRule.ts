@@ -105,6 +105,7 @@ export class RemoveGolemRule extends SpellRule {
     }
 
     let keepRemovingGolems=true
+    let requiresQuestionToPlayer=false
 
     /*
     No infinite loop proof:
@@ -144,9 +145,8 @@ export class RemoveGolemRule extends SpellRule {
         keepRemovingGolems=false
       } else if (nbGolemsStillToBeRemoved<nbPlayersWithMaxNbGolems){
         // Cannot decide which golem to be removed => ask player
-        moves.push(this.rules()
-        .startPlayerTurn(RuleId.AskGolemRemoval, this.getActivePlayer()))
-        return moves
+        requiresQuestionToPlayer=true
+        keepRemovingGolems=false
       } else {
         // Remove 1 golem to each player with the max nb of golems
         for (let i=0; i<opponentsId.length; i++){
@@ -169,8 +169,11 @@ export class RemoveGolemRule extends SpellRule {
     }
 
     // 5. Go to next spell rule
-    moves.push(this.nextSpellAction())
-
+    if (requiresQuestionToPlayer){
+      moves.push(this.rules().startPlayerTurn(RuleId.AskGolemRemoval, this.getActivePlayer()))
+    } else {
+      moves.push(this.nextSpellAction())
+    }
     return moves
   }
 }

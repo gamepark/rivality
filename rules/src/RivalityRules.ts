@@ -2,6 +2,7 @@ import { FillGapStrategy, hideItemId, hideItemIdToOthers, HidingStrategy, Materi
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { PlayerId } from './PlayerId'
+import { AskGolemRemovalRule } from './rules/AskGolemRemovalRule'
 import { CastSpellRule } from './rules/CastSpellRule'
 import { ChooseTileRule } from './rules/ChooseTileRule'
 import { EndTurnRule } from './rules/EndTurnRule'
@@ -31,7 +32,8 @@ export class RivalityRules extends SecretMaterialRules<PlayerId, MaterialType, L
     [RuleId.ChooseTile]: ChooseTileRule,
     [RuleId.CastSpell]: CastSpellRule,
     [RuleId.RemoveGolem]: RemoveGolemRule,
-    [RuleId.EndTurn]: EndTurnRule
+    [RuleId.EndTurn]: EndTurnRule,
+    [RuleId.AskGolemRemoval]: AskGolemRemovalRule
   }
 
   locationsStrategies = {
