@@ -54,7 +54,7 @@ export class RivalityTests {
     let expectedNbPlayers=2
 
     // Except few tests that require 3 players
-    if (testId>=46 && testId<=75){
+    if (testId>=46 && testId<=78){
       expectedNbPlayers=3
     }
 
@@ -291,14 +291,36 @@ export class RivalityTests {
       case 75:
         this.setupMaterial75(setup)
         break
+      case 76:
+        this.setupMaterial76(setup)
+        break
+      case 77:
+        this.setupMaterial77(setup)
+        break
+      case 78:
+        this.setupMaterial78(setup)
+        break
 
       default:
         console.log("*** Unknown test")
     }
   }
 
-  start(setup: RivalitySetup, _testId:number) {
-    setup.startPlayerTurn(RuleId.ChooseTile, 1)
+  start(setup: RivalitySetup, testId:number) {
+    switch (testId){
+      case 76:
+        this.start76(setup)
+        break
+      case 77:
+        this.start77(setup)
+        break
+      case 78:
+        this.start78(setup)
+        break
+
+      default:
+        setup.startPlayerTurn(RuleId.ChooseTile, 1)
+    }
   }
 
   texts(purpose:string, todo:string, expected:string){
@@ -633,16 +655,14 @@ export class RivalityTests {
     - 1 golem with broken shields vs wizard
     - 2 golems with broken shields vs wizard
     - Discard opponent golems if more than 5 golems - automated (done through various other tests)
-
     - Discard opponent golems if more than 5 golems - question about the golem to be removed
     - Discard player golems if more than 5 player's golems
-
-    - No shield for contested tile
-
-    - game over - all tiles are played
     - game over - all first player's golems are placed
     - game over - all second player's golems are placed
     - game over - all third player's golems are placed
+    - game over - all tiles are played (easily tested with game.monkeyOpponents())
+
+    - No shield for contested tile
     - mulligan
   */
 
@@ -1312,6 +1332,75 @@ export class RivalityTests {
   // +4 golems vs 1+1
   setupMaterial75(setup: RivalitySetup) {
     this.setupMaterialMoreThan5Golems(setup, 4, 1, 1, true)
+  }
+
+  setupMaterialLastGolem(setup: RivalitySetup, player:number){
+    let nbGolems1=0
+    let nbGolems2=0
+    let nbGolems3=0
+    if (player==1) nbGolems1=3
+    if (player==2) nbGolems2=3
+    if (player==3) nbGolems3=3
+
+    const squares=[
+      new Square( 1,  0, Tile.Cottage_12_21_23B, Orientation.North, nbGolems1, nbGolems2, nbGolems3),
+      new Square( 1,  1, Tile.Cottage_23B_12_21, Orientation.North, nbGolems1, nbGolems2, nbGolems3),
+      new Square( 1,  2, Tile.Cottage_22_23B_11, Orientation.North, nbGolems1, nbGolems2, nbGolems3),
+      new Square( 2,  0, Tile.Cottage_31_23B_x, Orientation.North, nbGolems1, nbGolems2, nbGolems3),
+      new Square( 2,  1, Tile.Cottage_11_23B_22, Orientation.North, nbGolems1, nbGolems2, nbGolems3),
+      new Square( 2,  2, Tile.Cottage_23B_31_x, Orientation.North, nbGolems1, nbGolems2, nbGolems3),
+    ]
+
+    this.prepareBoard_3players(setup, squares,
+      Tile.StoneCircle_x_41,
+      Tile.StoneCircle_31_11,
+      Tile.StoneCircle_11_31,
+      Tile.StoneCircle_12_31,
+      Tile.StoneCircle_31_12,
+      Tile.StoneCircle_11_32,
+      -1,  1,
+      -1,  0,
+      -1, -1
+    )
+  }
+
+  // Test 76 - All first player's golems are placed
+  setupMaterial76(setup: RivalitySetup) {
+    this.texts(
+      "All first player's golems are placed",
+      "Use your last golems",
+      "Game over after using your last golem"
+    )
+    this.setupMaterialLastGolem(setup, 1)
+  }
+  start76(setup: RivalitySetup) {
+    setup.startPlayerTurn(RuleId.ChooseTile, 1)
+  }
+
+  // Test 77 - All second player's golems are placed
+  setupMaterial77(setup: RivalitySetup) {
+    this.texts(
+      "All second player's golems are placed",
+      "Use your last golems",
+      "Game over after using your last golem"
+    )
+    this.setupMaterialLastGolem(setup, 2)
+  }
+  start77(setup: RivalitySetup) {
+    setup.startPlayerTurn(RuleId.ChooseTile, 2)
+  }
+
+  // Test 78 - All third player's golems are placed
+  setupMaterial78(setup: RivalitySetup) {
+    this.texts(
+      "All third player's golems are placed",
+      "Use your last golems",
+      "Game over after using your last golem"
+    )
+    this.setupMaterialLastGolem(setup, 3)
+  }
+  start78(setup: RivalitySetup) {
+    setup.startPlayerTurn(RuleId.ChooseTile, 3)
   }
 }
 
