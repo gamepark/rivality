@@ -93,6 +93,21 @@ export class RivalitySetup extends MaterialGameSetup<PlayerId, MaterialType, Loc
             rotation: Orientation.North
           }
         })))
+
+      // 2 specimens for specific cards
+      newTiles.push(...tiles
+        .filter(tile => tileTools.tileDeck(tile)==-1)
+        .map((tile) => ({
+          id: tile,
+          location: {
+            type: LocationType.Board,
+            id: BoardSpace.Tile,
+            x: 0,
+            y: 0,
+            rotation: Orientation.North
+          }
+        })))
+
       this.material(MaterialType.Tile).createItems(newTiles)
       this.material(MaterialType.Tile).shuffle()
 
