@@ -176,6 +176,33 @@ export class RivalityTests {
       case 36:
         this.setupMaterial36(setup)
         break
+      case 37:
+        this.setupMaterial37(setup)
+        break
+      case 38:
+        this.setupMaterial38(setup)
+        break
+      case 39:
+        this.setupMaterial39(setup)
+        break
+      case 40:
+        this.setupMaterial40(setup)
+        break
+      case 41:
+        this.setupMaterial41(setup)
+        break
+      case 42:
+        this.setupMaterial42(setup)
+        break
+      case 43:
+        this.setupMaterial43(setup)
+        break
+      case 44:
+        this.setupMaterial44(setup)
+        break
+      case 45:
+        this.setupMaterial45(setup)
+        break
 
       default:
         console.log("*** Unknown test")
@@ -291,6 +318,33 @@ export class RivalityTests {
         break
       case 36:
         this.start36(setup)
+        break
+      case 37:
+        this.start37(setup)
+        break
+      case 38:
+        this.start38(setup)
+        break
+      case 39:
+        this.start39(setup)
+        break
+      case 40:
+        this.start40(setup)
+        break
+      case 41:
+        this.start41(setup)
+        break
+      case 42:
+        this.start42(setup)
+        break
+      case 43:
+        this.start43(setup)
+        break
+      case 44:
+        this.start44(setup)
+        break
+      case 45:
+        this.start45(setup)
         break
       default:
         console.log("*** Unknown test")
@@ -577,13 +631,16 @@ export class RivalityTests {
     - 2 golems vs 2 shields+5 golems
     - 3 golems vs 2 shields+5 golems
     - 4 golems vs 2 shields+5 golems
-
-
     - 4 golems vs wizard
-    - golems with broken shields vs 1 shield
-    - golems with broken shields vs 2 shields
-    - golems with broken shields vs 2 shields+5 golems
-    - golems with broken shields vs wizard
+    - 1 golem with broken shields vs 1 shield
+    - 1 golem with broken shields vs 2 shields
+    - 1 golem with broken shields vs 2 shields+5 golems
+    - 2 golems with broken shields vs 1 shield
+    - 2 golems with broken shields vs 2 shields
+    - 2 golems with broken shields vs 2 shields+5 golems
+    - 1 golem with broken shields vs wizard
+    - 2 golems with broken shields vs wizard
+
     - Discard opponent golems if more than 5 golems - automated
     - Discard opponent golems if more than 5 golems - question about the golem to be removed
     - Discard player golems if more than 5 player's golems
@@ -783,8 +840,8 @@ export class RivalityTests {
         Tile.Fortress_22_13B_31,
         Tile.Fortress_23B_22_22,
         Tile.Fortress_31_22_13B,
-        -1, -1,
-        -1,  1
+        -1,  1,
+        -1, -1
       )
   }
 
@@ -1041,6 +1098,161 @@ export class RivalityTests {
     this.setupMaterialGolemsVsShields(setup, 4, 2, 1, TileControl.FiveOpponentGolems)
   }
   start36(setup: RivalitySetup) {
+    setup.startPlayerTurn(RuleId.ChooseTile, 1)
+  }
+
+  // Test 37 - 4 golems vs wizard
+  setupMaterial37(setup: RivalitySetup) {
+    this.texts(
+      "4 golems vs wizard",
+      "Move the first tile below the tile at the right of the Well of Mana",
+      "No extra golem"
+    )
+
+    const squares=[
+      new Square( 1,  0, Tile.StoneCircle_22_22, Orientation.North, 0, 1, 0)
+    ]
+
+    this.prepareBoard_2players(setup, squares,
+      Tile.StoneCircle_x_41,
+      Tile.Fortress_22_13B_31,
+      Tile.Fortress_23B_22_22,
+      Tile.Fortress_31_22_13B,
+      -1,  1,
+       1,  0
+    )
+  }
+  start37(setup: RivalitySetup) {
+    setup.startPlayerTurn(RuleId.ChooseTile, 1)
+  }
+
+  setupMaterialGolemsWithBrokenShieldsVsShields(
+    setup: RivalitySetup,
+    spellNbGolems: number,
+    nbShields: number,
+    expectedNbGolems: number,
+    nbOpponentGolems: number,
+    withWizard: boolean
+    ){
+      let title=""+spellNbGolems+" golem"
+      if (spellNbGolems>1)
+        title+="s"
+      title+=" with broken shields vs "+nbShields+" shield"
+      if (nbShields>1)
+        title+="s"
+
+      let expected=""
+      if (expectedNbGolems>0){
+        expected=expectedNbGolems+" extra golem"
+        if (expectedNbGolems>1)
+          expected+="s"
+        expected+=" (5 golems max)"
+      } else {
+        expected="No extra golem"
+      }
+
+      this.texts(
+        title,
+        "Move the first tile below the tile at the bottom of the board",
+        expected
+      )
+
+      let targetTile=Tile.StoneCircle_22_22
+      if (nbShields==1){
+        targetTile=Tile.Cottage_23B_32_x
+      } else if (nbShields==2){
+        targetTile=Tile.Fortress_22_22_23B
+      }
+
+      let firstHandTile=Tile.Fortress_22_13B_31
+      if (spellNbGolems==2){
+        firstHandTile=Tile.Cottage_22_23B_11
+      }
+
+      const squares=[
+        new Square( 1,  0, targetTile, Orientation.North, 0, nbOpponentGolems, 0),
+        new Square( 1,  1, Tile.StoneCircle_x_41, Orientation.North, 1, 0, 0),
+        new Square( 1,  2, Tile.StoneCircle_31_11, Orientation.North, 0, 1, 0),
+      ]
+
+      let wizard2X=-1
+      let wizard2Y=-1
+      if (withWizard){
+        wizard2X=1
+        wizard2Y=0
+      }
+
+      this.prepareBoard_2players(setup, squares,
+        firstHandTile,
+        Tile.Cottage_32_23B_x,
+        Tile.Cottage_23B_31_x,
+        Tile.Cottage_11_23B_22,
+        -1,  1,
+        wizard2X, wizard2Y
+      )
+  }
+
+  // Test 38 - 1 golem with broken shields vs 1 shield
+  setupMaterial38(setup: RivalitySetup) {
+    this.setupMaterialGolemsWithBrokenShieldsVsShields(setup, 1, 1, 1, 1, false)
+  }
+  start38(setup: RivalitySetup) {
+    setup.startPlayerTurn(RuleId.ChooseTile, 1)
+  }
+
+  // Test 39 - 1 golem with broken shields vs 2 shields
+  setupMaterial39(setup: RivalitySetup) {
+    this.setupMaterialGolemsWithBrokenShieldsVsShields(setup, 1, 2, 1, 1, false)
+  }
+  start39(setup: RivalitySetup) {
+    setup.startPlayerTurn(RuleId.ChooseTile, 1)
+  }
+
+  // Test 40 - 1 golem with broken shields vs 2 shields+5 golems
+  setupMaterial40(setup: RivalitySetup) {
+    this.setupMaterialGolemsWithBrokenShieldsVsShields(setup, 1, 2, 1, 5, false)
+  }
+  start40(setup: RivalitySetup) {
+    setup.startPlayerTurn(RuleId.ChooseTile, 1)
+  }
+
+  // Test 41 - 2 golems with broken shields vs 1 shield
+  setupMaterial41(setup: RivalitySetup) {
+    this.setupMaterialGolemsWithBrokenShieldsVsShields(setup, 2, 1, 2, 1, false)
+  }
+  start41(setup: RivalitySetup) {
+    setup.startPlayerTurn(RuleId.ChooseTile, 1)
+  }
+
+  // Test 42 - 2 golems with broken shields vs 2 shields
+  setupMaterial42(setup: RivalitySetup) {
+    this.setupMaterialGolemsWithBrokenShieldsVsShields(setup, 2, 2, 2, 1, false)
+  }
+  start42(setup: RivalitySetup) {
+    setup.startPlayerTurn(RuleId.ChooseTile, 1)
+  }
+
+  // Test 43 - 2 golems with broken shields vs 2 shields+5 golems
+  setupMaterial43(setup: RivalitySetup) {
+    this.setupMaterialGolemsWithBrokenShieldsVsShields(setup, 2, 2, 2, 5, false)
+  }
+  start43(setup: RivalitySetup) {
+    setup.startPlayerTurn(RuleId.ChooseTile, 1)
+  }
+
+  // Test 44 - 1 golem with broken shields vs wizard+2 shields+5 golems
+  setupMaterial44(setup: RivalitySetup) {
+    this.setupMaterialGolemsWithBrokenShieldsVsShields(setup, 1, 2, 0, 5, true)
+  }
+  start44(setup: RivalitySetup) {
+    setup.startPlayerTurn(RuleId.ChooseTile, 1)
+  }
+
+  // Test 45 - 2 golems with broken shields vs wizard+2 shields+5 golems
+  setupMaterial45(setup: RivalitySetup) {
+    this.setupMaterialGolemsWithBrokenShieldsVsShields(setup, 2, 2, 0, 5, true)
+  }
+  start45(setup: RivalitySetup) {
     setup.startPlayerTurn(RuleId.ChooseTile, 1)
   }
 }
