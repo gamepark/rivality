@@ -77,7 +77,7 @@ export class PlayerHandLocator extends HandLocator {
     if (item.location.rotation===Orientation.South)
       return 180
     if (item.location.rotation===Orientation.West)
-      return 270
+      return -90
 
     // Default: no rotation
     return 0

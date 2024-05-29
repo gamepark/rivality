@@ -1,8 +1,11 @@
 /** @jsxImportSource @emotion/react */
+import { isCustomMoveType, isMoveItemType, MoveItem } from '@gamepark/rules-api'
 import { css } from '@emotion/react'
+import { CustomMoveType } from '@gamepark/rivality/rules/CustomMoveType'
 import { LocationType } from '@gamepark/rivality/material/LocationType'
 import { MaterialType } from '@gamepark/rivality/material/MaterialType'
 import { PlayerId } from '@gamepark/rivality/PlayerId'
+import { Tile } from '@gamepark/rivality/material/Tile'
 import { MaterialTutorial, TutorialStep } from '@gamepark/react-game'
 import { TutorialSetup } from './TutorialSetup'
 import { Trans } from 'react-i18next'
@@ -100,7 +103,22 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           <Trans defaults="tuto.basics.1"></Trans><br/>
           </>
         )
-      }
+      },
+      focus: (game) => ({
+        materials: [
+          this.material(game, MaterialType.Tile).location(LocationType.PlayerHand).player(me),
+          this.material(game, MaterialType.Golem).location(LocationType.PlayerGolemStack).player(me)
+        ],
+        locations: [
+          this.location(LocationType.PlayerHand).player(me).location,
+          this.location(LocationType.PlayerGolemStack).player(me).location
+        ],
+        margin: {
+          right: 10,
+          top: 10,
+          bottom: 10
+        }
+      })
     },
     {
       popup: {
@@ -108,20 +126,44 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           <>
           <Trans defaults="tuto.basics.2"></Trans><br/>
           </>
-        )
-      }
+        ),
+        position: { x: 50, y: 0 },
+        size: { width: 50 }
+      },
+      focus: (game) => ({
+        materials: [
+          this.material(game, MaterialType.Tile).location(LocationType.Board)
+        ],
+        margin: {
+          right: 10,
+          top: 10,
+          bottom: 10,
+          left:10
+        }
+      })
     },
     {
       popup: {
         text: () => (
           <>
           <Trans defaults="tuto.basics.3"></Trans><br/>
-          <Trans defaults="tuto.basics.4"></Trans><br/>
           &nbsp;<br/>
+          <Trans defaults="tuto.basics.4"></Trans><br/>
+          </>
+        ),
+        position: { x: 50, y: 0 },
+        size: { width: 50 }
+      }
+    },
+    {
+      popup: {
+        text: () => (
+          <>
           <Trans defaults="tuto.basics.5"></Trans><br/>
           </>
         ),
-        size: { width: 120 }
+        position: { x: 50, y: 0 },
+        size: { width: 50 }
       }
     },
     {
@@ -134,7 +176,9 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           &nbsp;<br/>
           <Trans defaults="tuto.basics.8"></Trans>
           </>
-        )
+        ),
+        position: { x: 50, y: 0 },
+        size: { width: 50 }
       }
     },
     {
@@ -147,7 +191,23 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           &nbsp;<br/>
           <b><Trans defaults="tuto.tiles.3"></Trans></b>
           </>
-        )
+        ),
+        position: { x: 50, y: 0 },
+        size: { width: 50 }
+      },
+      move: {
+        player: me,
+        filter: (move, game) => {
+          if (!isMoveItemType(MaterialType.Tile)(move))
+            return false
+
+          const moveItem:MoveItem=move
+          const tile:Tile=game.items[MaterialType.Tile]![moveItem.itemIndex]!.id
+          console.log(tile)
+          return tile==Tile.StoneCircle_32_11
+          && move.location.x===0
+          && move.location.y===1
+        }
       }
     },
     {
@@ -158,7 +218,9 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           &nbsp;<br/>
           <Trans defaults="tuto.wizard.2"></Trans>
           </>
-        )
+        ),
+        position: { x: 50, y: 0 },
+        size: { width: 50 }
       }
     },
     {
@@ -169,10 +231,11 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           <ul>
           <li><Trans defaults="tuto.spells.2"></Trans></li>
           <li><Trans defaults="tuto.spells.3"></Trans></li>
-          <li><Trans defaults="tuto.spells.4"></Trans></li>
           </ul>
           </>
-        )
+        ),
+        position: { x: 50, y: 0 },
+        size: { width: 50 }
       }
     },
     {
@@ -183,7 +246,9 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           &nbsp;<br/>
           <Trans defaults="tuto.spells.6"></Trans>
           </>
-        )
+        ),
+        position: { x: 50, y: 0 },
+        size: { width: 50 }
       }
     },
     {
@@ -191,9 +256,33 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
         text: () => (
           <>
           <Trans defaults="tuto.end.turn.1"></Trans><br/>
+          &nbsp;<br/>
           <Trans defaults="tuto.end.turn.2"></Trans>
           </>
-        )
+        ),
+        position: { x: 50, y: 0 },
+        size: { width: 50 }
+      }
+    },
+    {
+      move: {
+        player: opponent,
+        filter: isCustomMoveType(CustomMoveType.Bottom)
+      }
+    },
+    {
+      move: {
+        player: opponent,
+        filter: (move, game) => {
+          if (!isMoveItemType(MaterialType.Tile)(move))
+            return false
+
+          const moveItem:MoveItem=move
+          const tile:Tile=game.items[MaterialType.Tile]![moveItem.itemIndex]!.id
+          return tile==Tile.Cottage_12_21_23B
+          && move.location.x===0
+          && move.location.y===-1
+        }
       }
     },
     {
@@ -202,7 +291,9 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           <>
           <Trans defaults="tuto.round.1"></Trans>
           </>
-        )
+        ),
+        position: { x: 50, y: 0 },
+        size: { width: 50 }
       }
     },
     {
@@ -213,7 +304,13 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           &nbsp;<br/>
           <b><Trans defaults="tuto.turn.tile.2"></Trans></b><br/>
           </>
-        )
+        ),
+        position: { x: 50, y: 0 },
+        size: { width: 50 }
+      },
+      move: {
+        player: me,
+        filter: isCustomMoveType(CustomMoveType.Left)
       }
     },
     {
@@ -222,7 +319,22 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           <>
           <b><Trans defaults="tuto.turn.tile.3"></Trans></b>
           </>
-        )
+        ),
+        position: { x: 50, y: 0 },
+        size: { width: 50 }
+      },
+      move: {
+        player: me,
+        filter: (move, game) => {
+          if (!isMoveItemType(MaterialType.Tile)(move))
+            return false
+
+          const moveItem:MoveItem=move
+          const tile:Tile=game.items[MaterialType.Tile]![moveItem.itemIndex]!.id
+          return tile==Tile.StoneCircle_22_22
+          && move.location.x===0
+          && move.location.y===-2
+        }
       }
     },
     {
@@ -233,7 +345,9 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           &nbsp;<br/>
           <Trans defaults="tuto.shield.2"></Trans><br/>
           </>
-        )
+        ),
+        position: { x: 50, y: 0 },
+        size: { width: 50 }
       }
     },
     {
@@ -244,7 +358,9 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           &nbsp;<br/>
           <Trans defaults="tuto.shield.4"></Trans>
           </>
-        )
+        ),
+        position: { x: 50, y: 0 },
+        size: { width: 50 }
       }
     },
     {
