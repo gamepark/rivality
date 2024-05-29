@@ -9,13 +9,22 @@ import App from './App'
 import { Locators } from './locators/Locators'
 import { Material } from './material/Material'
 import translations from './translations.json'
+import { Tutorial } from './tutorial/Tutorial'
 
 setupTranslation(translations, { debug: false })
 
 ReactDOM.render(
   <StrictMode>
-    <GameProvider game="rivality" Rules={RivalityRules} optionsSpec={RivalityOptionsSpec} GameSetup={RivalitySetup}
-                  material={Material} locators={Locators} animations={new MaterialGameAnimations()}>
+    <GameProvider
+      game="rivality"
+      Rules={RivalityRules}
+      optionsSpec={RivalityOptionsSpec}
+      GameSetup={RivalitySetup}
+      material={Material}
+      locators={Locators}
+      animations={new MaterialGameAnimations()}
+      tutorial={new Tutorial()}
+    >
       <App/>
     </GameProvider>
   </StrictMode>,
