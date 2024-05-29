@@ -1,7 +1,9 @@
 export enum RuleId {
-  ChooseTile      = 1,
-  CastSpell       = 2,
-  RemoveGolem     = 3,
-  EndTurn         = 4,
-  AskGolemRemoval = 5
+  Start           = 1,
+  ChooseTile      = 2,
+  CastSpell       = 3,
+  RemoveGolem     = 4,
+  AskGolemRemoval = 5,
+  EndTurn         = 6,
+  ShufflePlayer1Deck = 7
 }

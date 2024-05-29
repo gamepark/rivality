@@ -311,6 +311,6 @@ export class RivalitySetup extends MaterialGameSetup<PlayerId, MaterialType, Loc
       tests.start(this, options.test!)
       return
     }
-    this.startPlayerTurn(RuleId.ChooseTile, this.game.players[0])
+    this.startPlayerTurn(RuleId.Start, this.game.players[0])
   }
 }

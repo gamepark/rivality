@@ -300,6 +300,12 @@ export class RivalityTests {
       case 78:
         this.setupMaterial78(setup)
         break
+      case 79:
+        this.setupMaterial79(setup)
+        break
+      case 80:
+        this.setupMaterial80(setup)
+        break
 
       default:
         console.log("*** Unknown test")
@@ -316,6 +322,12 @@ export class RivalityTests {
         break
       case 78:
         this.start78(setup)
+        break
+      case 79:
+        this.start79(setup)
+        break
+      case 80:
+        this.start80(setup)
         break
 
       default:
@@ -1401,6 +1413,46 @@ export class RivalityTests {
   }
   start78(setup: RivalitySetup) {
     setup.startPlayerTurn(RuleId.ChooseTile, 3)
+  }
+
+  // Test 79 - No mulligan
+  setupMaterial79(setup: RivalitySetup) {
+    this.texts(
+      "No mulligan",
+      "Nothing to do",
+      "The game must ask to place a tile"
+    )
+    this.prepareBoard_2players(setup, [],
+      Tile.StoneCircle_x_41,
+      Tile.Cottage_12_21_23B,
+      Tile.Fortress_22_13B_31,
+      Tile.Cottage_23B_31_x,
+      -1,  1,
+      -1, -1
+    )
+  }
+  start79(setup: RivalitySetup) {
+    setup.startPlayerTurn(RuleId.Start, 1)
+  }
+
+  // Test 80 - Mulligan
+  setupMaterial80(setup: RivalitySetup) {
+    this.texts(
+      "Mulligan",
+      "Test both options",
+      "The game must ask to keep the tiles or to discard them"
+    )
+    this.prepareBoard_2players(setup, [],
+      Tile.StoneCircle_22_22,
+      Tile.Fortress_23B_22_22,
+      Tile.Fortress_22_13B_31,
+      Tile.Cottage_23B_31_x,
+      -1,  1,
+      -1, -1
+    )
+  }
+  start80(setup: RivalitySetup) {
+    setup.startPlayerTurn(RuleId.Start, 1)
   }
 }
 

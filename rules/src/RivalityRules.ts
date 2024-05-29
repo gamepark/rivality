@@ -1,12 +1,14 @@
 import { FillGapStrategy, hideItemId, hideItemIdToOthers, HidingStrategy, MaterialItem, SecretMaterialRules, PositiveSequenceStrategy } from '@gamepark/rules-api'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
-import { PlayerId } from './PlayerId'
 import { AskGolemRemovalRule } from './rules/AskGolemRemovalRule'
 import { CastSpellRule } from './rules/CastSpellRule'
 import { ChooseTileRule } from './rules/ChooseTileRule'
 import { EndTurnRule } from './rules/EndTurnRule'
 import { RemoveGolemRule } from './rules/RemoveGolemRule'
+import { StartRule } from './rules/StartRule'
+import { ShufflePlayer1DeckRule } from './rules/ShufflePlayer1DeckRule'
+import { PlayerId } from './PlayerId'
 import { RuleId } from './rules/RuleId'
 import { score } from './logic/Score'
 
@@ -29,11 +31,13 @@ export const alwaysShow: HidingStrategy = () => {
  */
 export class RivalityRules extends SecretMaterialRules<PlayerId, MaterialType, LocationType> {
   rules = {
+    [RuleId.Start]: StartRule,
     [RuleId.ChooseTile]: ChooseTileRule,
     [RuleId.CastSpell]: CastSpellRule,
     [RuleId.RemoveGolem]: RemoveGolemRule,
+    [RuleId.AskGolemRemoval]: AskGolemRemovalRule,
     [RuleId.EndTurn]: EndTurnRule,
-    [RuleId.AskGolemRemoval]: AskGolemRemovalRule
+    [RuleId.ShufflePlayer1Deck]: ShufflePlayer1DeckRule
   }
 
   locationsStrategies = {
