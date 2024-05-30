@@ -21,7 +21,7 @@ export class TutorialSetup extends RivalitySetup {
 
     // My hand
     this.material(MaterialType.Tile).location(LocationType.PlayerDeck).player(me)
-      .filter(item => item.id==Tile.StoneCircle_32_11)
+      .filter(item => item.id===Tile.StoneCircle_32_11)
       .moveItems({
         type:LocationType.PlayerHand,
         player:me,
@@ -29,7 +29,7 @@ export class TutorialSetup extends RivalitySetup {
         rotation: Orientation.North
       })
     this.material(MaterialType.Tile).location(LocationType.PlayerDeck).player(me)
-      .filter(item => item.id==Tile.StoneCircle_22_22)
+      .filter(item => item.id===Tile.StoneCircle_22_22)
       .moveItems({
         type:LocationType.PlayerHand,
         player:me,
@@ -39,7 +39,7 @@ export class TutorialSetup extends RivalitySetup {
 
     // Opponent's hand
     this.material(MaterialType.Tile).location(LocationType.PlayerDeck).player(opponent)
-      .filter(item => item.id==Tile.Cottage_12_21_23B)
+      .filter(item => item.id===Tile.Cottage_12_21_23B)
       .moveItems({
         type:LocationType.PlayerHand,
         player:opponent,
@@ -47,7 +47,7 @@ export class TutorialSetup extends RivalitySetup {
         rotation: Orientation.North
       })
     this.material(MaterialType.Tile).location(LocationType.PlayerDeck).player(opponent)
-      .filter(item => item.id==Tile.Cottage_22_23B_11)
+      .filter(item => item.id===Tile.Cottage_22_23B_11)
       .moveItems({
         type:LocationType.PlayerHand,
         player:opponent,
@@ -58,6 +58,40 @@ export class TutorialSetup extends RivalitySetup {
     // Check deck size
     console.log(this.material(MaterialType.Tile).location(LocationType.PlayerDeck).player(me).length)
     console.log(this.material(MaterialType.Tile).location(LocationType.PlayerDeck).player(opponent).length)
+
+    // Put card on top of my deck
+    this.material(MaterialType.Tile).location(LocationType.PlayerDeck).player(me)
+      .filter(item => item.id===Tile.StoneCircle_31_12)
+      .moveItems({
+        type: LocationType.PlayerDeck,
+        player: me
+      })
+    this.material(MaterialType.Tile).location(LocationType.PlayerDeck).player(me)
+      .filter(item => item.id===Tile.Fortress_31_22_13B)
+      .moveItems({
+        type: LocationType.PlayerDeck,
+        player: me
+      })
+    this.material(MaterialType.Tile).location(LocationType.PlayerDeck).player(me)
+      .filter(item => item.id===Tile.Cottage_23B_31_x)
+      .moveItems({
+        type: LocationType.PlayerDeck,
+        player: me
+      })
+
+    // Put card on top of the opponent's deck
+    this.material(MaterialType.Tile).location(LocationType.PlayerDeck).player(opponent)
+      .filter(item => item.id===Tile.StoneCircle_11_32)
+      .moveItems({
+        type: LocationType.PlayerDeck,
+        player: opponent
+      })
+    this.material(MaterialType.Tile).location(LocationType.PlayerDeck).player(opponent)
+      .filter(item => item.id===Tile.StoneCircle_x_41)
+      .moveItems({
+        type: LocationType.PlayerDeck,
+        player: opponent
+      })
 
 //    this.material(MaterialType.KingdomCard).location(LocationType.KingdomDeck).deck().dealOne({ type: LocationType.KingdomDiscard, rotation:true })
     this.startPlayerTurn(RuleId.Start, this.game.players[0])
