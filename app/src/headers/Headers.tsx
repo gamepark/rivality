@@ -7,6 +7,7 @@ import { ChooseTileHeader } from './ChooseTileHeader'
 import { EndTurnHeader } from './EndTurnHeader'
 import { RemoveGolemHeader } from './RemoveGolemHeader'
 import { StartHeader } from './StartHeader'
+import { ShufflePlayer1DeckHeader } from './ShufflePlayer1DeckHeader'
 
 export const Headers: Partial<Record<RuleId, ComponentType>> = {
   [RuleId.Start]: StartHeader,
@@ -14,5 +15,6 @@ export const Headers: Partial<Record<RuleId, ComponentType>> = {
   [RuleId.CastSpell]: CastSpellHeader,
   [RuleId.RemoveGolem]: RemoveGolemHeader,
   [RuleId.AskGolemRemoval]: AskGolemRemovalHeader,
-  [RuleId.EndTurn]: EndTurnHeader
+  [RuleId.EndTurn]: EndTurnHeader,
+  [RuleId.ShufflePlayer1Deck]: ShufflePlayer1DeckHeader
 }

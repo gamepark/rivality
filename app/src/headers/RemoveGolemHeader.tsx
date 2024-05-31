@@ -1,4 +1,7 @@
 /** @jsxImportSource @emotion/react */
+import { useTranslation } from 'react-i18next'
+
 export const RemoveGolemHeader = () => {
-  return <>Elimination des golems</>
+  const { t } = useTranslation()
+  return <>{t('header.remove.golem')}</>
 }
