@@ -7,6 +7,12 @@ import { RuleId } from './rules/RuleId'
 import { Tile } from './material/Tile'
 import { Wizard } from './material/Wizard'
 
+/**
+ * To test specific positions
+ *
+ * game.new({'test':1})
+ */
+
 class Square {
   x:number
   y:number
@@ -41,11 +47,6 @@ enum TileControl {
   FiveOpponentGolems=3
 }
 
-/**
- * To test specific positions
- *
- * game.new({'test':1})
- */
 export class RivalityTests {
   setupMaterial(setup: RivalitySetup, testId:number, nbPlayers:number) {
     console.log("Test "+testId)
@@ -54,7 +55,10 @@ export class RivalityTests {
     let expectedNbPlayers=2
 
     // Except few tests that require 3 players
-    if (testId>=46 && testId<=78){
+    if (
+        (testId>=46 && testId<=78)
+        || (testId>=81 && testId<=85)
+      ){
       expectedNbPlayers=3
     }
 
@@ -305,6 +309,21 @@ export class RivalityTests {
         break
       case 80:
         this.setupMaterial80(setup)
+        break
+      case 81:
+        this.setupMaterial81(setup)
+        break
+      case 82:
+        this.setupMaterial82(setup)
+        break
+      case 83:
+        this.setupMaterial83(setup)
+        break
+      case 84:
+        this.setupMaterial84(setup)
+        break
+      case 85:
+        this.setupMaterial85(setup)
         break
 
       default:
@@ -1454,6 +1473,181 @@ export class RivalityTests {
   start80(setup: RivalitySetup) {
     setup.startPlayerTurn(RuleId.Start, 1)
   }
+
+  setupMaterial_tieBreak(setup: RivalitySetup,
+    player1StoneCircle:boolean,
+    player1Cottage:boolean,
+    player2StoneCircle:boolean,
+    player2Cottage:boolean,
+    player3StoneCircle:boolean,
+    player3Cottage:boolean,
+    playerWithMajorityOnWellOfMana:number
+    ) {
+    // Note: few golems may be removed to reduce the player's score by 3 points
+    //       in case the well of mana is controlled
+    this.prepareBoard_3players(setup, [
+      new Square( 1,  0, Tile.StoneCircle_31_11, Orientation.North,
+        player1StoneCircle ? 1 : 0, 0, 0),
+      new Square( 2,  0, Tile.StoneCircle_11_31, Orientation.North,
+        (player1StoneCircle && playerWithMajorityOnWellOfMana!=1) ? 1 : 0, 0, 0),
+      new Square( 3,  0, Tile.StoneCircle_12_31, Orientation.North,
+        0, player2StoneCircle ? 1 : 0, 0),
+      new Square( 4,  0, Tile.StoneCircle_31_12, Orientation.North,
+        0, (player2StoneCircle && playerWithMajorityOnWellOfMana!=2) ? 1 : 0, 0),
+      new Square( 0,  1, Tile.StoneCircle_11_32, Orientation.North,
+        0, 0, player3StoneCircle ? 1 : 0),
+      new Square( 1,  1, Tile.StoneCircle_32_11, Orientation.North,
+        0, 0, (player3StoneCircle && playerWithMajorityOnWellOfMana!=3) ? 1 : 0),
+      new Square( 2,  1, Tile.Cottage_12_21_23B, Orientation.North,
+        player1Cottage ? 1 : 0, 0, 0),
+      new Square( 3,  1, Tile.Cottage_23B_12_21, Orientation.North,
+        (player1Cottage && playerWithMajorityOnWellOfMana!=1) ? 1 : 0, 0, 0),
+      new Square( 4,  1, Tile.Cottage_22_23B_11, Orientation.North,
+        0, player2Cottage ? 1 : 0, 0),
+      new Square( 0,  2, Tile.Cottage_31_23B_x, Orientation.North,
+        0, (player2Cottage && playerWithMajorityOnWellOfMana!=2) ? 1 : 0, 0),
+      new Square( 1,  2, Tile.Cottage_11_23B_22, Orientation.North,
+        0, 0, player3Cottage ? 1 : 0),
+      new Square( 2,  2, Tile.Cottage_23B_31_x, Orientation.North,
+        0, 0, (player3Cottage && playerWithMajorityOnWellOfMana!=3) ? 1 : 0),
+      new Square( 3,  2, Tile.Cottage_32_23B_x, Orientation.North, 0, 0, 0),
+      new Square( 4,  2, Tile.Cottage_23B_32_x, Orientation.North, 0, 0, 0),
+      new Square( 0,  3, Tile.Fortress_21_23B_22, Orientation.North, 0, 0, 0),
+      new Square( 1,  3, Tile.Fortress_22_13B_31, Orientation.North, 0, 0, 0),
+      new Square( 2,  3, Tile.Fortress_23B_22_22, Orientation.North, 0, 0, 0),
+      new Square( 3,  3, Tile.Fortress_31_22_13B, Orientation.North, 0, 0, 0),
+      new Square( 4,  3, Tile.Fortress_22_23B_21, Orientation.North, 0, 0, 0),
+      new Square( 0,  4, Tile.Fortress_22_22_23B, Orientation.North, 0, 0, 0),
+    ],
+      undefined, undefined,
+      undefined, undefined,
+      undefined, undefined,
+      -1,  1,
+      -1, -1,
+      -1,  0
+    )
+    // Remaining: 2 tiles Fortress_22_22_23B + 2 tiles StoneCircle_x_41
+    const stoneCircleDeck1=setup.material(MaterialType.Tile)
+      .filter(item => item.id===Tile.StoneCircle_22_22)
+      .deck()
+    const stoneCircleDeck2=setup.material(MaterialType.Tile)
+      .filter(item => item.id===Tile.StoneCircle_x_41)
+      .deck()
+
+    stoneCircleDeck1.deal({
+        type: LocationType.Board,
+        id: BoardSpace.Tile,
+        x: 1,
+        y: 4,
+        rotation: Orientation.North
+      }, 1)
+    stoneCircleDeck1.deal({
+        type: LocationType.Board,
+        id: BoardSpace.Tile,
+        x: 2,
+        y: 4,
+        rotation: Orientation.North
+      }, 1)
+    stoneCircleDeck2.deal({
+        type: LocationType.Board,
+        id: BoardSpace.Tile,
+        x: 3,
+        y: 4,
+        rotation: Orientation.North
+      }, 1)
+    stoneCircleDeck2.deal({
+        type:LocationType.PlayerHand,
+        player:1,
+        x:1,
+        rotation: Orientation.South
+      }, 1)
+
+    if (playerWithMajorityOnWellOfMana!=0){
+      setup
+        .material(MaterialType.Golem)
+        .location(LocationType.PlayerGolemStack)
+        .player(playerWithMajorityOnWellOfMana)
+        .limit(1)
+        .moveItems({
+          type: LocationType.Board,
+          id: BoardSpace.Golem,
+          x: 0,
+          y: 0,
+        })
+    }
+  }
+
+  setupMaterial81(setup: RivalitySetup) {
+    this.texts(
+      "Tie break",
+      "Move the tile to the bottom right corner",
+      "Tie - All players have a score of 0"
+    )
+    this.setupMaterial_tieBreak(setup,
+      false, false,
+      false, false,
+      false, false,
+      0
+    )
+  }
+
+  setupMaterial82(setup: RivalitySetup) {
+    this.texts(
+      "Tie break",
+      "Move the tile to the bottom right corner",
+      "Player 1 and 2 wins (tie) with 6 points. Player 3 has 2 points."
+    )
+    this.setupMaterial_tieBreak(setup,
+      true, true,
+      true, true,
+      true, false,
+      0
+    )
+  }
+
+  setupMaterial83(setup: RivalitySetup) {
+    this.texts(
+      "Tie break",
+      "Move the tile to the bottom right corner",
+      "Player 1 wins with 6 points. Player 2 has 6 points. Player 3 has 2 points."
+    )
+    this.setupMaterial_tieBreak(setup,
+      true, true,
+      true, true,
+      true, false,
+      1
+    )
+  }
+
+  setupMaterial84(setup: RivalitySetup) {
+    this.texts(
+      "Tie break",
+      "Move the tile to the bottom right corner",
+      "Player 1 has 6 points. Player 2 wins with 6 points. Player 3 has 2 points."
+    )
+    this.setupMaterial_tieBreak(setup,
+      true, true,
+      true, true,
+      true, false,
+      2
+    )
+  }
+
+  setupMaterial85(setup: RivalitySetup) {
+    this.texts(
+      "Tie break",
+      "Move the tile to the bottom right corner",
+      "Player 1 has 6 points. Player 2 has 6 points. Player 3 wins with 2 points."
+    )
+    this.setupMaterial_tieBreak(setup,
+      true, true,
+      true, true,
+      true, false,
+      3
+    )
+  }
+
+  // TODO - Pass tests 82 to 85
 }
 
 export const tests = new RivalityTests()

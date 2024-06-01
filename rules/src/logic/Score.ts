@@ -51,6 +51,10 @@ export class Score {
     let nbGolems2=golems.filter(item => item.id==Golem.Golem2 && item.location.x==x && item.location.y==y).length
     let nbGolems3=golems.filter(item => item.id==Golem.Golem3 && item.location.x==x && item.location.y==y).length
 
+    // For tests: there must be at least one golem to control the tile
+    if (nbGolems1+nbGolems2+nbGolems3 <= 0)
+      return undefined
+
     if ((nbGolems1 > nbGolems2) && (nbGolems1 > nbGolems3))
       return 1
     if ((nbGolems2 > nbGolems1) && (nbGolems2 > nbGolems3))
