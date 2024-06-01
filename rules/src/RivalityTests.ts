@@ -1646,8 +1646,6 @@ export class RivalityTests {
       3
     )
   }
-
-  // TODO - Pass tests 82 to 85
 }
 
 export const tests = new RivalityTests()

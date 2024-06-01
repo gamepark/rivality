@@ -30,7 +30,8 @@ const Score: FC<any> = (props) => {
   const rules = useRules<RivalityRules>()!
 
   if (!rules?.isOver()) return <></>
-  const score=rules.getScore(player)
+//  const score=rules.getScore(player)
+  const score=rules.computeScore(player)
 
   return <div><span css={vpText(score)}>{score}</span></div>
 }

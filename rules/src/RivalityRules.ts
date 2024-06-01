@@ -64,12 +64,67 @@ export class RivalityRules extends SecretMaterialRules<PlayerId, MaterialType, L
     return false
   }
 
-  getScore(player: PlayerId) {
+  rankPlayers(playerA: PlayerId, playerB: PlayerId): number {
+    const playerScores=[
+      this.computeScore(1),
+      this.computeScore(2),
+      this.computeScore(3)
+    ]
+    const playerControllingWellOfMana:PlayerId|undefined=this.getPlayerControllingWellOfMana()
+
+    console.log(playerScores)
+
+    let highscore=playerScores[0]
+    if (playerScores[1]>highscore) highscore=playerScores[1]
+    if (playerScores[2]>highscore) highscore=playerScores[2]
+
+    let nbPlayersWithHighScore=0
+    for (let i=0; i<3; i++){
+      if (playerScores[i] == highscore)
+        nbPlayersWithHighScore++
+    }
+
+    console.log(nbPlayersWithHighScore)
+
+    // In case multiple players have the highscore,
+    // the winner is the player controlling the well of mana
+    // even if his/her score is lower than the highscore
+    //
+    // then players are ranked through their score
+    if (nbPlayersWithHighScore>1){
+      if (playerA===playerControllingWellOfMana)
+        return -1
+      if (playerB===playerControllingWellOfMana)
+        return 1
+    }
+
+    // Then rank by score
+    const scoreA=playerScores[playerA-1]
+    const scoreB=playerScores[playerB-1]
+
+    console.log(scoreA)
+    console.log(scoreB)
+
+    if (scoreA < scoreB)
+      return 1
+    if (scoreA > scoreB)
+      return -1
+    return 0
+  }
+
+  // Do not use getScore() in order to rank players according to the rules of the game
+  computeScore(player: PlayerId) {
     return score.playerScore(
       player,
       this.material(MaterialType.Tile).location(LocationType.Board),
       this.material(MaterialType.Golem).location(LocationType.Board),
       this.material(MaterialType.Wizard).location(LocationType.Board)
+    )
+  }
+
+  getPlayerControllingWellOfMana() : PlayerId|undefined {
+    return score.playerControllingWellOfMana(
+      this.material(MaterialType.Golem).location(LocationType.Board)
     )
   }
 }

@@ -14,7 +14,7 @@ export class Score {
     wizards:Material<number, MaterialType, LocationType>):number {
     let res = 0
 
-    let playerControllingWellOfMana=this.playerControllingTile(golems, 0, 0, undefined)
+    let wellController=this.playerControllingWellOfMana(golems)
 
     // Loop on tiles
     tiles.location(LocationType.Board).getItems().forEach(item => {
@@ -27,7 +27,7 @@ export class Score {
       if (hasWizards)
         return
 
-      if (this.playerControllingTile(golems, x, y, playerControllingWellOfMana)===playerId){
+      if (this.playerControllingTile(golems, x, y, wellController)===playerId){
         // The tile is controlled by the current player
         if (tile===Tile.WellOfMana)
           res+=3
@@ -40,6 +40,10 @@ export class Score {
       }
     })
     return res
+  }
+
+  playerControllingWellOfMana(golems:Material<number, MaterialType, LocationType>):PlayerId | undefined {
+    return this.playerControllingTile(golems, 0, 0, undefined)
   }
 
   playerControllingTile(
