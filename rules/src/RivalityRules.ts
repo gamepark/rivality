@@ -72,8 +72,6 @@ export class RivalityRules extends SecretMaterialRules<PlayerId, MaterialType, L
     ]
     const playerControllingWellOfMana:PlayerId|undefined=this.getPlayerControllingWellOfMana()
 
-    console.log(playerScores)
-
     let highscore=playerScores[0]
     if (playerScores[1]>highscore) highscore=playerScores[1]
     if (playerScores[2]>highscore) highscore=playerScores[2]
@@ -83,8 +81,6 @@ export class RivalityRules extends SecretMaterialRules<PlayerId, MaterialType, L
       if (playerScores[i] == highscore)
         nbPlayersWithHighScore++
     }
-
-    console.log(nbPlayersWithHighScore)
 
     // In case multiple players have the highscore,
     // the winner is the player controlling the well of mana
@@ -101,9 +97,6 @@ export class RivalityRules extends SecretMaterialRules<PlayerId, MaterialType, L
     // Then rank by score
     const scoreA=playerScores[playerA-1]
     const scoreB=playerScores[playerB-1]
-
-    console.log(scoreA)
-    console.log(scoreB)
 
     if (scoreA < scoreB)
       return 1
