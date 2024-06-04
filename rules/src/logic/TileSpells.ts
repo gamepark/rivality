@@ -21,6 +21,9 @@ export class TileSpells {
       case Tile.StoneCircle_x_41:
         if (direction==Direction.Top)  return new Spell(4,1,false)
         return noSpell
+      case Tile.StoneCircle_x_41_star:
+        if (direction==Direction.Top)  return new Spell(4,1,false)
+        return noSpell
       case Tile.StoneCircle_31_11:
         if (direction==Direction.Left) return new Spell(3,1,false)
         if (direction==Direction.Top)  return new Spell(1,1,false)
@@ -45,9 +48,13 @@ export class TileSpells {
         if (direction==Direction.Left) return new Spell(3,2,false)
         if (direction==Direction.Top)  return new Spell(1,1,false)
         return noSpell
-      case Tile.StoneCircle_22_22:
-        if (direction==Direction.Left) return new Spell(2,2,false)
+      case Tile.StoneCircle_21_22:
+        if (direction==Direction.Left) return new Spell(2,1,false)
         if (direction==Direction.Top)  return new Spell(2,2,false)
+        return noSpell
+      case Tile.StoneCircle_22_21:
+        if (direction==Direction.Left) return new Spell(2,2,false)
+        if (direction==Direction.Top)  return new Spell(2,1,false)
         return noSpell
       case Tile.Cottage_12_21_23B:
         if (direction==Direction.Left) return new Spell(1,2,false)

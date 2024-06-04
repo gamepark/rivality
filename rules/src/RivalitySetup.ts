@@ -58,7 +58,7 @@ export class RivalitySetup extends MaterialGameSetup<PlayerId, MaterialType, Loc
       // In 2 players mode, the deck are predefined
       for (let player=1; player<=2; player++){
         newTiles.push(...tiles
-          .filter(tile => tileTools.tileDeck(tile)==player || tileTools.tileDeck(tile)==-1)
+          .filter(tile => tileTools.tileDeck(tile)==player) // || tileTools.tileDeck(tile)==-1)
           .map((tile) => ({
             id: tile,
             location: {
@@ -94,6 +94,7 @@ export class RivalitySetup extends MaterialGameSetup<PlayerId, MaterialType, Loc
           }
         })))
 
+/*
       // 2 specimens for specific cards
       newTiles.push(...tiles
         .filter(tile => tileTools.tileDeck(tile)==-1)
@@ -107,6 +108,7 @@ export class RivalitySetup extends MaterialGameSetup<PlayerId, MaterialType, Loc
             rotation: Orientation.North
           }
         })))
+*/
 
       this.material(MaterialType.Tile).createItems(newTiles)
       this.material(MaterialType.Tile).shuffle()

@@ -54,8 +54,7 @@ const vpText = (score = 0) => css`
 `
 
 export const playerColorCode: Record<PlayerColor, string> = {
-  [PlayerColor.Red]: 'red',
-  [PlayerColor.Blue]: 'blue',
-  [PlayerColor.Green]: 'green',
-  [PlayerColor.Yellow]: 'yellow'
+  [PlayerColor.Pink]:   'magenta',
+  [PlayerColor.Orange]: '#ff8c00',
+  [PlayerColor.Green]:  'green'
 }

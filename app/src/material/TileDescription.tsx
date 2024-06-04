@@ -9,7 +9,8 @@ import StoneCircle_12_31 from '../images/StoneCircle_12_31.jpg'
 import StoneCircle_31_12 from '../images/StoneCircle_31_12.jpg'
 import StoneCircle_11_32 from '../images/StoneCircle_11_32.jpg'
 import StoneCircle_32_11 from '../images/StoneCircle_32_11.jpg'
-import StoneCircle_22_22 from '../images/StoneCircle_22_22.jpg'
+import StoneCircle_21_22 from '../images/StoneCircle_21_22.jpg'
+import StoneCircle_22_21 from '../images/StoneCircle_22_21.jpg'
 import Cottage_12_21_23B from '../images/Cottage_12_21_23b.jpg'
 import Cottage_23B_12_21 from '../images/Cottage_23b_12_21.jpg'
 import Cottage_22_23B_11 from '../images/Cottage_22_23b_11.jpg'
@@ -43,7 +44,8 @@ export class TileDescription extends CardDescription {
     [Tile.StoneCircle_31_12]: StoneCircle_31_12,
     [Tile.StoneCircle_11_32]: StoneCircle_11_32,
     [Tile.StoneCircle_32_11]: StoneCircle_32_11,
-    [Tile.StoneCircle_22_22]: StoneCircle_22_22,
+    [Tile.StoneCircle_21_22]: StoneCircle_21_22,
+    [Tile.StoneCircle_22_21]: StoneCircle_22_21,
     [Tile.Cottage_12_21_23B]: Cottage_12_21_23B,
     [Tile.Cottage_23B_12_21]: Cottage_23B_12_21,
     [Tile.Cottage_22_23B_11]: Cottage_22_23B_11,

@@ -29,7 +29,7 @@ export class TutorialSetup extends RivalitySetup {
         rotation: Orientation.North
       })
     this.material(MaterialType.Tile).location(LocationType.PlayerDeck).player(me)
-      .filter(item => item.id===Tile.StoneCircle_22_22)
+      .filter(item => item.id===Tile.StoneCircle_22_21)
       .moveItems({
         type:LocationType.PlayerHand,
         player:me,

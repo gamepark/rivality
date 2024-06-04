@@ -709,7 +709,7 @@ export class RivalityTests {
       Tile.Fortress_22_13B_31,
       Tile.StoneCircle_31_12,
       Tile.StoneCircle_11_31,
-      Tile.StoneCircle_22_22,
+      Tile.StoneCircle_22_21,
       undefined, undefined,
       undefined, undefined
     )
@@ -727,7 +727,7 @@ export class RivalityTests {
       Tile.Fortress_22_13B_31,
       Tile.StoneCircle_31_12,
       Tile.StoneCircle_11_31,
-      Tile.StoneCircle_22_22,
+      Tile.StoneCircle_22_21,
       undefined, undefined,
       undefined, undefined
     )
@@ -773,7 +773,7 @@ export class RivalityTests {
 
     const squares=[
       new Square( 0, -2, Tile.StoneCircle_32_11, Orientation.North, 1, 0, 0),
-      new Square( 1, -2, Tile.StoneCircle_22_22, Orientation.North, 0, 1, 0),
+      new Square( 1, -2, Tile.StoneCircle_21_22, Orientation.North, 0, 1, 0),
 
       new Square(-2, -1, Tile.StoneCircle_x_41, Orientation.North, 1, 0, 0),
       new Square(-1, -1, Tile.StoneCircle_31_11, Orientation.North, 1, 0, 0),
@@ -834,7 +834,7 @@ export class RivalityTests {
         expected
       )
 
-      let targetTile=Tile.StoneCircle_22_22
+      let targetTile=Tile.StoneCircle_22_21
       if (nbShields==1){
         targetTile=Tile.Cottage_23B_32_x
       } else if (nbShields==2){
@@ -1048,7 +1048,7 @@ export class RivalityTests {
     )
 
     const squares=[
-      new Square( 1,  0, Tile.StoneCircle_22_22, Orientation.North, 0, 1, 0)
+      new Square( 1,  0, Tile.StoneCircle_22_21, Orientation.North, 0, 1, 0)
     ]
 
     this.prepareBoard_2players(setup, squares,
@@ -1092,7 +1092,7 @@ export class RivalityTests {
         expected
       )
 
-      let targetTile=Tile.StoneCircle_22_22
+      let targetTile=Tile.StoneCircle_22_21
       if (nbShields==1){
         targetTile=Tile.Cottage_23B_32_x
       } else if (nbShields==2){
@@ -1462,7 +1462,7 @@ export class RivalityTests {
       "The game must ask to keep the tiles or to discard them"
     )
     this.prepareBoard_2players(setup, [],
-      Tile.StoneCircle_22_22,
+      Tile.StoneCircle_21_22,
       Tile.Fortress_23B_22_22,
       Tile.Fortress_22_13B_31,
       Tile.Cottage_23B_31_x,
@@ -1528,7 +1528,7 @@ export class RivalityTests {
     )
     // Remaining: 2 tiles Fortress_22_22_23B + 2 tiles StoneCircle_x_41
     const stoneCircleDeck1=setup.material(MaterialType.Tile)
-      .filter(item => item.id===Tile.StoneCircle_22_22)
+      .filter(item => item.id===Tile.StoneCircle_21_22)
       .deck()
     const stoneCircleDeck2=setup.material(MaterialType.Tile)
       .filter(item => item.id===Tile.StoneCircle_x_41)

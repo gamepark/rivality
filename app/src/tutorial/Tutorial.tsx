@@ -275,7 +275,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
 
           const moveItem:MoveItem=move
           const tile:Tile=game.items[MaterialType.Tile]![moveItem.itemIndex]!.id
-          return tile===Tile.StoneCircle_22_22
+          return tile===Tile.StoneCircle_22_21
           && move.location.x===-2
           && move.location.y===0
         }
