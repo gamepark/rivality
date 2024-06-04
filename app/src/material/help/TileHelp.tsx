@@ -43,7 +43,6 @@ export const TileHelp = (props: MaterialHelpProps) => {
     nbPoints=1
     tileProtection=0
   }
-  console.log(nbPoints)
 
   const spellLeft=tileSpells.spell(item.id, Direction.Left)
   const spellTop=tileSpells.spell(item.id, Direction.Top)
@@ -51,6 +50,8 @@ export const TileHelp = (props: MaterialHelpProps) => {
 
   return <>
     Type: {tileType}<br/>
+    &nbsp;<br/>
+    Nb de point(s): {nbPoints}<br/>
     &nbsp;<br/>
     Sorts:<br/><ul>
     <li>

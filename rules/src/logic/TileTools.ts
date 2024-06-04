@@ -54,17 +54,10 @@ export class TileTools {
     return 0
   }
 
-  // Useless ---> -1 means one card for each deck
   // 0 means card out of deck (well of mana)
   // 1 means 1st deck
   // 2 means 2nd deck
   tileDeck(tile:Tile){
-/*
-    if (
-        (tile==Tile.StoneCircle_22_22) ||
-        (tile==Tile.StoneCircle_x_41)
-      ) return -1
-*/
     if (tile==Tile.WellOfMana)
       return 0
 
