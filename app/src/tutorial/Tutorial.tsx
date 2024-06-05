@@ -275,7 +275,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
 
           const moveItem:MoveItem=move
           const tile:Tile=game.items[MaterialType.Tile]![moveItem.itemIndex]!.id
-          return tile===Tile.StoneCircle_22_21
+          return tile===Tile.StoneCircle_21_22
           && move.location.x===-2
           && move.location.y===0
         }
@@ -393,7 +393,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
 
           const moveItem:MoveItem=move
           const tile:Tile=game.items[MaterialType.Tile]![moveItem.itemIndex]!.id
-          return tile===Tile.StoneCircle_x_41
+          return tile===Tile.StoneCircle_x_41_star
           && move.location.x===-2
           && move.location.y===-1
         }

@@ -3,6 +3,7 @@ import { CardDescription } from '@gamepark/react-game'
 import TileBack from '../images/TileBack.jpg'
 import WellOfMana from '../images/WellOfMana.jpg'
 import StoneCircle_x_41 from '../images/StoneCircle_x_41.jpg'
+import StoneCircle_x_41_star from '../images/StoneCircle_x_41_star.jpg'
 import StoneCircle_31_11 from '../images/StoneCircle_31_11.jpg'
 import StoneCircle_11_31 from '../images/StoneCircle_11_31.jpg'
 import StoneCircle_12_31 from '../images/StoneCircle_12_31.jpg'
@@ -38,6 +39,7 @@ export class TileDescription extends CardDescription {
   images = {
     [Tile.WellOfMana]: WellOfMana,
     [Tile.StoneCircle_x_41]: StoneCircle_x_41,
+    [Tile.StoneCircle_x_41_star]: StoneCircle_x_41_star,
     [Tile.StoneCircle_31_11]: StoneCircle_31_11,
     [Tile.StoneCircle_11_31]: StoneCircle_11_31,
     [Tile.StoneCircle_12_31]: StoneCircle_12_31,
