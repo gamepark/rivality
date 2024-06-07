@@ -1,4 +1,13 @@
-import { FillGapStrategy, hideItemId, hideItemIdToOthers, HidingStrategy, MaterialItem, SecretMaterialRules, PositiveSequenceStrategy } from '@gamepark/rules-api'
+import {
+  FillGapStrategy,
+  hideItemId,
+  hideItemIdToOthers,
+  HidingStrategy,
+  MaterialItem,
+  SecretMaterialRules,
+  PositiveSequenceStrategy,
+  CompetitiveRank, MaterialGame, MaterialMove
+} from '@gamepark/rules-api'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { AskGolemRemovalRule } from './rules/AskGolemRemovalRule'
@@ -29,7 +38,8 @@ export const alwaysShow: HidingStrategy = () => {
  * This class implements the rules of the board game.
  * It must follow Game Park "Rules" API so that the Game Park server can enforce the rules.
  */
-export class RivalityRules extends SecretMaterialRules<PlayerId, MaterialType, LocationType> {
+export class RivalityRules extends SecretMaterialRules<PlayerId, MaterialType, LocationType>
+  implements CompetitiveRank<MaterialGame<PlayerId, MaterialType, LocationType>, MaterialMove<PlayerId, MaterialType, LocationType>, PlayerId> {
   rules = {
     [RuleId.Start]: StartRule,
     [RuleId.ChooseTile]: ChooseTileRule,
