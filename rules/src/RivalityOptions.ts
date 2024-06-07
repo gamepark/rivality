@@ -5,8 +5,7 @@ import { OptionsSpec } from '@gamepark/rules-api'
  * The first generic parameter, "{}", can be changed to include game options like variants or expansions.
  */
 export type RivalityOptions = {
-  players: number,
-  test?: number
+  players: number
 }
 
 /**

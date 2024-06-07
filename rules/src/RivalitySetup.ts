@@ -1,21 +1,16 @@
 import { MaterialGameSetup } from '@gamepark/rules-api'
-import { RivalityOptions } from './RivalityOptions'
-import { RivalityRules } from './RivalityRules'
+import { tileTools } from './logic/TileTools'
 import { BoardSpace } from './material/BoardSpace'
+import { Golem, golems } from './material/Golem'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
-import { tiles, Tile } from './material/Tile'
-import { golems, Golem } from './material/Golem'
-import { wizards, Wizard } from './material/Wizard'
-import { tileTools } from './logic/TileTools'
+import { Tile, tiles } from './material/Tile'
+import { Wizard, wizards } from './material/Wizard'
 import { Orientation } from './Orientation'
 import { PlayerId } from './PlayerId'
+import { RivalityOptions } from './RivalityOptions'
+import { RivalityRules } from './RivalityRules'
 import { RuleId } from './rules/RuleId'
-import { tests } from './RivalityTests'
-
-function isTest(options: RivalityOptions) : boolean {
-  return (options.test !==undefined && options.test>0)
-}
 
 /**
  * This class creates a new Game based on the game options
@@ -27,14 +22,6 @@ export class RivalitySetup extends MaterialGameSetup<PlayerId, MaterialType, Loc
     this.setupTiles(options)
     this.setupGolems(options)
     this.setupWizards(options)
-
-    // Tests
-    if (isTest(options)){
-      console.log("Test mode")
-      tests.setupMaterial(this, options.test!, options.players)
-      return
-    }
-
     this.setupPlayerHands(options)
   }
 
@@ -308,11 +295,7 @@ export class RivalitySetup extends MaterialGameSetup<PlayerId, MaterialType, Loc
     }
   }
 
-  start(options: RivalityOptions) {
-    if (isTest(options)){
-      tests.start(this, options.test!)
-      return
-    }
+  start() {
     this.startPlayerTurn(RuleId.Start, this.game.players[0])
   }
 }
