@@ -20,9 +20,32 @@ class TableDimensions {
   yMax:number=0
 }
 
+export enum Corner {
+  TopLeft        = 1,
+  TopRight       = 2,
+  BottomLeft     = 3,
+  BottomRight    = 4
+}
+
 export class TableDesign {
   nbPlayers(rules: MaterialRules){
     return rules.players.length
+  }
+
+  playerCorner(player:number, _position:number, nbPlayers:number){
+    if (nbPlayers==2){
+      if (player==1)
+        return Corner.BottomRight
+      return Corner.TopRight
+    } else if (nbPlayers==3){
+      if (player==1)
+        return Corner.BottomRight
+      if (player==2)
+        return Corner.TopLeft
+      return Corner.TopRight
+    }
+    console.log("*** ERROR - Unsupported nb players")
+    return Corner.TopRight
   }
 
   getBoardDimensions(rules:MaterialRules){

@@ -1,13 +1,15 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
-import { PlayerColor } from '@gamepark/rivality/PlayerColor'
-import { PlayerPanel, usePlayers, useRules } from '@gamepark/react-game'
-import { RivalityRules } from '@gamepark/rivality/RivalityRules'
+import { PlayerId } from '@gamepark/rivality/PlayerId'
+import { getRelativePlayerIndex, /* PlayerPanel, /*usePlayers,*/ useMaterialContext /*, useRules*/ } from '@gamepark/react-game'
 import { FC } from 'react'
 import { createPortal } from 'react-dom'
+import { Corner, tableDesign } from '../locators/position/TableDesign'
+import { RivalityPlayerPanel } from './RivalityPlayerPanel'
 
-export const PlayerPanels: FC<any> = () => {
-  const players = usePlayers({ sortFromMe: true })
+export const PlayerPanels: FC<{players:number[]}> = ({players}) => {
+  const context=useMaterialContext()
+  const nbPlayers=players.length
   const root = document.getElementById('root')
   if (!root) {
     return null
@@ -15,46 +17,55 @@ export const PlayerPanels: FC<any> = () => {
 
   return createPortal(
     <>
-      {players.map((player, index) =>
-        <PlayerPanel key={player.id} playerId={player.id} color={playerColorCode[player.id]} css={panelPosition(index)}>
-          <Score player={player.id}/>
-        </PlayerPanel>
+      {players.map((player) => {
+        const relativeIndex = getRelativePlayerIndex(context, player)
+        const corner=tableDesign.playerCorner(player, relativeIndex, nbPlayers)
+        return <RivalityPlayerPanel key={player} playerId={player} css={panelPosition(corner)}/>
+      }
       )}
     </>,
     root
   )
 }
 
-const Score: FC<any> = (props) => {
-  const { player } = props
-  const rules = useRules<RivalityRules>()!
-
-  if (!rules?.isOver()) return <></>
-//  const score=rules.getScore(player)
-  const score=rules.computeScore(player)
-
-  return <div><span css={vpText(score)}>{score}</span></div>
-}
-
-const panelPosition = (index: number) => css`
+const panelPosition = (corner: Corner) => {
+  if (corner===Corner.BottomLeft)
+    return css`
+    position: absolute;
+    left: 1em;
+    bottom: 2em;
+    width: 28em;
+    height: 9em;
+    `
+  if (corner===Corner.TopLeft)
+    return css`
+    position: absolute;
+    left: 1em;
+    top: 9em;
+    width: 28em;
+    height: 9em;
+    `
+  if (corner===Corner.TopRight)
+    return css`
+    position: absolute;
+    right: 1em;
+    top: 9em;
+    width: 28em;
+    height: 9em;
+    `
+  // BottomRight
+  return css`
   position: absolute;
   right: 1em;
-  top: ${8.5 + index * 16}em;
+  bottom: 2em;
   width: 28em;
-  height: 14em;
-`
+  height: 9em;
+  `
+}
 
-const vpText = (score = 0) => css`
-  font-size: ${score < 100 ? 3 : 2.4}em;
-  position: absolute;
-  left: 50%;
-  top: 60%;
-  transform: translate(-50%, -50%);
-  font-weight: bold;
-`
-
-export const playerColorCode: Record<PlayerColor, string> = {
-  [PlayerColor.Pink]:   'magenta',
-  [PlayerColor.Orange]: '#ff8c00',
-  [PlayerColor.Green]:  'green'
+export const playerColorCode: Record<PlayerId, string> = {
+  1: 'blue',
+  2: 'green',
+  3: 'yellow',
+  4: 'red'
 }

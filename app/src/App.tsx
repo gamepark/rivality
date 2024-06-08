@@ -15,7 +15,7 @@ export default function App() {
   const loading = !game || isJustDisplayed || isImagesLoading
   return (
     <>
-      { !!game && <GameDisplay players={game.players.length} /> }
+      { !!game && <GameDisplay players={game.players} /> }
       <LoadingScreen display={loading} author="François Bachelart" artist="Lucie Mercier" publisher="Nostromo Editions" developer="Denis Boulanger"/>
       <MaterialHeader rulesStepsHeaders={Headers} loading={loading}/>
       <MaterialImageLoader onImagesLoad={() => setImagesLoading(false)} />
