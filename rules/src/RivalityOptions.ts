@@ -1,11 +1,13 @@
 import { OptionsSpec } from '@gamepark/rules-api'
+import { TFunction } from 'i18next'
 
 /**
  * This is the type of object that the game receives when a new game is started.
  * The first generic parameter, "{}", can be changed to include game options like variants or expansions.
  */
 export type RivalityOptions = {
-  players: number
+  players: number,
+  realTimeScore: boolean
 }
 
 /**
@@ -13,4 +15,9 @@ export type RivalityOptions = {
  * (forms for friendly games, or forms for matchmaking preferences, for instance).
  */
 export const RivalityOptionsSpec: OptionsSpec<RivalityOptions> = {
+  realTimeScore: {
+    label: (t: TFunction) => t('real-time-scores'),
+    help: (t: TFunction) => t('real-time-scores.help'),
+    competitiveDisabled: true
+  }
 }

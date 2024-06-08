@@ -32,7 +32,7 @@ export class Score {
         if (tile===Tile.WellOfMana)
           res+=3
         else if (tileTools.isFortress(tile))
-          res+=3
+          res+=4
         else if (tileTools.isCottage(tile))
           res+=2
         else

@@ -6,6 +6,7 @@ import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { Tile, tiles } from './material/Tile'
 import { Wizard, wizards } from './material/Wizard'
+import { Memory } from './rules/Memory'
 import { Orientation } from './Orientation'
 import { PlayerId } from './PlayerId'
 import { RivalityOptions } from './RivalityOptions'
@@ -19,6 +20,9 @@ export class RivalitySetup extends MaterialGameSetup<PlayerId, MaterialType, Loc
   Rules = RivalityRules
 
   setupMaterial(options: RivalityOptions) {
+    // Global parameters
+    this.memorize(Memory.RealTimeScore, options.realTimeScore ?? false)
+
     this.setupTiles(options)
     this.setupGolems(options)
     this.setupWizards(options)

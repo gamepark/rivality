@@ -29,7 +29,7 @@ export const TileHelp = (props: MaterialHelpProps) => {
     tileProtection=1
   } else if (tileTools.isFortress(item.id)){
     tileType=t('help.fortress')
-    nbPoints=3
+    nbPoints=4
     tileProtection=2
   } else {
     tileType=t('help.stone.circle')
