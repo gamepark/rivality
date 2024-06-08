@@ -33,14 +33,14 @@ export class TableDesign {
   }
 
   playerCorner(player:number, _position:number, nbPlayers:number){
-    if (nbPlayers==2){
-      if (player==1)
+    if (nbPlayers===2){
+      if (player===1)
         return Corner.BottomRight
       return Corner.TopRight
-    } else if (nbPlayers==3){
-      if (player==1)
+    } else if (nbPlayers===3){
+      if (player===1)
         return Corner.BottomRight
-      if (player==2)
+      if (player===2)
         return Corner.TopLeft
       return Corner.TopRight
     }
