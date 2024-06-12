@@ -56,8 +56,8 @@ export class TutorialSetup extends RivalitySetup {
       })
 
     // Check deck size
-    console.log(this.material(MaterialType.Tile).location(LocationType.PlayerDeck).player(me).length)
-    console.log(this.material(MaterialType.Tile).location(LocationType.PlayerDeck).player(opponent).length)
+//    console.log(this.material(MaterialType.Tile).location(LocationType.PlayerDeck).player(me).length)
+//    console.log(this.material(MaterialType.Tile).location(LocationType.PlayerDeck).player(opponent).length)
 
     // Put card on top of my deck
     this.material(MaterialType.Tile).location(LocationType.PlayerDeck).player(me)
