@@ -1,9 +1,10 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { Tile } from '@gamepark/rivality/material/Tile'
-import { MaterialHelpProps, Picture } from '@gamepark/react-game'
+import { MaterialHelpProps, Picture, usePlayerId, usePlayerName } from '@gamepark/react-game'
 import { useTranslation } from 'react-i18next'
 import { Direction } from '@gamepark/rivality/logic/Direction'
+import { LocationType } from '@gamepark/rivality/material/LocationType'
 import { Spell, tileSpells } from '@gamepark/rivality/logic/TileSpells'
 import { tileTools } from '@gamepark/rivality/logic/TileTools'
 import arrowIcon from '../../images/icon/arrow.png'
@@ -14,12 +15,28 @@ import shieldIcon from '../../images/icon/shield.png'
 
 export const TileHelp = (props: MaterialHelpProps) => {
   const { item } = props
+  const playerId = usePlayerId()
+  const playerLocation = item.location!.player!
+  const playerLocationName = usePlayerName(playerLocation!)
   const { t } = useTranslation()
 
   if (item.id === undefined) {
-    return <>
-      <h2>{t('help.tile')}</h2>
-    </>
+    const locationType=item.location!.type
+    if (locationType==LocationType.PlayerHand){
+      if (playerLocation===playerId){
+        return <><h2>{t('help.hand.you')}</h2></>
+      } else {
+        return <><h2>{t('help.hand.player', {player:playerLocationName})}</h2></>
+      }
+    } else if (locationType==LocationType.PlayerDeck){
+      if (playerLocation===playerId){
+        return <><h2>{t('help.deck.you')}</h2></>
+      } else {
+        return <><h2>{t('help.deck.player', {player:playerLocationName})}</h2></>
+      }
+    }
+    // Unknown location
+    return <></>
   }
 
   let tileType="unknown"
@@ -132,7 +149,6 @@ const SymbolBreakShields=({value}:{value:boolean}) => {
 }
 
 const SpellSymbols=({ spell }: {spell:Spell }) => {
-  console.log(spell)
   if (spell.nbGolems==0)
     return <></>
   return <>

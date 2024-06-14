@@ -19,12 +19,12 @@ export const WizardHelp = (props: MaterialHelpProps) => {
 
   if (owner===playerId){
     return <>
-      <h2>{t('Wizard')}</h2>
+      <h2>{t('help.wizard')}</h2>
       {t('help.wizard.you')}
     </>
   } else {
     return <>
-      <h2>{t('Wizard')}</h2>
+      <h2>{t('help.wizard')}</h2>
       {t('help.wizard.player', {player: ownerName})}
     </>
   }

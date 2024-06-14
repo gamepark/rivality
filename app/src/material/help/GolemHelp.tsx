@@ -19,12 +19,12 @@ export const GolemHelp = (props: MaterialHelpProps) => {
 
   if (owner===playerId){
     return <>
-      <h2>{t('Golem')}</h2>
+      <h2>{t('help.golem')}</h2>
       {t('help.golem.you')}
     </>
   } else {
     return <>
-      <h2>{t('Golem')}</h2>
+      <h2>{t('help.golem')}</h2>
       {t('help.golem.player', {player: ownerName})}
     </>
   }
