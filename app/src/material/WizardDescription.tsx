@@ -8,7 +8,7 @@ import Wizard2 from '../images/Wizard2.png'
 import Wizard3 from '../images/Wizard3.png'
 
 export class WizardDescription extends TokenDescription  {
-  width = 1.5
+  width = 2
   ratio = 150 / 150
   help = WizardHelp
   images = {
