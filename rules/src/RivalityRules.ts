@@ -20,6 +20,8 @@ import { ShufflePlayer1DeckRule } from './rules/ShufflePlayer1DeckRule'
 import { PlayerId } from './PlayerId'
 import { RuleId } from './rules/RuleId'
 import { score } from './logic/Score'
+import { tileTools } from './logic/TileTools'
+import { wizardTools } from './logic/WizardTools'
 
 export const hideCardWhenNotRotated: HidingStrategy = (
   item: MaterialItem
@@ -116,7 +118,7 @@ export class RivalityRules extends SecretMaterialRules<PlayerId, MaterialType, L
   }
 
   // Do not use getScore() in order to rank players according to the rules of the game
-  computeScore(player: PlayerId) {
+  computeScore(player: PlayerId){
     return score.playerScore(
       player,
       this.material(MaterialType.Tile).location(LocationType.Board),
@@ -129,5 +131,28 @@ export class RivalityRules extends SecretMaterialRules<PlayerId, MaterialType, L
     return score.playerControllingWellOfMana(
       this.material(MaterialType.Golem).location(LocationType.Board)
     )
+  }
+
+  // To get the value of the tile occupied by the wizard of the given player
+  computeWizardTileScore(player: PlayerId){
+    const playerWizard=wizardTools.playerWizard(player)
+
+    const wizardLocation=this.material(MaterialType.Wizard)
+      .location(LocationType.Board)
+      .filter(item => item.id===playerWizard)
+      .getItem()!
+      .location!
+
+    if (wizardLocation!==undefined){
+      const tileAtWizardLocation=this.material(MaterialType.Tile)
+        .location(LocationType.Board)
+        .filter(item => item.location.x===wizardLocation.x && item.location.y===wizardLocation.y)
+      if (tileAtWizardLocation.length>0){
+        const tile=tileAtWizardLocation.limit(1).getItem()!.id
+        return tileTools.tileScore(tile)
+      }
+    }
+    // No tile => score = 0
+    return 0
   }
 }

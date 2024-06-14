@@ -29,14 +29,7 @@ export class Score {
 
       if (this.playerControllingTile(golems, x, y, wellController)===playerId){
         // The tile is controlled by the current player
-        if (tile===Tile.WellOfMana)
-          res+=3
-        else if (tileTools.isFortress(tile))
-          res+=4
-        else if (tileTools.isCottage(tile))
-          res+=2
-        else
-          res+=1
+        res+=tileTools.tileScore(tile)
       }
     })
     return res

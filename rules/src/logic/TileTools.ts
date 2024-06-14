@@ -227,6 +227,13 @@ export class TileTools {
         break
     }
   }
+
+  tileScore(tile:Tile){
+    if (tile===Tile.WellOfMana) return 3
+    if (this.isFortress(tile)) return 4
+    if (this.isCottage(tile)) return 2
+    return 1
+  }
 }
 
 export const tileTools = new TileTools()

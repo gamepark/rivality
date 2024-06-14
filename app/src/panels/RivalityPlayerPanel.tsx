@@ -57,16 +57,26 @@ const Score: FC<RivalityPlayerPanelProps> = (props => {
   const gameIsOver=rules?.isOver()
   if (!realTimeScore && !gameIsOver) return <></>
   const score=rules.computeScore(playerId)
+  let scoreTxt=String(score)
+  let scoreWithExtraValue=false
+  if (!gameIsOver){
+    const wizardTileScore=rules.computeWizardTileScore(playerId)
+    if (wizardTileScore>0){
+      scoreWithExtraValue=true
+      scoreTxt+="\u00A0(+"+wizardTileScore+")"
+    }
+  }
+  const placedCardCss=scoreWithExtraValue ? placedCard2 : placedCard1
 
   return (
-    <span css={[placedCard, data]}>
+    <span css={[placedCardMain, placedCardCss, data]}>
       <FontAwesomeIcon icon={faStar} css={scoreStyle} fill="#28B8CE"/>
-      <span>{score}</span>
+      &nbsp;<span>{scoreTxt}</span>
     </span>
   )
 })
 
-const placedCard = css`
+const placedCardMain = css`
   position: absolute;
   width: 3.5em;
   font-size: 2.5em;
@@ -80,6 +90,13 @@ const placedCard = css`
     text-align: right;
     width: 1.7em;
   }
+`
+
+const placedCard1 = css`
+  width: 3.5em;
+`
+const placedCard2 = css`
+  width: 5em;
 `
 
 const scoreStyle = css`
@@ -124,10 +141,7 @@ const PlayerBackground = [
 const ImageDelta = [
   "-5em -4em",
   "-7em -9.5em",
-  "-7em -6em",
-//  "-9em -13em",
-//  "-9em -5em",
-//  "-9em -20em",
+  "-7em -6em"
 ]
 
 const panelStyle = (playerId: PlayerId) => css`
@@ -183,6 +197,6 @@ const timerStyle = css`
   position: absolute;
   bottom: 0.2em;
   left: initial;
-  right: 4.1em;
+  right: 5.5em;
   font-size: 2.5em;
 `
