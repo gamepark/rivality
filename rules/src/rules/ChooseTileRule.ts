@@ -110,7 +110,11 @@ export class ChooseTileRule extends PlayerTurnRule {
               y:move.location.y
             }
           ),
-          this.material(MaterialType.Golem).location(LocationType.PlayerGolemStack).player(this.getActivePlayer()).limit(1).moveItemsAtOnce(
+          this.material(MaterialType.Golem)
+            .location(LocationType.PlayerGolemStack)
+            .player(this.getActivePlayer())
+            .sort(item => -item.location.x!)
+            .limit(1).moveItemsAtOnce(
             {
               type: LocationType.Board,
               id: BoardSpace.Golem,

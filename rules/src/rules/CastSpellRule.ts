@@ -177,6 +177,7 @@ export class CastSpellRule extends SpellRule {
       material(MaterialType.Golem)
       .location(LocationType.PlayerGolemStack)
       .player(this.getActivePlayer())
+      .sort(item => -item.location.x!)
       .limit(nbAddedGolems)
       .moveItemsAtOnce(
         {
