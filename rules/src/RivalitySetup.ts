@@ -205,9 +205,9 @@ export class RivalitySetup extends MaterialGameSetup<PlayerId, MaterialType, Loc
   setupWizards(options: RivalityOptions) {
     const newWizards = []
 
-    let wizard1X=-1
+    let wizard1X=3
     let wizard1Y=1
-    let wizard2X=-1
+    let wizard2X=3
     let wizard2Y=-1
     let wizard3X:number|undefined=undefined
     let wizard3Y:number|undefined=undefined
@@ -215,9 +215,9 @@ export class RivalitySetup extends MaterialGameSetup<PlayerId, MaterialType, Loc
     if (options.players==2){
       // OK - default values
     } else if (options.players==3){
-      wizard2X=-2
+      wizard2X=-3
       wizard2Y=0
-      wizard3X=-1
+      wizard3X=3
       wizard3Y=-1
     } else {
       console.log("*** ERROR - Unsupported nb of players")

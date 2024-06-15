@@ -5,13 +5,15 @@ import { LocationType } from '@gamepark/rivality/material/LocationType'
 import { MaterialType } from '@gamepark/rivality/material/MaterialType'
 import { tileDescription, spaceBetweenTiles } from '../../material/TileDescription'
 
-const spaceBetweenBoardAndHand=2
-const spaceBetweenHandAndBoard=2
+//const spaceBetweenBoardAndHand=2
+//const spaceBetweenHandAndBoard=2
+/*
 const tableThresholdXMin=-32
 const tableThresholdXMax=32
 const tableThresholdYMin=0
 const tableThresholdYMax=0
-const playerLeftThresholdXMin=-25
+*/
+//const playerLeftThresholdXMin=-25
 
 class TableDimensions {
   xMin:number=0
@@ -65,6 +67,29 @@ export class TableDesign {
         if (item.location.y!>boardYMax) boardYMax=item.location.y!
       })
 
+    // Ensure a minimum table size
+    if (boardXMax-boardXMin<4){
+      if (boardXMin<=-2){
+        boardXMax=boardXMin+4
+      } else if (boardXMax>=2){
+        boardXMin=boardXMax-4
+      } else {
+        boardXMin=-2
+        boardXMax=2
+      }
+    }
+
+    if (boardYMax-boardYMin<4){
+      if (boardYMin<=-2){
+        boardYMax=boardYMin+4
+      } else if (boardYMax>=2){
+        boardYMin=boardYMax-4
+      } else {
+        boardYMin=-2
+        boardYMax=2
+      }
+    }
+
     return {boardXMin, boardXMax, boardYMin, boardYMax}
   }
 
@@ -97,18 +122,24 @@ export class TableDesign {
       case 2: {
         // Minimal dimensions to ensure we see all tiles and golems
         const boardSize=this.getBoardSize(rules)
-        const extraX=2*(tileDescription.width+spaceBetweenBoardAndHand+spaceBetweenHandAndBoard)
-        const extraY=2*(tileDescription.height+spaceBetweenBoardAndHand+spaceBetweenHandAndBoard)
+//        const extraX=2*(tileDescription.width+spaceBetweenBoardAndHand+spaceBetweenHandAndBoard)
+//        const extraY=2*(tileDescription.height+spaceBetweenBoardAndHand+spaceBetweenHandAndBoard)
+        const extraX=5
+        const extraY=5
+
+        const golemStackWidth=22
 
         let xMin=boardSize.xMin-extraX/2
-        let xMax=boardSize.xMax+extraX/2
+        let xMax=boardSize.xMax+extraX/2+golemStackWidth
         let yMin=boardSize.yMin-extraY/2
         let yMax=boardSize.yMax+extraY/2
 
+/*
         if (xMin>tableThresholdXMin) xMin=tableThresholdXMin
         if (xMax<tableThresholdXMax) xMax=tableThresholdXMax
         if (yMin>tableThresholdYMin) yMin=tableThresholdYMin
         if (yMax<tableThresholdYMax) yMax=tableThresholdYMax
+*/
 
         return { xMin, xMax, yMin, yMax }
       }
@@ -142,12 +173,32 @@ export class TableDesign {
   }
 
   playerDeckCoordinates(location: Location, context: LocationContext){
-    const locationPlayer = location.player
+    const locationPlayer = location.player!
     const { rules } = context
     let nbPlayers=this.nbPlayers(rules)
 
     let handCoords=this.playerHandCoordinates(location, context)
+    const fakePosition=0
+    const corner=this.playerCorner(locationPlayer, fakePosition, nbPlayers)
 
+    let x=0
+    let y=0
+    switch (corner){
+      case Corner.BottomRight:
+        x=handCoords.x-14
+        y=handCoords.y+7.5
+        break
+      case Corner.TopRight:
+        x=handCoords.x-14
+        y=handCoords.y-7.5
+        break
+      case Corner.TopLeft:
+        x=handCoords.x+10
+        y=handCoords.y-10.5
+        break
+    }
+
+/*
     let x=0
     let y=handCoords.y
     if (nbPlayers===2){
@@ -168,14 +219,38 @@ export class TableDesign {
     } else {
       console.log("*** ERROR - Unsupported nb of players")
     }
+*/
     return {x:x, y:y, z:0}
   }
 
   playerHandCoordinates(location: Location, context: LocationContext){
-    const locationPlayer = location.player
+    const locationPlayer = location.player!
     const { rules } = context
     let nbPlayers=this.nbPlayers(rules)
 
+    const fakePosition=0
+    const corner=this.playerCorner(locationPlayer, fakePosition, nbPlayers)
+
+    let tableSize=this.getTableSize(nbPlayers, rules)
+
+    let x=0
+    let y=0
+    switch (corner){
+      case Corner.BottomRight:
+        x=tableSize.xMax-10
+        y=tableSize.yMax-12
+        break
+      case Corner.TopRight:
+        x=tableSize.xMax-10
+        y=tableSize.yMin+12
+        break
+      case Corner.TopLeft:
+        x=tableSize.xMin+5
+        y=tableSize.yMin+15.5
+        break
+    }
+
+/*
     let boardSize=this.getBoardSize(rules)
 
     let x=-tileDescription.width/2-spaceBetweenTiles
@@ -205,16 +280,52 @@ export class TableDesign {
     } else {
       console.log("*** ERROR - Unsupported nb of players")
     }
+*/
     return {x:x, y:y, z:0}
   }
 
   playerGolemStackCoordinates(location: Location, context: LocationContext){
-    const locationPlayer = location.player
+    const locationPlayer = location.player!
     const { rules } = context
     let nbPlayers=this.nbPlayers(rules)
 
     let handCoords=this.playerHandCoordinates(location, context)
 
+    const fakePosition=0
+    const corner=this.playerCorner(locationPlayer, fakePosition, nbPlayers)
+
+    let x=0
+    let y=0
+    switch (corner){
+      case Corner.BottomRight:
+        x=handCoords.x
+        if (nbPlayers==2){
+          y=handCoords.y-7
+        } else {
+          y=handCoords.y-9
+        }
+        break
+      case Corner.TopRight:
+        x=handCoords.x
+        if (nbPlayers==2){
+          y=handCoords.y+7
+        } else {
+          y=handCoords.y+9
+        }
+        break
+/*
+      case Corner.BottomLeft:
+        x=handCoords.x
+        y=handCoords.y-10
+        break
+*/
+      case Corner.TopLeft:
+        x=handCoords.x
+        y=handCoords.y+14
+        break
+    }
+
+/*
     let x=0
     let y=handCoords.y
     if (nbPlayers===2){
@@ -235,6 +346,7 @@ export class TableDesign {
     } else {
       console.log("*** ERROR - Unsupported nb of players")
     }
+*/
     return {x:x, y:y, z:0}
   }
 }
