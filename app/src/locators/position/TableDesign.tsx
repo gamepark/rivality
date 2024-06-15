@@ -5,16 +5,6 @@ import { LocationType } from '@gamepark/rivality/material/LocationType'
 import { MaterialType } from '@gamepark/rivality/material/MaterialType'
 import { tileDescription, spaceBetweenTiles } from '../../material/TileDescription'
 
-//const spaceBetweenBoardAndHand=2
-//const spaceBetweenHandAndBoard=2
-/*
-const tableThresholdXMin=-32
-const tableThresholdXMax=32
-const tableThresholdYMin=0
-const tableThresholdYMax=0
-*/
-//const playerLeftThresholdXMin=-25
-
 class TableDimensions {
   xMin:number=0
   xMax:number=0
@@ -134,13 +124,6 @@ export class TableDesign {
         let yMin=boardSize.yMin-extraY/2
         let yMax=boardSize.yMax+extraY/2
 
-/*
-        if (xMin>tableThresholdXMin) xMin=tableThresholdXMin
-        if (xMax<tableThresholdXMax) xMax=tableThresholdXMax
-        if (yMin>tableThresholdYMin) yMin=tableThresholdYMin
-        if (yMax<tableThresholdYMax) yMax=tableThresholdYMax
-*/
-
         return { xMin, xMax, yMin, yMax }
       }
       case 3: {
@@ -197,29 +180,6 @@ export class TableDesign {
         y=handCoords.y-10.5
         break
     }
-
-/*
-    let x=0
-    let y=handCoords.y
-    if (nbPlayers===2){
-      if (locationPlayer===1){
-        x=-12
-      } else if (locationPlayer===2){
-        x=12
-      }
-    } else if (nbPlayers===3){
-      if (locationPlayer===1){
-        x=-12
-      } else if (locationPlayer===2){
-        x=handCoords.x
-        y=-12
-      } else if (locationPlayer===3){
-        x=12
-      }
-    } else {
-      console.log("*** ERROR - Unsupported nb of players")
-    }
-*/
     return {x:x, y:y, z:0}
   }
 
@@ -249,38 +209,6 @@ export class TableDesign {
         y=tableSize.yMin+15.5
         break
     }
-
-/*
-    let boardSize=this.getBoardSize(rules)
-
-    let x=-tileDescription.width/2-spaceBetweenTiles
-    let y=0
-    if (nbPlayers===2){
-        if (locationPlayer===1){
-          x=0
-          y=boardSize.yMax+tileDescription.height/2+spaceBetweenBoardAndHand
-        } else if (locationPlayer===2){
-          x=0
-          y=boardSize.yMin-tileDescription.height/2-spaceBetweenBoardAndHand
-        }
-    } else if (nbPlayers===3){
-      x=0
-      if (locationPlayer===1){
-        y=boardSize.yMax+tileDescription.height/2+spaceBetweenBoardAndHand
-      } else if (locationPlayer===2){
-//        x=boardSize.xMin+tileDescription.height/2+spaceBetweenBoardAndHand
-        x=boardSize.xMin-tileDescription.height/2-spaceBetweenBoardAndHand
-        if (x>playerLeftThresholdXMin)
-          x=playerLeftThresholdXMin
-        y=0
-      } else if (locationPlayer===3){
-//        x=-x
-        y=boardSize.yMin-tileDescription.height/2-spaceBetweenBoardAndHand
-      }
-    } else {
-      console.log("*** ERROR - Unsupported nb of players")
-    }
-*/
     return {x:x, y:y, z:0}
   }
 
@@ -313,40 +241,11 @@ export class TableDesign {
           y=handCoords.y+9
         }
         break
-/*
-      case Corner.BottomLeft:
-        x=handCoords.x
-        y=handCoords.y-10
-        break
-*/
       case Corner.TopLeft:
         x=handCoords.x
         y=handCoords.y+14
         break
     }
-
-/*
-    let x=0
-    let y=handCoords.y
-    if (nbPlayers===2){
-        if (locationPlayer===1){
-          x=20
-        } else if (locationPlayer===2){
-          x=-20
-        }
-    } else if (nbPlayers===3){
-      if (locationPlayer===1){
-        x=14
-      } else if (locationPlayer===2){
-        x=handCoords.x
-        y=17 // TODO
-      } else if (locationPlayer===3){
-        x=-14
-      }
-    } else {
-      console.log("*** ERROR - Unsupported nb of players")
-    }
-*/
     return {x:x, y:y, z:0}
   }
 }
