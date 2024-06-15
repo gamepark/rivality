@@ -3,6 +3,7 @@ import { css } from '@emotion/react'
 import { MaterialHelpProps, Picture, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
 import { useTranslation } from 'react-i18next'
 import { Direction } from '@gamepark/rivality/logic/Direction'
+import { Golem } from '@gamepark/rivality/material/Golem'
 import { LocationType } from '@gamepark/rivality/material/LocationType'
 import { MaterialType } from '@gamepark/rivality/material/MaterialType'
 import { RivalityRules } from '@gamepark/rivality/RivalityRules'
@@ -26,13 +27,13 @@ export const TileHelp = (props: MaterialHelpProps) => {
 
   if (item.id === undefined) {
     const locationType=item.location!.type
-    if (locationType==LocationType.PlayerHand){
+    if (locationType===LocationType.PlayerHand){
       if (playerLocation===playerId){
         return <><h2>{t('help.hand.you')}</h2></>
       } else {
         return <><h2>{t('help.hand.player', {player:playerLocationName})}</h2></>
       }
-    } else if (locationType==LocationType.PlayerDeck){
+    } else if (locationType===LocationType.PlayerDeck){
       const nbCards=rules?.material(MaterialType.Tile).location(LocationType.PlayerDeck).player(playerLocation).length
       if (playerLocation===playerId){
         return <>
@@ -79,6 +80,15 @@ export const TileHelp = (props: MaterialHelpProps) => {
   const spellTop=tileSpells.spell(item.id, Direction.Top)
   const spellRight=tileSpells.spell(item.id, Direction.Right)
 
+  const golemsOnTile=rules?.material(MaterialType.Golem)
+    .location(LocationType.Board)
+    .filter(golem => golem.location.x===item.location!.x && golem.location.y===item.location!.y)
+  const has5SimilarGolemsOnTile=(
+    ( golemsOnTile!.filter(golem => golem.id===Golem.Golem1).length >= 5 ) ||
+    ( golemsOnTile!.filter(golem => golem.id===Golem.Golem2).length >= 5 ) ||
+    ( golemsOnTile!.filter(golem => golem.id===Golem.Golem3).length >= 5 )
+  )
+
   return <>
     {t('help.type')}: {tileType}<br/>
     &nbsp;<br/>
@@ -98,7 +108,7 @@ export const TileHelp = (props: MaterialHelpProps) => {
       <SpellHelp spell={spellRight}/><br/>
     </li>
     </ul>
-    {t('help.protection')}: <TileProtection shields={tileProtection}/>
+    {t('help.protection')}: <TileProtection shields={tileProtection} extraShield={has5SimilarGolemsOnTile}/>
   </>
 }
 
@@ -138,14 +148,28 @@ const SymbolShield=({nb}:{nb:number}) => {
   return <><Picture css={iconCss} src={shieldIcon}/>&nbsp;<SymbolShield nb={nb-1}/></>
 }
 
-const TileProtection=({ shields }: {shields:number }) => {
+const TileProtection=({ shields, extraShield }: {shields:number, extraShield:boolean}) => {
   const { t } = useTranslation()
-  if (shields>0){
-    if (shields===1)
-      return <>{t('help.shield.1')}&nbsp;&nbsp;<SymbolShield nb={1}/></>
-    return <>{t('help.shield.2', {shields})}&nbsp;&nbsp;<SymbolShield nb={shields}/></>
+  const total = extraShield ? shields+1 : shields
+  if (total>0){
+    if (total===1){
+      if (shields===1){
+        // Only 1 standard shield
+        return <>{t('help.shield.1')}&nbsp;&nbsp;<SymbolShield nb={shields}/></>
+      } else {
+        // Only 1 extra shield
+        return <>{t('help.shield.1')}&nbsp;&nbsp;<SymbolExtraShield/></>
+      }
+    }
+    // Potential mix of standard and extra shields
+    return <>{t('help.shield.2', {shields:total})}&nbsp;&nbsp;<SymbolShield nb={shields}/>{extraShield ? <>+<SymbolExtraShield/></> : ""}</>
   }
   return <>{t('help.none.2')}</>
+}
+
+const SymbolExtraShield=() => {
+  const { t } = useTranslation()
+  return <><SymbolShield nb={1}/> {t('help.shield.3')}</>
 }
 
 const SymbolGolem=({nb}:{nb:number}) => {
@@ -164,7 +188,7 @@ const SymbolBreakShields=({value}:{value:boolean}) => {
 }
 
 const SpellSymbols=({ spell }: {spell:Spell }) => {
-  if (spell.nbGolems==0)
+  if (spell.nbGolems===0)
     return <></>
   return <>
     &nbsp;&nbsp;&nbsp;

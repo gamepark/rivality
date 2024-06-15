@@ -30,7 +30,7 @@ export class GolemDescription extends TokenDescription  {
         golem.location.y===item.location.y )
       .length
 
-    if (nbGolemsOnLocation==5)
+    if (nbGolemsOnLocation===5)
       return haloCss
     return emptyCss
   }
