@@ -1,12 +1,15 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
-import { Tile } from '@gamepark/rivality/material/Tile'
-import { MaterialHelpProps, Picture, usePlayerId, usePlayerName } from '@gamepark/react-game'
+import { MaterialHelpProps, Picture, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
 import { useTranslation } from 'react-i18next'
 import { Direction } from '@gamepark/rivality/logic/Direction'
 import { LocationType } from '@gamepark/rivality/material/LocationType'
+import { MaterialType } from '@gamepark/rivality/material/MaterialType'
+import { RivalityRules } from '@gamepark/rivality/RivalityRules'
 import { Spell, tileSpells } from '@gamepark/rivality/logic/TileSpells'
+import { Tile } from '@gamepark/rivality/material/Tile'
 import { tileTools } from '@gamepark/rivality/logic/TileTools'
+import { GPTrans } from '../../Translator'
 import arrowIcon from '../../images/icon/arrow.png'
 import breakShieldsIcon from '../../images/icon/break_shields.png'
 import distanceIcon from '../../images/icon/distance.png'
@@ -18,6 +21,7 @@ export const TileHelp = (props: MaterialHelpProps) => {
   const playerId = usePlayerId()
   const playerLocation = item.location!.player!
   const playerLocationName = usePlayerName(playerLocation!)
+  const rules=useRules<RivalityRules>()
   const { t } = useTranslation()
 
   if (item.id === undefined) {
@@ -29,10 +33,21 @@ export const TileHelp = (props: MaterialHelpProps) => {
         return <><h2>{t('help.hand.player', {player:playerLocationName})}</h2></>
       }
     } else if (locationType==LocationType.PlayerDeck){
+      const nbCards=rules?.material(MaterialType.Tile).location(LocationType.PlayerDeck).player(playerLocation).length
       if (playerLocation===playerId){
-        return <><h2>{t('help.deck.you')}</h2></>
+        return <>
+          <h2>{t('help.deck.you')}</h2>
+          <p>
+            <GPTrans defaults="help.nb.cards" suffix=":"></GPTrans> {nbCards}
+          </p>
+        </>
       } else {
-        return <><h2>{t('help.deck.player', {player:playerLocationName})}</h2></>
+        return <>
+          <h2>{t('help.deck.player', {player:playerLocationName})}</h2>
+          <p>
+            <GPTrans defaults="help.nb.cards" suffix=":"></GPTrans> {nbCards}
+          </p>
+        </>
       }
     }
     // Unknown location
