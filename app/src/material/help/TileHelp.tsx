@@ -1,21 +1,16 @@
 /** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react'
-import { MaterialHelpProps, Picture, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
+import { MaterialHelpProps, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
 import { useTranslation } from 'react-i18next'
 import { Direction } from '@gamepark/rivality/logic/Direction'
 import { Golem } from '@gamepark/rivality/material/Golem'
 import { LocationType } from '@gamepark/rivality/material/LocationType'
 import { MaterialType } from '@gamepark/rivality/material/MaterialType'
 import { RivalityRules } from '@gamepark/rivality/RivalityRules'
-import { Spell, tileSpells } from '@gamepark/rivality/logic/TileSpells'
+import { tileSpells } from '@gamepark/rivality/logic/TileSpells'
 import { Tile } from '@gamepark/rivality/material/Tile'
 import { tileTools } from '@gamepark/rivality/logic/TileTools'
 import { GPTrans } from '../../Translator'
-import arrowIcon from '../../images/icon/arrow.png'
-import breakShieldsIcon from '../../images/icon/break_shields.png'
-import distanceIcon from '../../images/icon/distance.png'
-import golemIcon from '../../images/icon/golem.png'
-import shieldIcon from '../../images/icon/shield.png'
+import { SpellHelp, SymbolShield } from './HelpTools'
 
 export const TileHelp = (props: MaterialHelpProps) => {
   const { item } = props
@@ -112,42 +107,6 @@ export const TileHelp = (props: MaterialHelpProps) => {
   </>
 }
 
-const SpellHelp=({ spell }: {spell:Spell }) => {
-  const { t } = useTranslation()
-  const isValidSpell=spell.nbGolems>0
-  return <>
-    <SpellSymbols spell={spell}/>
-    <ul>
-      <li>
-        {isValidSpell && <SpellDetails spell={spell}/>}
-        {!isValidSpell && <>{t('help.none.1')}</>}
-      </li>
-      {isValidSpell && spell.breakShields && <li>{t('help.break.shields')}</li>}
-    </ul>
-  </>
-}
-
-const SpellDetails=({ spell }: {spell:Spell }) => {
-  const { t } = useTranslation()
-  const nbGolems=spell.nbGolems
-  const distance=spell.distance
-  if (nbGolems===1){
-    if (distance===1){
-      return <>{t('help.summon.1.1')}</>
-    }
-    return <>{t('help.summon.1.2', {distance})}</>
-  }
-  if (distance===1){
-    return <>{t('help.summon.2.1', {nbGolems})}</>
-  }
-  return <>{t('help.summon.2.2', {nbGolems, distance})}</>
-}
-
-const SymbolShield=({nb}:{nb:number}) => {
-  if (nb<=0) return <></>
-  return <><Picture css={iconCss} src={shieldIcon}/>&nbsp;<SymbolShield nb={nb-1}/></>
-}
-
 const TileProtection=({ shields, extraShield }: {shields:number, extraShield:boolean}) => {
   const { t } = useTranslation()
   const total = extraShield ? shields+1 : shields
@@ -171,35 +130,3 @@ const SymbolExtraShield=() => {
   const { t } = useTranslation()
   return <><SymbolShield nb={1}/> {t('help.shield.3')}</>
 }
-
-const SymbolGolem=({nb}:{nb:number}) => {
-  if (nb<=0) return <></>
-  return <><Picture css={iconCss} src={golemIcon}/>&nbsp;<SymbolGolem nb={nb-1}/></>
-}
-
-const SymbolDistance=({nb}:{nb:number}) => {
-  if (nb<=0) return <></>
-  return <>&nbsp;<Picture css={iconCss} src={distanceIcon}/><SymbolDistance nb={nb-1}/></>
-}
-
-const SymbolBreakShields=({value}:{value:boolean}) => {
-  if (!value) return <></>
-  return <>&nbsp;&nbsp;<Picture css={iconCss} src={breakShieldsIcon}/></>
-}
-
-const SpellSymbols=({ spell }: {spell:Spell }) => {
-  if (spell.nbGolems===0)
-    return <></>
-  return <>
-    &nbsp;&nbsp;&nbsp;
-    <SymbolGolem nb={spell.nbGolems}/>
-    <Picture css={iconCss} src={arrowIcon}/>
-    <SymbolDistance nb={spell.distance}/>
-    <SymbolBreakShields value={spell.breakShields}/>
-    &nbsp;<br/>&nbsp;
-  </>
-}
-
-const iconCss=css`
-  vertical-align: middle;
-`

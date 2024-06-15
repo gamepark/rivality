@@ -1,12 +1,14 @@
 /** @jsxImportSource @emotion/react */
+import { MaterialTutorial, TutorialStep } from '@gamepark/react-game'
 import { isCustomMoveType, isMoveItemType, MoveItem } from '@gamepark/rules-api'
 import { css } from '@emotion/react'
 import { CustomMoveType } from '@gamepark/rivality/rules/CustomMoveType'
 import { LocationType } from '@gamepark/rivality/material/LocationType'
 import { MaterialType } from '@gamepark/rivality/material/MaterialType'
 import { PlayerId } from '@gamepark/rivality/PlayerId'
+import { Spell } from '@gamepark/rivality/logic/TileSpells'
 import { Tile } from '@gamepark/rivality/material/Tile'
-import { MaterialTutorial, TutorialStep } from '@gamepark/react-game'
+import { SpellSymbols, SymbolBreakShields, SymbolShield } from '../material/help/HelpTools'
 import { TutorialSetup } from './TutorialSetup'
 import { Trans } from 'react-i18next'
 
@@ -172,13 +174,19 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           <>
           <Trans defaults="tuto.spells.1"></Trans><br/>
           <ul>
-          <li><Trans defaults="tuto.spells.2"></Trans></li>
-          <li><Trans defaults="tuto.spells.3"></Trans></li>
+          <li>
+            <Trans defaults="tuto.spells.2"></Trans><br/>
+            <SpellSymbols spell={new Spell(3,2,false)}/>
+          </li>
+          <li>
+            <Trans defaults="tuto.spells.3"></Trans><br/>
+            <SpellSymbols spell={new Spell(1,1,false)}/>
+          </li>
           </ul>
           </>
         ),
         position: { x: 50, y: 0 },
-        size: { width: 50 }
+        size: { width: 60 }
       }
     },
     {
@@ -329,7 +337,9 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       popup: {
         text: () => (
           <>
-          <Trans defaults="tuto.shield.1"></Trans><br/>
+          <Trans defaults="tuto.shield.1">
+            <SymbolShield nb={1}/>
+          </Trans><br/>
           &nbsp;<br/>
           <Trans defaults="tuto.shield.2"></Trans><br/>
           </>
@@ -402,7 +412,9 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       popup: {
         text: () => (
           <>
-          <Trans defaults="tuto.broken.shield.1"></Trans>
+          <Trans defaults="tuto.broken.shield.1">
+            <SymbolBreakShields value={true}/>
+          </Trans>
           </>
         ),
         position: { x: 50, y: 0 },
@@ -540,7 +552,9 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       popup: {
         text: () => (
           <>
-          <Trans defaults="tuto.5.golems.5"></Trans><br/>
+          <Trans defaults="tuto.5.golems.5">
+            <SymbolShield nb={1}/>
+          </Trans><br/>
           </>
         ),
         position: { x: 50, y: 0 },
