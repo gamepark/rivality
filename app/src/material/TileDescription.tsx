@@ -1,5 +1,7 @@
+import { css } from '@emotion/react'
 import { Tile } from '@gamepark/rivality/material/Tile'
-import { CardDescription } from '@gamepark/react-game'
+import { CardDescription, ItemContext } from '@gamepark/react-game'
+import { MaterialItem } from '@gamepark/rules-api'
 import TileBack from '../images/TileBack.jpg'
 import WellOfMana from '../images/WellOfMana.jpg'
 import StoneCircle_x_41 from '../images/StoneCircle_x_41.jpg'
@@ -27,6 +29,7 @@ import Fortress_31_22_13B from '../images/Fortress_31_22_13b.jpg'
 import Fortress_22_23B_21 from '../images/Fortress_22_23b_21.jpg'
 import Fortress_22_22_23B from '../images/Fortress_22_22_23b.jpg'
 import { TileHelp } from './help/TileHelp'
+import { uiTileTools } from './UITileTools'
 
 export class TileDescription extends CardDescription {
   height = 7
@@ -62,6 +65,20 @@ export class TileDescription extends CardDescription {
     [Tile.Fortress_31_22_13B]: Fortress_31_22_13B,
     [Tile.Fortress_22_23B_21]: Fortress_22_23B_21,
     [Tile.Fortress_22_22_23B]: Fortress_22_22_23B
+  }
+
+  getItemExtraCss(item: MaterialItem, context: ItemContext){
+    const location=item.location
+    if (
+      uiTileTools.isHighlightedSquare(location, context) ||
+      uiTileTools.isActiveWizardSquare(location, context)
+    ){
+      return css`filter: contrast(1.5)`
+    }
+    if (uiTileTools.isUnderAttackSquare(location, context)){
+      return css`filter: opacity(0.5) drop-shadow(0 0 0 red)`
+    }
+    return css``
   }
 }
 

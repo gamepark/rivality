@@ -2,7 +2,6 @@
 import { css } from '@emotion/react'
 import { LocationType } from '@gamepark/rivality/material/LocationType'
 import { MaterialType } from '@gamepark/rivality/material/MaterialType'
-import { Memory } from '@gamepark/rivality/rules/Memory'
 import { LocationContext, LocationDescription, MaterialContext } from '@gamepark/react-game'
 import { Coordinates, Location } from '@gamepark/rules-api'
 import { spaceBetweenTiles, tileDescription } from '../../material/TileDescription'
@@ -14,26 +13,9 @@ export class BoardDescription extends LocationDescription {
   borderRadius = tileDescription.borderRadius
 
 //  alwaysVisible = true
-//  extraCss = css`border: 0.05em solid lightgrey`
-
-  isHighlightedSquare(location:Location, context: MaterialContext){
-    let spellX=context.rules.remind(Memory.SpellTileX)
-    let spellY=context.rules.remind(Memory.SpellTileY)
-    return (spellX!==undefined && spellY!==undefined && location.x===spellX && location.y===spellY)
-  }
-
-  getExtraCss(location:Location, context: MaterialContext){
-    if (this.isHighlightedSquare(location, context)){
-      return css`border: 0.2em solid darkred`
-    }
-    return css`border: 0.05em solid lightgrey`
-  }
+  extraCss = css`border: 0.05em solid lightgrey`
 
   isAlwaysVisible(location:Location, context: MaterialContext) : boolean {
-    // Set as visible the highlighted square if any
-    if (this.isHighlightedSquare(location, context))
-      return true
-
     // Set as visible the locations around the tiles on the board
     let boardTiles=context.rules.material(MaterialType.Tile).location(LocationType.Board)
     let isOccupied=boardTiles
