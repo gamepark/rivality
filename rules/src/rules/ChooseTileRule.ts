@@ -58,22 +58,12 @@ export class ChooseTileRule extends PlayerTurnRule {
       .player(this.getActivePlayer())
 
     // Orientation of hand cards
+    moves.push(this.rules().customMove(CustomMoveType.RotateClockwise))
+
     let handTilesItems=handTiles.getItems()
     let currentOrientation=Orientation.North
     if (handTilesItems.length>0){
       currentOrientation=handTilesItems[0].location.rotation
-      if (currentOrientation !== Orientation.North){
-        moves.push(this.rules().customMove(CustomMoveType.Top))
-      }
-      if (currentOrientation !== Orientation.West){
-        moves.push(this.rules().customMove(CustomMoveType.Left))
-      }
-      if (currentOrientation !== Orientation.South){
-        moves.push(this.rules().customMove(CustomMoveType.Bottom))
-      }
-      if (currentOrientation !== Orientation.East){
-        moves.push(this.rules().customMove(CustomMoveType.Right))
-      }
     }
 
     let availableBoardCoords=tileTools.possibleTileLocations(
@@ -130,16 +120,30 @@ export class ChooseTileRule extends PlayerTurnRule {
   }
 
   onCustomMove(move: CustomMove): MaterialMove[] {
-    let orientation:Orientation=Orientation.North
-    if (move.type === CustomMoveType.Left) {
-      orientation=Orientation.West
-    } else if (move.type === CustomMoveType.Top) {
-      orientation=Orientation.North
-    } else if (move.type === CustomMoveType.Right) {
-      orientation=Orientation.East
-    } else if (move.type === CustomMoveType.Bottom) {
-      orientation=Orientation.South
+    if (move.type===CustomMoveType.RotateClockwise){
+      // 1 - Get current orientation
+      let currentOrientation=Orientation.North
+      let handTilesItems=this
+        .material(MaterialType.Tile)
+        .location(LocationType.PlayerHand)
+        .player(this.getActivePlayer())
+        .getItems()
+      if (handTilesItems.length>0){
+        currentOrientation=handTilesItems[0].location.rotation
+      }
+
+      // 2 - Compute new orientation
+      let orientation=Orientation.North
+      switch (currentOrientation){
+        case Orientation.West:  orientation=Orientation.North; break
+        case Orientation.North: orientation=Orientation.East; break
+        case Orientation.East:  orientation=Orientation.South; break
+        case Orientation.South: orientation=Orientation.West; break
+      }
+
+      // 3 - Apply new orientation
+      return [this.material(MaterialType.Tile).location(LocationType.PlayerHand).player(this.getActivePlayer()).moveItemsAtOnce({ rotation:orientation })]
     }
-    return [this.material(MaterialType.Tile).location(LocationType.PlayerHand).player(this.getActivePlayer()).moveItemsAtOnce({ rotation:orientation })]
+    return []
   }
 }
