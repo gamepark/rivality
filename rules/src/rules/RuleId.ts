@@ -5,5 +5,6 @@ export enum RuleId {
   RemoveGolem     = 4,
   AskGolemRemoval = 5,
   EndTurn         = 6,
-  ShufflePlayer1Deck = 7
+  ShufflePlayer1Deck = 7,
+  ValidateTile    = 8
 }

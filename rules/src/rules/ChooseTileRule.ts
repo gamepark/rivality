@@ -112,7 +112,7 @@ export class ChooseTileRule extends PlayerTurnRule {
               y:move.location.y
             }
           ),
-          this.rules().startPlayerTurn(RuleId.CastSpell, this.getActivePlayer())
+          this.rules().startPlayerTurn(RuleId.ValidateTile, this.getActivePlayer())
         ]
       }
     }

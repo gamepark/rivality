@@ -17,6 +17,7 @@ import { EndTurnRule } from './rules/EndTurnRule'
 import { RemoveGolemRule } from './rules/RemoveGolemRule'
 import { StartRule } from './rules/StartRule'
 import { ShufflePlayer1DeckRule } from './rules/ShufflePlayer1DeckRule'
+import { ValidateTileRule } from './rules/ValidateTileRule'
 import { PlayerId } from './PlayerId'
 import { RuleId } from './rules/RuleId'
 import { score } from './logic/Score'
@@ -49,7 +50,8 @@ export class RivalityRules extends SecretMaterialRules<PlayerId, MaterialType, L
     [RuleId.RemoveGolem]: RemoveGolemRule,
     [RuleId.AskGolemRemoval]: AskGolemRemovalRule,
     [RuleId.EndTurn]: EndTurnRule,
-    [RuleId.ShufflePlayer1Deck]: ShufflePlayer1DeckRule
+    [RuleId.ShufflePlayer1Deck]: ShufflePlayer1DeckRule,
+    [RuleId.ValidateTile]: ValidateTileRule
   }
 
   locationsStrategies = {

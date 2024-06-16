@@ -8,5 +8,7 @@ export enum CustomMoveType {
   Player3  = 7,
   KeepHand = 8,
   NewHand  = 9,
-  RotateClockwise = 10
+  RotateClockwise = 10,
+  Validate = 11,
+  Cancel   = 12
 }
