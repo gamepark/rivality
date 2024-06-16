@@ -173,11 +173,11 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       popup: {
         text: () => (
           <>
-            Après avoir placé une tuile, il est possible d'annuler son coup.<br/>
+            <Trans defaults="tuto.validation.1"></Trans><br/>
             &nbsp;<br/>
-            Ici, nous avons joué le coup voulu.<br/>
+            <Trans defaults="tuto.validation.2"></Trans><br/>
             &nbsp;<br/>
-            <b>Validez votre coup</b>
+            <b><Trans defaults="tuto.validate.move"></Trans></b>
           </>
         ),
         position: { x: 40, y: -15 },
@@ -318,7 +318,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       popup: {
         text: () => (
           <>
-            <b>Validez votre coup</b>
+            <b><Trans defaults="tuto.validate.move"></Trans></b>
           </>
         ),
         position: { x: 40, y: -15 },
@@ -369,7 +369,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       popup: {
         text: () => (
           <>
-          <b><Trans defaults="tuto.round.3"></Trans> (3 rotations)</b>
+          <b><Trans defaults="tuto.round.3"></Trans> (<Trans defaults="tuto.rotations.3"></Trans>)</b>
           </>
         ),
         position: { x: 40, y: -15 },
@@ -384,7 +384,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       popup: {
         text: () => (
           <>
-          <b><Trans defaults="tuto.round.3"></Trans> (2 rotations)</b>
+          <b><Trans defaults="tuto.round.3"></Trans> (<Trans defaults="tuto.rotations.2"></Trans>)</b>
           </>
         ),
         position: { x: 40, y: -15 },
@@ -399,7 +399,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       popup: {
         text: () => (
           <>
-          <b><Trans defaults="tuto.round.3"></Trans> (1 rotation)</b>
+          <b><Trans defaults="tuto.round.3"></Trans> (<Trans defaults="tuto.rotations.1"></Trans>)</b>
           </>
         ),
         position: { x: 40, y: -15 },
@@ -453,7 +453,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       popup: {
         text: () => (
           <>
-            <b>Validez votre coup</b>
+            <b><Trans defaults="tuto.validate.move"></Trans></b>
           </>
         ),
         position: { x: 40, y: -15 },
@@ -511,23 +511,6 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
         size: { width: 72 }
       }
     },
-/*
-    {
-      popup: {
-        text: () => (
-          <>
-          <b><Trans defaults="tuto.round.5"></Trans></b>
-          </>
-        ),
-        position: { x: 50, y: 0 },
-        size: { width: 50 }
-      },
-      move: {
-        player: me,
-        filter: isCustomMoveType(CustomMoveType.Bottom)
-      }
-    },
-*/
     {
       popup: {
         text: () => (
@@ -556,9 +539,9 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       popup: {
         text: () => (
           <>
-          Il est possible de tourner une tuile après l'avoir posé et avant de valider le coup.<br/>
+          <Trans defaults="tuto.round.4b"></Trans><br/>
           &nbsp;<br/>
-          <b><Trans defaults="tuto.round.5"></Trans> (2 rotations)</b>
+          <b><Trans defaults="tuto.round.5"></Trans> (<Trans defaults="tuto.rotations.2"></Trans>)</b>
           </>
         ),
         position: { x: 40, y: -15 },
@@ -573,7 +556,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       popup: {
         text: () => (
           <>
-          <b><Trans defaults="tuto.round.5"></Trans> (1 rotation)</b>
+          <b><Trans defaults="tuto.round.5"></Trans> (<Trans defaults="tuto.rotations.1"></Trans>)</b>
           </>
         ),
         position: { x: 40, y: -15 },
@@ -588,7 +571,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       popup: {
         text: () => (
           <>
-            <b>Validez votre coup</b>
+            <b><Trans defaults="tuto.validate.move"></Trans></b>
           </>
         ),
         position: { x: 40, y: -15 },
@@ -664,7 +647,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       popup: {
         text: () => (
           <>
-          <b><Trans defaults="tuto.round.7"></Trans> (3 rotations)</b>
+          <b><Trans defaults="tuto.round.7"></Trans> (<Trans defaults="tuto.rotations.3"></Trans>)</b>
           </>
         ),
         position: { x: 40, y: -15 },
@@ -679,7 +662,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       popup: {
         text: () => (
           <>
-          <b><Trans defaults="tuto.round.7"></Trans> (2 rotations)</b>
+          <b><Trans defaults="tuto.round.7"></Trans> (<Trans defaults="tuto.rotations.2"></Trans>)</b>
           </>
         ),
         position: { x: 40, y: -15 },
@@ -694,7 +677,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       popup: {
         text: () => (
           <>
-          <b><Trans defaults="tuto.round.7"></Trans> (1 rotation)</b>
+          <b><Trans defaults="tuto.round.7"></Trans> (<Trans defaults="tuto.rotations.1"></Trans>)</b>
           </>
         ),
         position: { x: 40, y: -15 },
@@ -733,7 +716,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       popup: {
         text: () => (
           <>
-            <b>Validez votre coup</b>
+            <b><Trans defaults="tuto.validate.move"></Trans></b>
           </>
         ),
         position: { x: 40, y: -15 },
