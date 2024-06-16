@@ -97,8 +97,8 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           <Trans defaults="tuto.basics.4"></Trans><br/>
           </>
         ),
-        position: { x: 50, y: 0 },
-        size: { width: 50 }
+        position: { x: 40, y: -10 },
+        size: { width: 70 }
       }
     },
     {
@@ -108,8 +108,8 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           <Trans defaults="tuto.basics.5"></Trans><br/>
           </>
         ),
-        position: { x: 50, y: 0 },
-        size: { width: 50 }
+        position: { x: 40, y: -10 },
+        size: { width: 70 }
       }
     },
     {
@@ -120,11 +120,12 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           &nbsp;<br/>
           <Trans defaults="tuto.basics.7"></Trans><br/>
           &nbsp;<br/>
-          <Trans defaults="tuto.basics.8"></Trans>
+          <Trans defaults="tuto.basics.8"></Trans><br/>
+          <Trans defaults="tuto.basics.9"></Trans>
           </>
         ),
-        position: { x: 50, y: 0 },
-        size: { width: 50 }
+        position: { x: 40, y: -15 },
+        size: { width: 70 }
       }
     },
     {
@@ -138,8 +139,8 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           <b><Trans defaults="tuto.tiles.3"></Trans></b>
           </>
         ),
-        position: { x: 50, y: 0 },
-        size: { width: 50 }
+        position: { x: 40, y: -15 },
+        size: { width: 72 }
       },
       move: {
         player: me,
@@ -164,8 +165,27 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           <Trans defaults="tuto.wizard.2"></Trans>
           </>
         ),
-        position: { x: 50, y: 0 },
-        size: { width: 50 }
+        position: { x: 40, y: -15 },
+        size: { width: 72 }
+      }
+    },
+    {
+      popup: {
+        text: () => (
+          <>
+            Après avoir placé une tuile, il est possible d'annuler son coup.<br/>
+            &nbsp;<br/>
+            Ici, nous avons joué le coup voulu.<br/>
+            &nbsp;<br/>
+            <b>Validez votre coup</b>
+          </>
+        ),
+        position: { x: 40, y: -15 },
+        size: { width: 72 }
+      },
+      move: {
+        player: me,
+        filter: isCustomMoveType(CustomMoveType.Validate)
       }
     },
     {
@@ -185,8 +205,8 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           </ul>
           </>
         ),
-        position: { x: 50, y: 0 },
-        size: { width: 60 }
+        position: { x: 40, y: -10 },
+        size: { width: 72 }
       }
     },
     {
@@ -198,8 +218,8 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           <Trans defaults="tuto.spells.6"></Trans>
           </>
         ),
-        position: { x: 50, y: 0 },
-        size: { width: 50 }
+        position: { x: 40, y: -15 },
+        size: { width: 72 }
       }
     },
     {
@@ -211,14 +231,14 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           <Trans defaults="tuto.end.turn.2"></Trans>
           </>
         ),
-        position: { x: 50, y: 0 },
-        size: { width: 50 }
+        position: { x: 40, y: -15 },
+        size: { width: 72 }
       }
     },
     {
       move: {
         player: opponent,
-        filter: isCustomMoveType(CustomMoveType.Right)
+        filter: isCustomMoveType(CustomMoveType.RotateClockwise)
       }
     },
     {
@@ -237,14 +257,20 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       }
     },
     {
+      move: {
+        player: opponent,
+        filter: isCustomMoveType(CustomMoveType.Validate)
+      }
+    },
+    {
       popup: {
         text: () => (
           <>
           <Trans defaults="tuto.round.1"></Trans>
           </>
         ),
-        position: { x: 50, y: 0 },
-        size: { width: 50 }
+        position: { x: 40, y: -15 },
+        size: { width: 72 }
       }
     },
     {
@@ -256,12 +282,12 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           <b><Trans defaults="tuto.turn.tile.2"></Trans></b><br/>
           </>
         ),
-        position: { x: 50, y: 0 },
-        size: { width: 50 }
+        position: { x: 40, y: -15 },
+        size: { width: 72 }
       },
       move: {
         player: me,
-        filter: isCustomMoveType(CustomMoveType.Right)
+        filter: isCustomMoveType(CustomMoveType.RotateClockwise)
       }
     },
     {
@@ -271,8 +297,8 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           <b><Trans defaults="tuto.turn.tile.3"></Trans></b>
           </>
         ),
-        position: { x: 50, y: 0 },
-        size: { width: 50 }
+        position: { x: 40, y: -15 },
+        size: { width: 72 }
       },
       move: {
         player: me,
@@ -292,15 +318,30 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       popup: {
         text: () => (
           <>
+            <b>Validez votre coup</b>
+          </>
+        ),
+        position: { x: 40, y: -15 },
+        size: { width: 50 }
+      },
+      move: {
+        player: me,
+        filter: isCustomMoveType(CustomMoveType.Validate)
+      }
+    },
+    {
+      popup: {
+        text: () => (
+          <>
           <Trans defaults="tuto.round.2"></Trans>
           </>
         ),
-        position: { x: 50, y: 0 },
+        position: { x: 40, y: -15 },
         size: { width: 50 }
       },
       move: {
         player: opponent,
-        filter: isCustomMoveType(CustomMoveType.Bottom)
+        filter: isCustomMoveType(CustomMoveType.RotateClockwise)
       }
     },
     {
@@ -319,18 +360,54 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       }
     },
     {
+      move: {
+        player: opponent,
+        filter: isCustomMoveType(CustomMoveType.Validate)
+      }
+    },
+    {
       popup: {
         text: () => (
           <>
-          <b><Trans defaults="tuto.round.3"></Trans></b>
+          <b><Trans defaults="tuto.round.3"></Trans> (3 rotations)</b>
           </>
         ),
-        position: { x: 50, y: 0 },
-        size: { width: 50 }
+        position: { x: 40, y: -15 },
+        size: { width: 72 }
       },
       move: {
         player: me,
-        filter: isCustomMoveType(CustomMoveType.Top)
+        filter: isCustomMoveType(CustomMoveType.RotateClockwise)
+      }
+    },
+    {
+      popup: {
+        text: () => (
+          <>
+          <b><Trans defaults="tuto.round.3"></Trans> (2 rotations)</b>
+          </>
+        ),
+        position: { x: 40, y: -15 },
+        size: { width: 72 }
+      },
+      move: {
+        player: me,
+        filter: isCustomMoveType(CustomMoveType.RotateClockwise)
+      }
+    },
+    {
+      popup: {
+        text: () => (
+          <>
+          <b><Trans defaults="tuto.round.3"></Trans> (1 rotation)</b>
+          </>
+        ),
+        position: { x: 40, y: -15 },
+        size: { width: 72 }
+      },
+      move: {
+        player: me,
+        filter: isCustomMoveType(CustomMoveType.RotateClockwise)
       }
     },
     {
@@ -344,8 +421,8 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           <Trans defaults="tuto.shield.2"></Trans><br/>
           </>
         ),
-        position: { x: 50, y: 0 },
-        size: { width: 50 }
+        position: { x: 40, y: -15 },
+        size: { width: 72 }
       }
     },
     {
@@ -355,8 +432,8 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           <b><Trans defaults="tuto.round.4"></Trans></b>
           </>
         ),
-        position: { x: 50, y: 0 },
-        size: { width: 50 }
+        position: { x: 40, y: -15 },
+        size: { width: 72 }
       },
       move: {
         player: me,
@@ -376,23 +453,30 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       popup: {
         text: () => (
           <>
+            <b>Validez votre coup</b>
+          </>
+        ),
+        position: { x: 40, y: -15 },
+        size: { width: 50 }
+      },
+      move: {
+        player: me,
+        filter: isCustomMoveType(CustomMoveType.Validate)
+      }
+    },
+    {
+      popup: {
+        text: () => (
+          <>
           <Trans defaults="tuto.shield.3"></Trans><br/>
           &nbsp;<br/>
           <Trans defaults="tuto.shield.4"></Trans>
           </>
         ),
-        position: { x: 50, y: 0 },
-        size: { width: 50 }
+        position: { x: 40, y: -15 },
+        size: { width: 72 }
       }
     },
-/*
-    {
-      move: {
-        player: opponent,
-        filter: isCustomMoveType(CustomMoveType.Bottom)
-      }
-    },
-*/
     {
       move: {
         player: opponent,
@@ -409,6 +493,12 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       }
     },
     {
+      move: {
+        player: opponent,
+        filter: isCustomMoveType(CustomMoveType.Validate)
+      }
+    },
+    {
       popup: {
         text: () => (
           <>
@@ -417,10 +507,11 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           </Trans>
           </>
         ),
-        position: { x: 50, y: 0 },
-        size: { width: 50 }
+        position: { x: 40, y: -15 },
+        size: { width: 72 }
       }
     },
+/*
     {
       popup: {
         text: () => (
@@ -436,6 +527,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
         filter: isCustomMoveType(CustomMoveType.Bottom)
       }
     },
+*/
     {
       popup: {
         text: () => (
@@ -443,8 +535,8 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           <b><Trans defaults="tuto.round.6"></Trans></b>
           </>
         ),
-        position: { x: 50, y: 0 },
-        size: { width: 50 }
+        position: { x: 40, y: -15 },
+        size: { width: 72 }
       },
       move: {
         player: me,
@@ -464,19 +556,72 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       popup: {
         text: () => (
           <>
+          Il est possible de tourner une tuile après l'avoir posé et avant de valider le coup.<br/>
+          &nbsp;<br/>
+          <b><Trans defaults="tuto.round.5"></Trans> (2 rotations)</b>
+          </>
+        ),
+        position: { x: 40, y: -15 },
+        size: { width: 72 }
+      },
+      move: {
+        player: me,
+        filter: isCustomMoveType(CustomMoveType.RotateClockwise)
+      }
+    },
+    {
+      popup: {
+        text: () => (
+          <>
+          <b><Trans defaults="tuto.round.5"></Trans> (1 rotation)</b>
+          </>
+        ),
+        position: { x: 40, y: -15 },
+        size: { width: 72 }
+      },
+      move: {
+        player: me,
+        filter: isCustomMoveType(CustomMoveType.RotateClockwise)
+      }
+    },
+    {
+      popup: {
+        text: () => (
+          <>
+            <b>Validez votre coup</b>
+          </>
+        ),
+        position: { x: 40, y: -15 },
+        size: { width: 50 }
+      },
+      move: {
+        player: me,
+        filter: isCustomMoveType(CustomMoveType.Validate)
+      }
+    },
+    {
+      popup: {
+        text: () => (
+          <>
           <Trans defaults="tuto.broken.shield.3"></Trans><br/>
           &nbsp;<br/>
           <Trans defaults="tuto.broken.shield.4"></Trans>
           </>
         ),
-        position: { x: 50, y: 0 },
-        size: { width: 50 }
+        position: { x: 40, y: -15 },
+        size: { width: 72 }
       }
     },
     {
       move: {
         player: opponent,
-        filter: isCustomMoveType(CustomMoveType.Top)
+        filter: isCustomMoveType(CustomMoveType.RotateClockwise)
+      }
+    },
+    {
+      move: {
+        player: opponent,
+        filter: isCustomMoveType(CustomMoveType.RotateClockwise)
       }
     },
     {
@@ -495,6 +640,12 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       }
     },
     {
+      move: {
+        player: opponent,
+        filter: isCustomMoveType(CustomMoveType.Validate)
+      }
+    },
+    {
       popup: {
         text: () => (
           <>
@@ -505,23 +656,53 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           <Trans defaults="tuto.5.golems.3"></Trans><br/>
           </>
         ),
-        position: { x: 50, y: 0 },
-        size: { width: 50 }
+        position: { x: 40, y: -15 },
+        size: { width: 72 }
       }
     },
     {
       popup: {
         text: () => (
           <>
-          <b><Trans defaults="tuto.round.7"></Trans></b>
+          <b><Trans defaults="tuto.round.7"></Trans> (3 rotations)</b>
           </>
         ),
-        position: { x: 50, y: 0 },
-        size: { width: 50 }
+        position: { x: 40, y: -15 },
+        size: { width: 72 }
       },
       move: {
         player: me,
-        filter: isCustomMoveType(CustomMoveType.Left)
+        filter: isCustomMoveType(CustomMoveType.RotateClockwise)
+      }
+    },
+    {
+      popup: {
+        text: () => (
+          <>
+          <b><Trans defaults="tuto.round.7"></Trans> (2 rotations)</b>
+          </>
+        ),
+        position: { x: 40, y: -15 },
+        size: { width: 72 }
+      },
+      move: {
+        player: me,
+        filter: isCustomMoveType(CustomMoveType.RotateClockwise)
+      }
+    },
+    {
+      popup: {
+        text: () => (
+          <>
+          <b><Trans defaults="tuto.round.7"></Trans> (1 rotation)</b>
+          </>
+        ),
+        position: { x: 40, y: -15 },
+        size: { width: 72 }
+      },
+      move: {
+        player: me,
+        filter: isCustomMoveType(CustomMoveType.RotateClockwise)
       }
     },
     {
@@ -531,8 +712,8 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           <b><Trans defaults="tuto.5.golems.4"></Trans></b>
           </>
         ),
-        position: { x: 50, y: 0 },
-        size: { width: 50 }
+        position: { x: 40, y: -15 },
+        size: { width: 72 }
       },
       move: {
         player: me,
@@ -552,13 +733,28 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       popup: {
         text: () => (
           <>
+            <b>Validez votre coup</b>
+          </>
+        ),
+        position: { x: 40, y: -15 },
+        size: { width: 50 }
+      },
+      move: {
+        player: me,
+        filter: isCustomMoveType(CustomMoveType.Validate)
+      }
+    },
+    {
+      popup: {
+        text: () => (
+          <>
           <Trans defaults="tuto.5.golems.5">
             <SymbolShield nb={1}/>
           </Trans><br/>
           </>
         ),
-        position: { x: 50, y: 0 },
-        size: { width: 50 }
+        position: { x: 40, y: -15 },
+        size: { width: 72 }
       }
     },
     {
