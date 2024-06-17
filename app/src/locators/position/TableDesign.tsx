@@ -227,7 +227,7 @@ export class TableDesign {
     switch (corner){
       case Corner.BottomRight:
         x=handCoords.x
-        if (nbPlayers==2){
+        if (nbPlayers===2){
           y=handCoords.y-7
         } else {
           y=handCoords.y-9
@@ -235,7 +235,7 @@ export class TableDesign {
         break
       case Corner.TopRight:
         x=handCoords.x
-        if (nbPlayers==2){
+        if (nbPlayers===2){
           y=handCoords.y+7
         } else {
           y=handCoords.y+9
