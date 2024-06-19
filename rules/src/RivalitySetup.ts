@@ -329,7 +329,8 @@ export class RivalitySetup extends MaterialGameSetup<PlayerId, MaterialType, Loc
         if (player==1){
           defaultOrientation=Orientation.North
         } else if (player==2){
-          defaultOrientation=Orientation.East
+//          defaultOrientation=Orientation.East
+          defaultOrientation=Orientation.South
         } else if (player==3){
           defaultOrientation=Orientation.South
         }
