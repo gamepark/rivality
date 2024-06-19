@@ -261,7 +261,7 @@ export class TableDesign {
     const player=me!==undefined ? me : 1
     let handCoords=this.playerHandCoordinatesForPlayer(player, context)
 
-    if (nbPlayers==3 && me==2){
+    if (nbPlayers===3 && me===2){
       return {
         x:handCoords.x+(tileDescription.height/2),
         y:handCoords.y-(tileDescription.width),
