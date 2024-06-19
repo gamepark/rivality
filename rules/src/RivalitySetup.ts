@@ -253,7 +253,7 @@ export class RivalitySetup extends MaterialGameSetup<PlayerId, MaterialType, Loc
   setupWizards(options: RivalityOptions) {
     const newWizards = []
 
-    let wizard1X=-3
+    let wizard1X=3
     let wizard1Y=1
     let wizard2X=3
     let wizard2Y=-1

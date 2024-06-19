@@ -35,7 +35,8 @@ export class PlayerHandLocator extends HandLocator {
         res=0
       }
       if (item.location.player===2){
-        res=90
+//        res=90
+        res=180
       }
       if (item.location.player===3){
         res=180
@@ -62,7 +63,8 @@ export class PlayerHandLocator extends HandLocator {
         if (item.location.player===1)
           return 0
         if (item.location.player===2)
-          return 90
+//          return 90
+          return 180
         if (item.location.player===3)
           return 180
       }

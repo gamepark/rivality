@@ -12,8 +12,8 @@ import Player1 from '../images/Panel_pink.png'
 import Player2 from '../images/Panel_orange.png'
 import Player3 from '../images/Panel_green.png'
 
-import Day from '../images/time/day.png'
-import Night from '../images/time/night.png'
+//import Day from '../images/time/day.png'
+//import Night from '../images/time/night.png'
 
 import { Memory } from '@gamepark/rivality/rules/Memory'
 
@@ -26,7 +26,7 @@ export const RivalityPlayerPanel: FC<RivalityPlayerPanelProps> = (props) => {
   const { t } = useTranslation()
   const rules = useRules<RivalityRules>()!
   let playerName = usePlayerName(playerId)
-  const turnToPlay = rules.isTurnToPlay(playerId)
+//  const turnToPlay = rules.isTurnToPlay(playerId)
 
   // Tweak names for the tutorial
   const me = usePlayerId()
@@ -36,10 +36,11 @@ export const RivalityPlayerPanel: FC<RivalityPlayerPanelProps> = (props) => {
     playerName=t('tuto.opponent')
   }
 
+//  <div css={turnToPlay ? day : night}></div>
+
   return (
     <>
       <div css={[panelPlayerStyle, panelStyle(playerId)]} {...rest}>
-        <div css={turnToPlay ? day : night}></div>
         <Avatar css={avatarStyle} playerId={playerId} speechBubbleProps={{ direction: SpeechBubbleDirection.BOTTOM_LEFT }}/>
         <h2 css={[nameStyle, data]}>{playerName}</h2>
         <Timer {...props} />
@@ -180,6 +181,7 @@ const data = css`
   z-index: 2;
 `
 
+/*
 const day = css`
   position: absolute;
   top: -1em;
@@ -202,6 +204,7 @@ const night = css`
   background-repeat: no-repeat;
 }
 `
+*/
 
 const timerStyle = css`
   position: absolute;

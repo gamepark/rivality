@@ -46,16 +46,34 @@ export class TableDesign {
     let boardYMin=0
     let boardYMax=0
 
-    rules
+    const tiles=rules
       .material(MaterialType.Tile)
       .location(LocationType.Board)
       .getItems()
-      .forEach(item => {
+
+    tiles.forEach(item => {
         if (item.location.x!<boardXMin) boardXMin=item.location.x!
         if (item.location.x!>boardXMax) boardXMax=item.location.x!
         if (item.location.y!<boardYMin) boardYMin=item.location.y!
         if (item.location.y!>boardYMax) boardYMax=item.location.y!
       })
+
+    // If there is a tile in a corner of the board, slightly extend
+    // the board dimensions, in order to avoid an overlap with player's decks
+    let hasLeftCorner=false
+    let hasRightCorner=false
+    tiles.forEach(item => {
+      if (item.location.x===boardXMin &&
+          (item.location.y===boardYMin || item.location.y===boardYMax))
+        hasLeftCorner=true
+      if (item.location.x===boardXMax &&
+          (item.location.y===boardYMin || item.location.y===boardYMax))
+        hasRightCorner=true
+    })
+    if (hasLeftCorner)
+      boardXMin=boardXMin-1
+    if (hasRightCorner)
+      boardXMax=boardXMax+1
 
     // Ensure a minimum table size
     if (boardXMax-boardXMin<4){
@@ -112,11 +130,8 @@ export class TableDesign {
       case 2: {
         // Minimal dimensions to ensure we see all tiles and golems
         const boardSize=this.getBoardSize(rules)
-//        const extraX=2*(tileDescription.width+spaceBetweenBoardAndHand+spaceBetweenHandAndBoard)
-//        const extraY=2*(tileDescription.height+spaceBetweenBoardAndHand+spaceBetweenHandAndBoard)
         const extraX=5
         const extraY=5
-
         const golemStackWidth=22
 
         let xMin=boardSize.xMin-extraX/2
@@ -128,6 +143,7 @@ export class TableDesign {
       }
       case 3: {
         // Same dimensions as 2 player mode with extra space on the left
+/*
         const twoPlayersDimensions=this.getTableSize(2, rules)
         return {
           xMin:twoPlayersDimensions.xMin-10,
@@ -135,6 +151,18 @@ export class TableDesign {
           yMin:twoPlayersDimensions.yMin,
           yMax:twoPlayersDimensions.yMax
         }
+*/
+        const boardSize=this.getBoardSize(rules)
+        const extraX=5
+        const extraY=5
+        const golemStackWidth=15
+
+        let xMin=boardSize.xMin-extraX/2-golemStackWidth
+        let xMax=boardSize.xMax+extraX/2+golemStackWidth
+        let yMin=boardSize.yMin-extraY/2
+        let yMax=boardSize.yMax+extraY/2
+
+        return { xMin, xMax, yMin, yMax }
       }
       case 4:
         return { xMin: -49, xMax: 54, yMin: -42, yMax: 42 }
@@ -176,8 +204,12 @@ export class TableDesign {
         y=handCoords.y-7.5
         break
       case Corner.TopLeft:
+        x=handCoords.x+14
+        y=handCoords.y-7.5
+/*
         x=handCoords.x+10
         y=handCoords.y-10.5
+*/
         break
     }
     return {x:x, y:y, z:0}
@@ -209,8 +241,12 @@ export class TableDesign {
         y=tableSize.yMin+12
         break
       case Corner.TopLeft:
+        x=tableSize.xMin+10
+        y=tableSize.yMin+12
+/*
         x=tableSize.xMin+5
         y=tableSize.yMin+15.5
+*/
         break
     }
     return {x:x, y:y, z:0}
@@ -247,7 +283,8 @@ export class TableDesign {
         break
       case Corner.TopLeft:
         x=handCoords.x
-        y=handCoords.y+14
+//        y=handCoords.y+14
+        y=handCoords.y+9
         break
     }
     return {x:x, y:y, z:0}

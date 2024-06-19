@@ -22,7 +22,7 @@ export class PlayerGolemStackLocator extends ItemLocator {
       if (item.location.player===1)
         return 0
       if (item.location.player===2)
-        return 90
+        return 180
       if (item.location.player===3)
         return 180
     }
