@@ -1,6 +1,7 @@
 import { MaterialGameSetup } from '@gamepark/rules-api'
 import { tileTools } from './logic/TileTools'
 import { BoardSpace } from './material/BoardSpace'
+import { Button } from './material/Button'
 import { Golem, golems } from './material/Golem'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
@@ -23,10 +24,44 @@ export class RivalitySetup extends MaterialGameSetup<PlayerId, MaterialType, Loc
     // Global parameters
     this.memorize(Memory.RealTimeScore, options.realTimeScore ?? false)
 
+    this.setupButtons()
     this.setupTiles(options)
     this.setupGolems(options)
     this.setupWizards(options)
     this.setupPlayerHands(options)
+  }
+
+  setupButtons() {
+    const newButtons = [
+      {
+        id: Button.Rotator,
+        location: {
+          type: LocationType.PlayerButton
+        }
+      },
+      {
+        id: Button.Rotator,
+        location: {
+          type: LocationType.Board,
+          id: BoardSpace.Button
+        }
+      },
+      {
+        id: Button.Validate,
+        location: {
+          type: LocationType.Board,
+          id: BoardSpace.Button
+        }
+      },
+      {
+        id: Button.Cancel,
+        location: {
+          type: LocationType.Board,
+          id: BoardSpace.Button
+        }
+      }
+    ]
+    this.material(MaterialType.Button).createItems(newButtons)
   }
 
   setupTiles(options: RivalityOptions) {

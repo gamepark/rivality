@@ -185,11 +185,15 @@ export class TableDesign {
 
   playerHandCoordinates(location: Location, context: LocationContext){
     const locationPlayer = location.player!
+    return this.playerHandCoordinatesForPlayer(locationPlayer, context)
+  }
+
+  playerHandCoordinatesForPlayer(player: number, context: LocationContext){
     const { rules } = context
     let nbPlayers=this.nbPlayers(rules)
 
     const fakePosition=0
-    const corner=this.playerCorner(locationPlayer, fakePosition, nbPlayers)
+    const corner=this.playerCorner(player, fakePosition, nbPlayers)
 
     let tableSize=this.getTableSize(nbPlayers, rules)
 
@@ -247,6 +251,28 @@ export class TableDesign {
         break
     }
     return {x:x, y:y, z:0}
+  }
+
+  playerButtonCoordinates(_location: Location, context: LocationContext){
+    const { rules } = context
+    let nbPlayers=this.nbPlayers(rules)
+
+    const me=context.player
+    const player=me!==undefined ? me : 1
+    let handCoords=this.playerHandCoordinatesForPlayer(player, context)
+
+    if (nbPlayers==3 && me==2){
+      return {
+        x:handCoords.x+(tileDescription.height/2),
+        y:handCoords.y-(tileDescription.width),
+        z:handCoords.z+2
+      }
+    }
+    return {
+      x:handCoords.x+(tileDescription.width),
+      y:handCoords.y-(tileDescription.height/2),
+      z:handCoords.z+2
+    }
   }
 }
 

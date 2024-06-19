@@ -2,13 +2,13 @@
 import { GridLocator, ItemContext } from '@gamepark/react-game'
 import { MaterialItem } from '@gamepark/rules-api'
 import { BoardSpace } from '@gamepark/rivality/material/BoardSpace'
-//import { Golem } from '@gamepark/rivality/material/Golem'
+import { Button } from '@gamepark/rivality/material/Button'
 import { Orientation } from '@gamepark/rivality/Orientation'
-import { Wizard } from '@gamepark/rivality/material/Wizard'
 import { BoardDescription } from './description/BoardDescription'
 import { tileDescription, spaceBetweenTiles } from '../material/TileDescription'
 import { LocationType } from '@gamepark/rivality/material/LocationType'
 import { MaterialType } from '@gamepark/rivality/material/MaterialType'
+import { uiTileTools } from '../material/UITileTools'
 
 export class BoardLocator extends GridLocator {
   itemsPerLine = 4
@@ -17,47 +17,76 @@ export class BoardLocator extends GridLocator {
 
   locationDescription = new BoardDescription()
 
+  getPositionDeltaTile(){
+    // The tile is centered
+    return {x:0, y:0, z:0}
+  }
+
+  getPositionDeltaGolem(item: MaterialItem, context: ItemContext){
+    let indexOnCard=context.rules
+      .material(MaterialType.Golem)
+      .location(LocationType.Board)
+      .filter(a => a.location.x===item.location.x && a.location.y===item.location.y && a.location.z!<=item.location.z!)
+      .length
+
+    let nbGolemsOnCard=context.rules
+      .material(MaterialType.Golem)
+      .location(LocationType.Board)
+      .filter(a => a.location.x===item.location.x && a.location.y===item.location.y)
+      .length
+
+    let radius=2
+    return {
+      x:-radius*Math.cos(2*Math.PI/nbGolemsOnCard*indexOnCard+(Math.PI/2)),
+      y:-radius*Math.sin(2*Math.PI/nbGolemsOnCard*indexOnCard+(Math.PI/2)),
+      z:1
+    }
+  }
+
+  getPositionDeltaWizard(){
+    return {x:0, y:0, z:1}
+  }
+
+  getPositionDeltaButton(item: MaterialItem, _context: ItemContext){
+    if (item.id===Button.Rotator)
+      return {x:tileDescription.width/2, y:-tileDescription.height/2, z:1}
+    if (item.id===Button.Validate)
+      return {x:tileDescription.width/2, y:tileDescription.height/2, z:1}
+    if (item.id===Button.Cancel)
+      return {x:-tileDescription.width/2, y:-tileDescription.height/2, z:1}
+    console.log("*** ERROR - Unsupported button")
+    return {x:0, y:0, z:1}
+  }
+
   getPosition(item: MaterialItem, context: ItemContext) {
     let baseCoordinates=this.locationDescription.getCoordinates(item.location, context)
-    let deltaX=0
-    let deltaY=0
-    let deltaZ=0
-    if (item.location.id===BoardSpace.Tile){
-      // The tile is centered
-    } else if (item.location.id===BoardSpace.Golem){
-      let indexOnCard=context.rules
-        .material(MaterialType.Golem)
-        .location(LocationType.Board)
-        .filter(a => a.location.x===item.location.x && a.location.y===item.location.y && a.location.z!<=item.location.z!)
-        .length
-
-      let nbGolemsOnCard=context.rules
-        .material(MaterialType.Golem)
-        .location(LocationType.Board)
-        .filter(a => a.location.x===item.location.x && a.location.y===item.location.y)
-        .length
-
-      let radius=2
-      deltaX=-radius*Math.cos(2*Math.PI/nbGolemsOnCard*indexOnCard+(Math.PI/2))
-      deltaY=-radius*Math.sin(2*Math.PI/nbGolemsOnCard*indexOnCard+(Math.PI/2))
-      deltaZ=1
-    } else if (item.location.id===BoardSpace.Wizard){
-      deltaX=0
-      if (item.id===Wizard.Wizard1)
-//        deltaY=1.5
-        deltaY=0
-      else if (item.id===Wizard.Wizard2)
-//        deltaY=-1.5
-        deltaY=0
-      else
-        deltaY=0
-      deltaZ=1
+    let delta={x:0, y:0, z:0}
+    switch (item.location.id){
+      case BoardSpace.Tile:
+        delta=this.getPositionDeltaTile()
+        break
+      case BoardSpace.Golem:
+        delta=this.getPositionDeltaGolem(item, context)
+        break
+      case BoardSpace.Wizard:
+        delta=this.getPositionDeltaWizard()
+        break
+      case BoardSpace.Button:
+        const activeLocation=uiTileTools.activePlayerWizardLocation(context)
+        if (activeLocation!==undefined){
+          baseCoordinates=this.locationDescription.getCoordinates(
+            activeLocation,
+            context
+          )
+        }
+        delta=this.getPositionDeltaButton(item, context)
+        break
     }
 
     return {
-      x:baseCoordinates.x+deltaX,
-      y:baseCoordinates.y+deltaY,
-      z:baseCoordinates.z+deltaZ
+      x:baseCoordinates.x+delta.x,
+      y:baseCoordinates.y+delta.y,
+      z:baseCoordinates.z+delta.z
     }
   }
 

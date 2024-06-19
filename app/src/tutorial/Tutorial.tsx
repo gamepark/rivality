@@ -1,7 +1,8 @@
 /** @jsxImportSource @emotion/react */
 import { MaterialTutorial, TutorialStep } from '@gamepark/react-game'
-import { isCustomMoveType, isMoveItemType, MoveItem } from '@gamepark/rules-api'
+import { isCustomMoveType, isMoveItemType, isSelectItemType, MaterialGame, MaterialMove, MoveItem } from '@gamepark/rules-api'
 import { css } from '@emotion/react'
+import { Button } from '@gamepark/rivality/material/Button'
 import { CustomMoveType } from '@gamepark/rivality/rules/CustomMoveType'
 import { LocationType } from '@gamepark/rivality/material/LocationType'
 import { MaterialType } from '@gamepark/rivality/material/MaterialType'
@@ -185,7 +186,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       },
       move: {
         player: me,
-        filter: isCustomMoveType(CustomMoveType.Validate)
+        filter: this.validateMove
       }
     },
     {
@@ -238,7 +239,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     {
       move: {
         player: opponent,
-        filter: isCustomMoveType(CustomMoveType.RotateClockwise)
+        filter: this.rotateMove
       }
     },
     {
@@ -259,7 +260,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     {
       move: {
         player: opponent,
-        filter: isCustomMoveType(CustomMoveType.Validate)
+        filter: this.validateMove
       }
     },
     {
@@ -287,7 +288,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       },
       move: {
         player: me,
-        filter: isCustomMoveType(CustomMoveType.RotateClockwise)
+        filter: this.rotateMove
       }
     },
     {
@@ -326,7 +327,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       },
       move: {
         player: me,
-        filter: isCustomMoveType(CustomMoveType.Validate)
+        filter: this.validateMove
       }
     },
     {
@@ -341,7 +342,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       },
       move: {
         player: opponent,
-        filter: isCustomMoveType(CustomMoveType.RotateClockwise)
+        filter: this.rotateMove
       }
     },
     {
@@ -362,7 +363,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     {
       move: {
         player: opponent,
-        filter: isCustomMoveType(CustomMoveType.Validate)
+        filter: this.validateMove
       }
     },
     {
@@ -377,7 +378,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       },
       move: {
         player: me,
-        filter: isCustomMoveType(CustomMoveType.RotateClockwise)
+        filter: this.rotateMove
       }
     },
     {
@@ -392,7 +393,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       },
       move: {
         player: me,
-        filter: isCustomMoveType(CustomMoveType.RotateClockwise)
+        filter: this.rotateMove
       }
     },
     {
@@ -407,7 +408,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       },
       move: {
         player: me,
-        filter: isCustomMoveType(CustomMoveType.RotateClockwise)
+        filter: this.rotateMove
       }
     },
     {
@@ -461,7 +462,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       },
       move: {
         player: me,
-        filter: isCustomMoveType(CustomMoveType.Validate)
+        filter: this.validateMove
       }
     },
     {
@@ -495,7 +496,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     {
       move: {
         player: opponent,
-        filter: isCustomMoveType(CustomMoveType.Validate)
+        filter: this.validateMove
       }
     },
     {
@@ -549,7 +550,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       },
       move: {
         player: me,
-        filter: isCustomMoveType(CustomMoveType.RotateClockwise)
+        filter: this.rotateMove
       }
     },
     {
@@ -564,7 +565,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       },
       move: {
         player: me,
-        filter: isCustomMoveType(CustomMoveType.RotateClockwise)
+        filter: this.rotateMove
       }
     },
     {
@@ -579,7 +580,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       },
       move: {
         player: me,
-        filter: isCustomMoveType(CustomMoveType.Validate)
+        filter: this.validateMove
       }
     },
     {
@@ -598,13 +599,13 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     {
       move: {
         player: opponent,
-        filter: isCustomMoveType(CustomMoveType.RotateClockwise)
+        filter: this.rotateMove
       }
     },
     {
       move: {
         player: opponent,
-        filter: isCustomMoveType(CustomMoveType.RotateClockwise)
+        filter: this.rotateMove
       }
     },
     {
@@ -625,7 +626,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     {
       move: {
         player: opponent,
-        filter: isCustomMoveType(CustomMoveType.Validate)
+        filter: this.validateMove
       }
     },
     {
@@ -655,7 +656,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       },
       move: {
         player: me,
-        filter: isCustomMoveType(CustomMoveType.RotateClockwise)
+        filter: this.rotateMove
       }
     },
     {
@@ -670,7 +671,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       },
       move: {
         player: me,
-        filter: isCustomMoveType(CustomMoveType.RotateClockwise)
+        filter: this.rotateMove
       }
     },
     {
@@ -685,7 +686,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       },
       move: {
         player: me,
-        filter: isCustomMoveType(CustomMoveType.RotateClockwise)
+        filter: this.rotateMove
       }
     },
     {
@@ -724,7 +725,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       },
       move: {
         player: me,
-        filter: isCustomMoveType(CustomMoveType.Validate)
+        filter: this.validateMove
       }
     },
     {
@@ -791,6 +792,34 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       }
     }
   ]
+
+  validateMove(move:MaterialMove, game:MaterialGame){
+    let value1=isCustomMoveType(CustomMoveType.Validate)(move)
+    let value2=false
+
+    if (isSelectItemType(MaterialType.Button)(move)){
+      const buttonItems=game.items[MaterialType.Button]
+      if (buttonItems!==undefined){
+        const buttonId=buttonItems[move.itemIndex].id
+        value2=(buttonId===Button.Validate)
+      }
+    }
+    return value1 || value2
+  }
+
+  rotateMove(move:MaterialMove, game:MaterialGame){
+    let value1=isCustomMoveType(CustomMoveType.RotateClockwise)(move)
+    let value2=false
+
+    if (isSelectItemType(MaterialType.Button)(move)){
+      const buttonItems=game.items[MaterialType.Button]
+      if (buttonItems!==undefined){
+        const buttonId=buttonItems[move.itemIndex].id
+        value2=(buttonId===Button.Rotator)
+      }
+    }
+    return value1 || value2
+  }
 }
 
 export const alignIcon = css`

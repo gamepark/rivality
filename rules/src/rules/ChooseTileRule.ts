@@ -1,4 +1,4 @@
-import { CustomMove, isMoveItem, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
+import { CustomMove, isMoveItemType, isSelectItemType, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { tileTools } from '../logic/TileTools'
 import { wizardTools } from '../logic/WizardTools'
 import { BoardSpace } from '../material/BoardSpace'
@@ -60,6 +60,9 @@ export class ChooseTileRule extends PlayerTurnRule {
     // Orientation of hand cards
     moves.push(this.rules().customMove(CustomMoveType.RotateClockwise))
 
+    moves.push(...this.material(MaterialType.Button).location(LocationType.PlayerButton).selectItems())
+
+    // Tile moves
     let handTilesItems=handTiles.getItems()
     let currentOrientation=Orientation.North
     if (handTilesItems.length>0){
@@ -86,63 +89,67 @@ export class ChooseTileRule extends PlayerTurnRule {
     return moves
   }
 
+  rotateActions(){
+    // 1 - Get current orientation
+    let currentOrientation=Orientation.North
+    let handTilesItems=this
+      .material(MaterialType.Tile)
+      .location(LocationType.PlayerHand)
+      .player(this.getActivePlayer())
+      .getItems()
+    if (handTilesItems.length>0){
+      currentOrientation=handTilesItems[0].location.rotation
+    }
+
+    // 2 - Compute new orientation
+    let orientation=Orientation.North
+    switch (currentOrientation){
+      case Orientation.West:  orientation=Orientation.North; break
+      case Orientation.North: orientation=Orientation.East; break
+      case Orientation.East:  orientation=Orientation.South; break
+      case Orientation.South: orientation=Orientation.West; break
+    }
+
+    // 3 - Apply new orientation
+    return [this.material(MaterialType.Tile).location(LocationType.PlayerHand).player(this.getActivePlayer()).moveItemsAtOnce({ rotation:orientation })]
+  }
+
   afterItemMove(move: ItemMove): MaterialMove[] {
-    if (isMoveItem(move)){
-      if (move.itemType==MaterialType.Tile){
-        // Move the wizard and a golem to the tile
-        // Then apply tile effects
-        return [
-          ...this.material(MaterialType.Wizard).filter(item => item.id==wizardTools.playerWizard(this.getActivePlayer())).moveItems(
-            {
-              type: LocationType.Board,
-              id: BoardSpace.Wizard,
-              x:move.location.x,
-              y:move.location.y
-            }
-          ),
-          this.material(MaterialType.Golem)
-            .location(LocationType.PlayerGolemStack)
-            .player(this.getActivePlayer())
-            .sort(item => -item.location.x!)
-            .limit(1).moveItemsAtOnce(
-            {
-              type: LocationType.Board,
-              id: BoardSpace.Golem,
-              x:move.location.x,
-              y:move.location.y
-            }
-          ),
-          this.rules().startPlayerTurn(RuleId.ValidateTile, this.getActivePlayer())
-        ]
-      }
+    if (isSelectItemType(MaterialType.Button)(move)){
+      return this.rotateActions()
+    } else if (isMoveItemType(MaterialType.Tile)(move)){
+      // Move the wizard and a golem to the tile
+      // Then apply tile effects
+      return [
+        ...this.material(MaterialType.Wizard).filter(item => item.id==wizardTools.playerWizard(this.getActivePlayer())).moveItems(
+          {
+            type: LocationType.Board,
+            id: BoardSpace.Wizard,
+            x:move.location.x,
+            y:move.location.y
+          }
+        ),
+        this.material(MaterialType.Golem)
+          .location(LocationType.PlayerGolemStack)
+          .player(this.getActivePlayer())
+          .sort(item => -item.location.x!)
+          .limit(1).moveItemsAtOnce(
+          {
+            type: LocationType.Board,
+            id: BoardSpace.Golem,
+            x:move.location.x,
+            y:move.location.y
+          }
+        ),
+        this.rules().startPlayerTurn(RuleId.ValidateTile, this.getActivePlayer())
+      ]
     }
     return []
   }
 
   onCustomMove(move: CustomMove): MaterialMove[] {
     if (move.type===CustomMoveType.RotateClockwise){
-      // 1 - Get current orientation
-      let currentOrientation=Orientation.North
-      let handTilesItems=this
-        .material(MaterialType.Tile)
-        .location(LocationType.PlayerHand)
-        .player(this.getActivePlayer())
-        .getItems()
-      if (handTilesItems.length>0){
-        currentOrientation=handTilesItems[0].location.rotation
-      }
-
-      // 2 - Compute new orientation
-      let orientation=Orientation.North
-      switch (currentOrientation){
-        case Orientation.West:  orientation=Orientation.North; break
-        case Orientation.North: orientation=Orientation.East; break
-        case Orientation.East:  orientation=Orientation.South; break
-        case Orientation.South: orientation=Orientation.West; break
-      }
-
-      // 3 - Apply new orientation
-      return [this.material(MaterialType.Tile).location(LocationType.PlayerHand).player(this.getActivePlayer()).moveItemsAtOnce({ rotation:orientation })]
+      return this.rotateActions()
     }
     return []
   }

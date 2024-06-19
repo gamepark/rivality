@@ -1,4 +1,5 @@
-import { CustomMove, MaterialMove, PlayerTurnRule, XYCoordinates } from '@gamepark/rules-api'
+import { CustomMove, isSelectItemType, ItemMove, MaterialMove, PlayerTurnRule, XYCoordinates } from '@gamepark/rules-api'
+import { Button } from '../material/Button'
 import { CustomMoveType } from './CustomMoveType'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
@@ -12,44 +13,10 @@ export class ValidateTileRule extends PlayerTurnRule {
     return [
       this.rules().customMove(CustomMoveType.Validate),
       this.rules().customMove(CustomMoveType.RotateClockwise),
-      this.rules().customMove(CustomMoveType.Cancel)
+      this.rules().customMove(CustomMoveType.Cancel),
+      ...this.material(MaterialType.Button).location(LocationType.Board).selectItems()
     ]
   }
-
-/*
-  afterItemMove(move: ItemMove): MaterialMove[] {
-    if (isMoveItem(move)){
-      if (move.itemType==MaterialType.Tile){
-        // Move the wizard and a golem to the tile
-        // Then apply tile effects
-        return [
-          ...this.material(MaterialType.Wizard).filter(item => item.id==wizardTools.playerWizard(this.getActivePlayer())).moveItems(
-            {
-              type: LocationType.Board,
-              id: BoardSpace.Wizard,
-              x:move.location.x,
-              y:move.location.y
-            }
-          ),
-          this.material(MaterialType.Golem)
-            .location(LocationType.PlayerGolemStack)
-            .player(this.getActivePlayer())
-            .sort(item => -item.location.x!)
-            .limit(1).moveItemsAtOnce(
-            {
-              type: LocationType.Board,
-              id: BoardSpace.Golem,
-              x:move.location.x,
-              y:move.location.y
-            }
-          ),
-          this.rules().startPlayerTurn(RuleId.CastSpell, this.getActivePlayer())
-        ]
-      }
-    }
-    return []
-  }
-  */
 
   coordinatesOfTileWithWizard(): XYCoordinates {
     const wizardItem=this.material(MaterialType.Wizard)
@@ -73,7 +40,7 @@ export class ValidateTileRule extends PlayerTurnRule {
       .filter(item => item.location.x===coords.x && item.location.y===coords.y)
   }
 
-  rotationActions(): MaterialMove[]{
+  rotateActions(): MaterialMove[]{
     // 1 - Get current orientation
     let currentOrientation=Orientation.North
     let tileItem=this.tileWithWizard().getItem()
@@ -133,10 +100,22 @@ export class ValidateTileRule extends PlayerTurnRule {
     return moves
   }
 
+  afterItemMove(move: ItemMove): MaterialMove[] {
+    if (isSelectItemType(MaterialType.Button)(move)){
+      const buttonId=this.material(MaterialType.Button).index(move.itemIndex).getItem()?.id
+      switch (buttonId){
+        case Button.Rotator:  return this.rotateActions()
+        case Button.Cancel:   return this.cancelActions()
+        case Button.Validate: return this.validateActions()
+      }
+    }
+    return []
+  }
+
   onCustomMove(move: CustomMove): MaterialMove[] {
     switch (move.type){
       case CustomMoveType.RotateClockwise:
-        return this.rotationActions()
+        return this.rotateActions()
       case CustomMoveType.Validate:
         return this.validateActions()
       case CustomMoveType.Cancel:
