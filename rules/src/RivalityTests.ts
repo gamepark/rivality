@@ -1462,10 +1462,10 @@ export class RivalityTests {
       "The game must ask to keep the tiles or to discard them"
     )
     this.prepareBoard_2players(setup, [],
-      Tile.StoneCircle_21_22,
       Tile.Fortress_23B_22_22,
-      Tile.Fortress_22_13B_31,
+      Tile.Cottage_32_23B_x,
       Tile.Cottage_23B_31_x,
+      Tile.StoneCircle_21_22,
       -1,  1,
       -1, -1
     )
@@ -1518,6 +1518,9 @@ export class RivalityTests {
       new Square( 3,  3, Tile.Fortress_31_22_13B, Orientation.North, 0, 0, 0),
       new Square( 4,  3, Tile.Fortress_22_23B_21, Orientation.North, 0, 0, 0),
       new Square( 0,  4, Tile.Fortress_22_22_23B, Orientation.North, 0, 0, 0),
+      new Square( 1,  4, Tile.StoneCircle_21_22, Orientation.North, 0, 0, 0),
+      new Square( 2,  4, Tile.StoneCircle_22_21, Orientation.North, 0, 0, 0),
+      new Square( 3,  4, Tile.StoneCircle_x_41_star, Orientation.North, 0, 0, 0)
     ],
       undefined, undefined,
       undefined, undefined,
@@ -1526,36 +1529,10 @@ export class RivalityTests {
       -1, -1,
       -1,  0
     )
-    // Remaining: 2 tiles Fortress_22_22_23B + 2 tiles StoneCircle_x_41
-    const stoneCircleDeck1=setup.material(MaterialType.Tile)
-      .filter(item => item.id===Tile.StoneCircle_21_22)
-      .deck()
-    const stoneCircleDeck2=setup.material(MaterialType.Tile)
-      .filter(item => item.id===Tile.StoneCircle_x_41)
-      .deck()
 
-    stoneCircleDeck1.deal({
-        type: LocationType.Board,
-        id: BoardSpace.Tile,
-        x: 1,
-        y: 4,
-        rotation: Orientation.North
-      }, 1)
-    stoneCircleDeck1.deal({
-        type: LocationType.Board,
-        id: BoardSpace.Tile,
-        x: 2,
-        y: 4,
-        rotation: Orientation.North
-      }, 1)
-    stoneCircleDeck2.deal({
-        type: LocationType.Board,
-        id: BoardSpace.Tile,
-        x: 3,
-        y: 4,
-        rotation: Orientation.North
-      }, 1)
-    stoneCircleDeck2.deal({
+    setup.material(MaterialType.Tile)
+      .filter(item => item.id===Tile.StoneCircle_x_41)
+      .moveItem({
         type:LocationType.PlayerHand,
         player:1,
         x:1,

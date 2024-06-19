@@ -7,7 +7,8 @@ import { TFunction } from 'i18next'
  */
 export type RivalityOptions = {
   players: number,
-  realTimeScore: boolean
+  realTimeScore: boolean,
+  test?: number
 }
 
 /**

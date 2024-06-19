@@ -1,18 +1,23 @@
 import { MaterialGameSetup } from '@gamepark/rules-api'
-import { tileTools } from './logic/TileTools'
-import { BoardSpace } from './material/BoardSpace'
-import { Button } from './material/Button'
-import { Golem, golems } from './material/Golem'
-import { LocationType } from './material/LocationType'
-import { MaterialType } from './material/MaterialType'
-import { Tile, tiles } from './material/Tile'
-import { Wizard, wizards } from './material/Wizard'
-import { Memory } from './rules/Memory'
-import { Orientation } from './Orientation'
-import { PlayerId } from './PlayerId'
 import { RivalityOptions } from './RivalityOptions'
 import { RivalityRules } from './RivalityRules'
+import { BoardSpace } from './material/BoardSpace'
+import { Button } from './material/Button'
+import { LocationType } from './material/LocationType'
+import { MaterialType } from './material/MaterialType'
+import { Memory } from './rules/Memory'
+import { tiles, Tile } from './material/Tile'
+import { golems, Golem } from './material/Golem'
+import { wizards, Wizard } from './material/Wizard'
+import { tileTools } from './logic/TileTools'
+import { Orientation } from './Orientation'
+import { PlayerId } from './PlayerId'
 import { RuleId } from './rules/RuleId'
+import { tests } from './RivalityTests'
+
+function isTest(options: RivalityOptions) : boolean {
+  return (options.test !==undefined && options.test>0)
+}
 
 /**
  * This class creates a new Game based on the game options
@@ -28,6 +33,14 @@ export class RivalitySetup extends MaterialGameSetup<PlayerId, MaterialType, Loc
     this.setupTiles(options)
     this.setupGolems(options)
     this.setupWizards(options)
+
+    // Tests
+    if (isTest(options)){
+      console.log("Test mode")
+      tests.setupMaterial(this, options.test!, options.players)
+      return
+    }
+
     this.setupPlayerHands(options)
   }
 
@@ -240,7 +253,7 @@ export class RivalitySetup extends MaterialGameSetup<PlayerId, MaterialType, Loc
   setupWizards(options: RivalityOptions) {
     const newWizards = []
 
-    let wizard1X=3
+    let wizard1X=-3
     let wizard1Y=1
     let wizard2X=3
     let wizard2Y=-1
@@ -334,7 +347,11 @@ export class RivalitySetup extends MaterialGameSetup<PlayerId, MaterialType, Loc
     }
   }
 
-  start() {
+  start(options: RivalityOptions) {
+    if (isTest(options)){
+      tests.start(this, options.test!)
+      return
+    }
     this.startPlayerTurn(RuleId.Start, this.game.players[0])
   }
 }
