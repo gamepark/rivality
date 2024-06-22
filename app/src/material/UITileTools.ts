@@ -42,7 +42,11 @@ export class UITileTools {
   isUnderAttackSquare(location:Location, context: MaterialContext){
     const activePlayer=context.player
     if (activePlayer!==undefined){
-      if (context.rules.state.rule?.id===RuleId.ValidateTile){
+      const ruleId=context.rules.state.rule?.id
+      if (
+        ruleId===RuleId.ValidateTile ||
+        ruleId===RuleId.AskSpellOrientation
+      ){
         const thisX=location.x!
         const thisY=location.y!
 
@@ -85,11 +89,22 @@ export class UITileTools {
           })
 
           // 4 - Check if the current location is a target of the spells
+          let targetNorth=true
+          let targetSouth=true
+          let targetEast=true
+          let targetWest=true
+          if (ruleId===RuleId.AskSpellOrientation){
+            // Restrict the target to the spell orientations that have not been applied yet
+            targetNorth=context.rules.remind(Memory.AppliedSpellNorth)!==true
+            targetSouth=context.rules.remind(Memory.AppliedSpellSouth)!==true
+            targetEast=context.rules.remind(Memory.AppliedSpellEast)!==true
+            targetWest=context.rules.remind(Memory.AppliedSpellWest)!==true
+          }
           if (
-            (thisX===tileX && thisY===tileY-distances[Orientation.North]) ||
-            (thisX===tileX && thisY===tileY+distances[Orientation.South]) ||
-            (thisY===tileY && thisX===tileX-distances[Orientation.West]) ||
-            (thisY===tileY && thisX===tileX+distances[Orientation.East])
+            (targetNorth && thisX===tileX && thisY===tileY-distances[Orientation.North]) ||
+            (targetSouth && thisX===tileX && thisY===tileY+distances[Orientation.South]) ||
+            (targetWest  && thisY===tileY && thisX===tileX-distances[Orientation.West]) ||
+            (targetEast  && thisY===tileY && thisX===tileX+distances[Orientation.East])
           ){
             return true
           }

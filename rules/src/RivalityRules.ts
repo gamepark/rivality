@@ -10,13 +10,16 @@ import {
 } from '@gamepark/rules-api'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
+import { ApplySpellEffectRule } from './rules/ApplySpellEffectRule'
 import { AskGolemRemovalRule } from './rules/AskGolemRemovalRule'
-import { CastSpellRule } from './rules/CastSpellRule'
+import { AskSpellOrientationRule } from './rules/AskSpellOrientationRule'
 import { ChooseTileRule } from './rules/ChooseTileRule'
 import { EndTurnRule } from './rules/EndTurnRule'
+import { PrepareCastSpellRule } from './rules/PrepareCastSpellRule'
 import { RemoveGolemRule } from './rules/RemoveGolemRule'
-import { StartRule } from './rules/StartRule'
+import { SelectCastSpellOrientationRule } from './rules/SelectCastSpellOrientationRule'
 import { ShufflePlayer1DeckRule } from './rules/ShufflePlayer1DeckRule'
+import { StartRule } from './rules/StartRule'
 import { ValidateTileRule } from './rules/ValidateTileRule'
 import { PlayerId } from './PlayerId'
 import { RuleId } from './rules/RuleId'
@@ -46,12 +49,15 @@ export class RivalityRules extends SecretMaterialRules<PlayerId, MaterialType, L
   rules = {
     [RuleId.Start]: StartRule,
     [RuleId.ChooseTile]: ChooseTileRule,
-    [RuleId.CastSpell]: CastSpellRule,
+    [RuleId.SelectCastSpellOrientation]: SelectCastSpellOrientationRule,
     [RuleId.RemoveGolem]: RemoveGolemRule,
     [RuleId.AskGolemRemoval]: AskGolemRemovalRule,
     [RuleId.EndTurn]: EndTurnRule,
     [RuleId.ShufflePlayer1Deck]: ShufflePlayer1DeckRule,
-    [RuleId.ValidateTile]: ValidateTileRule
+    [RuleId.ValidateTile]: ValidateTileRule,
+    [RuleId.PrepareCastSpell]: PrepareCastSpellRule,
+    [RuleId.ApplySpellEffect]: ApplySpellEffectRule,
+    [RuleId.AskSpellOrientation]: AskSpellOrientationRule
   }
 
   locationsStrategies = {

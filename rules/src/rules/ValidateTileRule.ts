@@ -62,7 +62,7 @@ export class ValidateTileRule extends PlayerTurnRule {
   }
 
   validateActions(): MaterialMove[]{
-    return [this.rules().startPlayerTurn(RuleId.CastSpell, this.getActivePlayer())]
+    return [this.rules().startPlayerTurn(RuleId.PrepareCastSpell, this.getActivePlayer())]
   }
 
   cancelActions(): MaterialMove[]{

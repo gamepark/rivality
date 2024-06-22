@@ -3,22 +3,24 @@ import { BoardSpace } from '../material/BoardSpace'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { Tile } from '../material/Tile'
-import { golemTools } from '../logic/GolemTools'
-import { wizardTools } from '../logic/WizardTools'
-import { Spell, tileSpells } from '../logic/TileSpells'
+import { Spell } from '../logic/TileSpells'
 import { tileTools } from '../logic/TileTools'
 import { Orientation } from '../Orientation'
 import { Memory } from './Memory'
 import { RuleId } from '../rules/RuleId'
 import { SpellRule } from './SpellRule'
 
-export class CastSpellRule extends SpellRule {
+/*
+ * This rule applies the effect of a spell in a given orientation
+ * then goes back to the rule to select the next spell orientation
+ */
+export class ApplySpellEffectRule extends SpellRule {
   onRuleStart(): MaterialMove[] {
     // Default orientation is not set
     let spellOrientation=this.remind(Memory.SpellOrientation)
     if (spellOrientation===undefined){
-      spellOrientation=Orientation.North
-      this.memorize(Memory.SpellOrientation, spellOrientation)
+      console.log("*** ERROR - unknown spell orientation => The game is stuck")
+      return []
     }
 
     // Apply spell effects
@@ -30,37 +32,42 @@ export class CastSpellRule extends SpellRule {
     if (moves.length>0)
       return moves
 
-    return [this.spellAction(this.nextOrientation())]
+    return [this.rules().startPlayerTurn(RuleId.SelectCastSpellOrientation, this.getActivePlayer())]
   }
 
   castEffects(spellOrientation:Orientation):MaterialMove[] {
     this.memorize(Memory.SpellOrientation, spellOrientation)
 
+    // Record the orientation as applied
+    let extraMemory:Memory|undefined=undefined
+    switch (spellOrientation){
+      case Orientation.North:
+        extraMemory=Memory.AppliedSpellNorth
+        break
+      case Orientation.East:
+        extraMemory=Memory.AppliedSpellEast
+        break
+      case Orientation.South:
+        extraMemory=Memory.AppliedSpellSouth
+        break
+      case Orientation.West:
+        extraMemory=Memory.AppliedSpellWest
+        break
+    }
+    this.memorize(extraMemory, true)
+
     // Get the active tile coordinates
-    const playerWizard=wizardTools.playerWizard(this.getActivePlayer())
-    const wizardItem=this
-      .material(MaterialType.Wizard)
-      .location(LocationType.Board)
-      .filter(item => item.id==playerWizard)
-      .getItem()
-    const tileX=wizardItem!.location.x!
-    const tileY=wizardItem!.location.y!
+    const activeTileCoordinates=this.getActiveTileCoordinates()
+    const tileX=activeTileCoordinates.x
+    const tileY=activeTileCoordinates.y
 
     // Get the active tile
-    const tile=this
-      .material(MaterialType.Tile)
-      .location(LocationType.Board)
-      .filter(item => item.location.x==tileX && item.location.y==tileY)
-      .getItem()
-
-    const tileId:Tile=tile!.id
-    const tileOrientation:Orientation=tile!.location.rotation
-
-    // Get the active spell
-    const spell:Spell=tileSpells.spell(
-      tileId,
-      tileTools.tileSideFromOrientations(spellOrientation, tileOrientation)
-    )
+    const tile=this.getActiveTile()
+    if (tile===undefined){
+      console.log("*** ERROR - Missing active tile")
+      return []
+    }
+    const spell=this.getSpell(tile, spellOrientation)
 
     // Apply the spell if there's one
     if (spell.nbGolems<=0)
@@ -70,35 +77,10 @@ export class CastSpellRule extends SpellRule {
 
   // Precondition: the spell is not empty
   applySpell(spellOrientation:Orientation, spell:Spell, tileX:number, tileY:number):MaterialMove[]{
-    // Find the target tile of the spell
-    let coefX=0
-    let coefY=0
-    switch (spellOrientation){
-      case Orientation.North:
-        coefY=-1
-        break
-      case Orientation.East:
-        coefX=1
-        break
-      case Orientation.South:
-        coefY=1
-        break
-      case Orientation.West:
-        coefX=-1
-        break
-    }
-
-    const targetX=tileX+coefX*spell.distance
-    const targetY=tileY+coefY*spell.distance
-
-//    console.log("initial tile: ("+tileX+","+tileY+")")
-//    console.log("target: ("+targetX+","+targetY+")")
-
-    const targetTile=this
-      .material(MaterialType.Tile)
-      .location(LocationType.Board)
-      .filter(item => item.location.x==targetX && item.location.y==targetY)
-      .getItem()
+    const tilesCoords=this.getTargetTileCoordinates({x:tileX, y:tileY}, spellOrientation, spell)
+    const targetX=tilesCoords.x
+    const targetY=tilesCoords.y
+    const targetTile=this.getTile(tilesCoords)
     if (targetTile === undefined){
       // No tile on the board
       return []
@@ -132,13 +114,7 @@ export class CastSpellRule extends SpellRule {
   applySpellOnWizardFreeTile(spell:Spell, targetX:number, targetY:number, targetTile:Tile){
     this.memorize(Memory.SpellTileX, targetX)
     this.memorize(Memory.SpellTileY, targetY)
-
-    const golemsOnTarget=this
-      .material(MaterialType.Golem)
-      .location(LocationType.Board)
-      .filter(item => item.location.x==targetX && item.location.y==targetY)
-
-    const golemCount = golemTools.golemCount(golemsOnTarget, this.getActivePlayer())
+    const golemCount=this.getGolemCountAtCoords({x:targetX, y:targetY})
 
     // Manage shields
     let nbActiveShields=0

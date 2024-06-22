@@ -10,5 +10,9 @@ export enum CustomMoveType {
   NewHand  = 9,
   RotateClockwise = 10,
   Validate = 11,
-  Cancel   = 12
+  Cancel   = 12,
+  North    = 13,
+  East     = 14,
+  South    = 15,
+  West     = 16
 }

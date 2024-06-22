@@ -1,26 +1,99 @@
-import { MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
-import { Memory } from './Memory'
+import { MaterialItem, PlayerTurnRule, XYCoordinates } from '@gamepark/rules-api'
+import { GolemCount, golemTools } from '../logic/GolemTools'
+import { LocationType } from '../material/LocationType'
+import { MaterialType } from '../material/MaterialType'
 import { Orientation } from '../Orientation'
-import { RuleId } from '../rules/RuleId'
+import { Spell, tileSpells } from '../logic/TileSpells'
+import { Tile } from '../material/Tile'
+import { tileTools } from '../logic/TileTools'
+import { wizardTools } from '../logic/WizardTools'
 
 export abstract class SpellRule extends PlayerTurnRule {
-  spellAction(orientation:Orientation|undefined) : MaterialMove {
-    if (orientation===undefined){
-      this.forget(Memory.SpellOrientation)
-      return this.rules().startPlayerTurn(RuleId.EndTurn, this.getActivePlayer())
+  getActiveTileCoordinates(): XYCoordinates {
+    const playerWizard=wizardTools.playerWizard(this.getActivePlayer())
+    const wizardItem=this
+      .material(MaterialType.Wizard)
+      .location(LocationType.Board)
+      .filter(item => item.id==playerWizard)
+      .getItem()
+    return {
+      x:wizardItem!.location.x!,
+      y:wizardItem!.location.y!
     }
-
-    this.memorize(Memory.SpellOrientation, orientation)
-    return this.rules().startPlayerTurn(RuleId.CastSpell, this.getActivePlayer())
   }
 
-  nextOrientation() : Orientation|undefined {
-    const currentOrientation:Orientation = this.remind(Memory.SpellOrientation)
-    if (currentOrientation==Orientation.North) return Orientation.East
-    if (currentOrientation==Orientation.East) return Orientation.South
-    if (currentOrientation==Orientation.South) return Orientation.West
-    if (currentOrientation==Orientation.West) return undefined
-    console.log("*** ERROR - Unexpected orientation")
-    return undefined
+  getActiveTile(): MaterialItem|undefined {
+    const coords=this.getActiveTileCoordinates()
+    return this
+      .material(MaterialType.Tile)
+      .location(LocationType.Board)
+      .filter(item => item.location.x==coords.x && item.location.y==coords.y)
+      .getItem()
+  }
+
+  getSpell(tile:MaterialItem, spellOrientation:Orientation): Spell {
+    const tileId:Tile=tile.id
+    const tileOrientation:Orientation=tile.location.rotation
+
+    const spell:Spell=tileSpells.spell(
+      tileId,
+      tileTools.tileSideFromOrientations(spellOrientation, tileOrientation)
+    )
+    return spell
+  }
+
+  getTargetTileCoordinates(tileCoordinates:XYCoordinates, spellOrientation:Orientation, spell:Spell): XYCoordinates {
+    // Find the target tile of the spell
+    let coefX=0
+    let coefY=0
+    switch (spellOrientation){
+      case Orientation.North:
+        coefY=-1
+        break
+      case Orientation.East:
+        coefX=1
+        break
+      case Orientation.South:
+        coefY=1
+        break
+      case Orientation.West:
+        coefX=-1
+        break
+    }
+
+    return {
+      x:tileCoordinates.x+coefX*spell.distance,
+      y:tileCoordinates.y+coefY*spell.distance
+    }
+  }
+
+  getTile(tileCoordinates: XYCoordinates): MaterialItem|undefined {
+    return this
+      .material(MaterialType.Tile)
+      .location(LocationType.Board)
+      .filter(item => item.location.x==tileCoordinates.x && item.location.y==tileCoordinates.y)
+      .getItem()
+  }
+
+  existsTile(tileCoordinates: XYCoordinates): boolean {
+    const tile=this.getTile(tileCoordinates)
+    return (tile !== undefined)
+  }
+
+  hasTileWizard(tileCoordinates: XYCoordinates): boolean {
+    return this
+      .material(MaterialType.Wizard)
+      .location(LocationType.Board)
+      .filter(item => item.location.x==tileCoordinates.x && item.location.y==tileCoordinates.y)
+      .length > 0
+  }
+
+  getGolemCountAtCoords(coords:XYCoordinates): GolemCount {
+    const golemsOnTarget=this
+      .material(MaterialType.Golem)
+      .location(LocationType.Board)
+      .filter(item => item.location.x==coords.x && item.location.y==coords.y)
+
+    return golemTools.golemCount(golemsOnTarget, this.getActivePlayer())
   }
 }
