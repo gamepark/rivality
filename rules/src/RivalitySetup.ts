@@ -1,4 +1,4 @@
-import { MaterialGameSetup } from '@gamepark/rules-api'
+import { MaterialGameSetup, MaterialItem } from '@gamepark/rules-api'
 import { RivalityOptions } from './RivalityOptions'
 import { RivalityRules } from './RivalityRules'
 import { BoardSpace } from './material/BoardSpace'
@@ -45,35 +45,36 @@ export class RivalitySetup extends MaterialGameSetup<PlayerId, MaterialType, Loc
   }
 
   setupButtons() {
-    const newButtons = [
+    const newButtons:MaterialItem[]=[
       {
         id: Button.Rotator,
         location: {
           type: LocationType.PlayerButton
         }
-      },
-      {
-        id: Button.Rotator,
-        location: {
-          type: LocationType.Board,
-          id: BoardSpace.Button
-        }
-      },
-      {
-        id: Button.Validate,
-        location: {
-          type: LocationType.Board,
-          id: BoardSpace.Button
-        }
-      },
-      {
-        id: Button.Cancel,
-        location: {
-          type: LocationType.Board,
-          id: BoardSpace.Button
-        }
       }
     ]
+
+/*
+    const boardButtons=[
+      Button.Rotator,
+      Button.Validate,
+      Button.Cancel,
+      Button.ChooseSpellNorth,
+      Button.ChooseSpellEast,
+      Button.ChooseSpellSouth,
+      Button.ChooseSpellWest
+    ]
+    boardButtons.forEach(button => {
+      newButtons.push({
+        id: button,
+        location: {
+          type: LocationType.Board,
+          id: BoardSpace.Button
+        }
+      })
+    })
+*/
+
     this.material(MaterialType.Button).createItems(newButtons)
   }
 

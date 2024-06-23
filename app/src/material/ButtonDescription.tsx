@@ -4,6 +4,7 @@ import { Button } from '@gamepark/rivality/material/Button'
 import { ItemContext, TokenDescription } from '@gamepark/react-game'
 import { LocationType } from '@gamepark/rivality/material/LocationType'
 import { MaterialItem } from '@gamepark/rules-api'
+import { Memory } from '@gamepark/rivality/rules/Memory'
 import { RuleId } from '@gamepark/rivality/rules/RuleId'
 import Rotator from '../images/icon/rotator.png'
 import Validate from '../images/icon/validate.png'
@@ -16,7 +17,11 @@ export class ButtonDescription extends TokenDescription  {
   images = {
     [Button.Rotator]: Rotator,
     [Button.Validate]: Validate,
-    [Button.Cancel]: Cancel
+    [Button.Cancel]: Cancel,
+    [Button.ChooseSpellNorth]: Validate,
+    [Button.ChooseSpellEast]: Validate,
+    [Button.ChooseSpellSouth]: Validate,
+    [Button.ChooseSpellWest]: Validate
   }
 
   getItemExtraCss(item: MaterialItem, context: ItemContext){
@@ -25,14 +30,37 @@ export class ButtonDescription extends TokenDescription  {
         context.rules.isTurnToPlay(me)){
           const currentRule:RuleId|undefined=context.rules.game.rule?.id
           if (currentRule!==undefined){
+            // TODO - Rely on rules to know if a move is possible or not
+
             if (
-              // Display the rotator button next to player's hand on tile selection step
+              // Display the buttons on board at validation step
               (item.location.type===LocationType.Board &&
                currentRule===RuleId.ValidateTile) ||
 
-              // Display the rotator button on board at validation step
+              // Display the buttons next to player's hand on tile selection step
               (item.location.type===LocationType.PlayerButton &&
-               currentRule===RuleId.ChooseTile)
+               currentRule===RuleId.ChooseTile) ||
+
+              // Display the buttons on board at spell orientation selection step
+              (item.location.type===LocationType.Board &&
+               currentRule===RuleId.AskSpellOrientation &&
+               item.id==Button.ChooseSpellNorth &&
+               context.rules.remind(Memory.AppliedSpellNorth)!==true) ||
+
+              (item.location.type===LocationType.Board &&
+               currentRule===RuleId.AskSpellOrientation &&
+               item.id==Button.ChooseSpellEast &&
+               context.rules.remind(Memory.AppliedSpellEast)!==true) ||
+
+              (item.location.type===LocationType.Board &&
+               currentRule===RuleId.AskSpellOrientation &&
+               item.id==Button.ChooseSpellSouth &&
+               context.rules.remind(Memory.AppliedSpellSouth)!==true) ||
+
+              (item.location.type===LocationType.Board &&
+               currentRule===RuleId.AskSpellOrientation &&
+               item.id==Button.ChooseSpellWest &&
+               context.rules.remind(Memory.AppliedSpellWest)!==true)
             ){
               return showCss
             }

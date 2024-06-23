@@ -177,7 +177,7 @@ export class TableDesign {
     return { xMin: -55, xMax: 57, yMin: -35, yMax: 17 }
   }
 
-  boardCoordinates(_location: Location, context: LocationContext){
+  boardCoordinates(context: LocationContext){
     const { rules } = context
     const centerCoord=this.getBoardCenter(rules)
     return {x:centerCoord.x, y:centerCoord.y, z:0}

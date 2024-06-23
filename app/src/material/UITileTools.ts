@@ -1,5 +1,5 @@
 import { MaterialContext } from '@gamepark/react-game'
-import { Location } from '@gamepark/rules-api'
+import { Location, XYCoordinates } from '@gamepark/rules-api'
 import { LocationType } from '@gamepark/rivality/material/LocationType'
 import { MaterialType } from '@gamepark/rivality/material/MaterialType'
 import { Memory } from '@gamepark/rivality/rules/Memory'
@@ -17,7 +17,8 @@ export class UITileTools {
   }
 
   isActiveWizardSquare(location:Location, context: MaterialContext){
-    if (context.rules.state.rule?.id!==RuleId.ValidateTile)
+    const ruleId=context.rules.state.rule?.id
+    if (ruleId!==RuleId.ValidateTile && ruleId!==RuleId.AskSpellOrientation)
       return false
 
     const wizardLocation=this.activePlayerWizardLocation(context)
@@ -112,6 +113,43 @@ export class UITileTools {
       }
     }
     return false
+  }
+
+  activeSpellTargetCoordinates(context: MaterialContext, spellOrientation:Orientation): XYCoordinates|undefined {
+    // 1 - Find location of the tile with wizard
+    const wizardLocation=this.activePlayerWizardLocation(context)
+    if (wizardLocation===undefined)
+      return undefined
+
+    // 2 - Find tile with wizard
+    const tileX=wizardLocation.x!
+    const tileY=wizardLocation.y!
+
+    const wizardTile=context.rules.material(MaterialType.Tile)
+      .location(LocationType.Board)
+      .filter(item => item.location.x===tileX && item.location.y===tileY)
+    if (wizardTile.length <= 0)
+      return undefined
+
+    const tileItem=wizardTile.getItem()!
+    const tileId=tileItem.id
+    const tileOrientation=tileItem.location.rotation
+
+    // 3 - Find spell distance
+    const direction=tileTools.tileSideFromOrientations(spellOrientation, tileOrientation)
+    const spell=tileSpells.spell(tileId, direction)
+    if (spell.nbGolems <= 0)
+      return undefined
+
+    const spellDistance=spell.distance
+
+    switch (spellOrientation){
+      case Orientation.North: return {x:tileX, y:tileY-spellDistance}
+      case Orientation.South: return {x:tileX, y:tileY+spellDistance}
+      case Orientation.East: return {x:tileX+spellDistance, y:tileY}
+      case Orientation.West: return {x:tileX-spellDistance, y:tileY}
+    }
+    return undefined
   }
 }
 

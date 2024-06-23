@@ -48,12 +48,18 @@ export class BoardLocator extends GridLocator {
   }
 
   getPositionDeltaButton(item: MaterialItem, _context: ItemContext){
-    if (item.id===Button.Rotator)
-      return {x:tileDescription.width/2, y:-tileDescription.height/2, z:1}
-    if (item.id===Button.Validate)
-      return {x:tileDescription.width/2, y:tileDescription.height/2, z:1}
-    if (item.id===Button.Cancel)
-      return {x:-tileDescription.width/2, y:-tileDescription.height/2, z:1}
+    switch (item.id){
+      case Button.Rotator:
+        return {x:tileDescription.width/2, y:-tileDescription.height/2, z:1}
+      case Button.Validate:
+      case Button.ChooseSpellNorth:
+      case Button.ChooseSpellEast:
+      case Button.ChooseSpellSouth:
+      case Button.ChooseSpellWest:
+        return {x:tileDescription.width/2, y:tileDescription.height/2, z:1}
+      case Button.Cancel:
+        return {x:-tileDescription.width/2, y:-tileDescription.height/2, z:1}
+    }
     console.log("*** ERROR - Unsupported button")
     return {x:0, y:0, z:1}
   }
@@ -61,6 +67,10 @@ export class BoardLocator extends GridLocator {
   getPosition(item: MaterialItem, context: ItemContext) {
     let baseCoordinates=this.locationDescription.getCoordinates(item.location, context)
     let delta={x:0, y:0, z:0}
+
+    let isMainTileButton=false
+    let isTargetTileButton=false
+    let spellOrientation=Orientation.North
     switch (item.location.id){
       case BoardSpace.Tile:
         delta=this.getPositionDeltaTile()
@@ -72,13 +82,54 @@ export class BoardLocator extends GridLocator {
         delta=this.getPositionDeltaWizard()
         break
       case BoardSpace.Button:
-        const activeLocation=uiTileTools.activePlayerWizardLocation(context)
-        if (activeLocation!==undefined){
-          baseCoordinates=this.locationDescription.getCoordinates(
-            activeLocation,
-            context
-          )
+        switch (item.id){
+          // Buttons around the main tile
+          case Button.Cancel:
+          case Button.Rotator:
+          case Button.Validate:
+            isMainTileButton=true
+            break
+
+          // Buttons around specific tiles
+          case Button.ChooseSpellNorth:
+            isTargetTileButton=true
+            spellOrientation=Orientation.North
+            break
+          case Button.ChooseSpellEast:
+            isTargetTileButton=true
+            spellOrientation=Orientation.East
+            break
+          case Button.ChooseSpellSouth:
+            isTargetTileButton=true
+            spellOrientation=Orientation.South
+            break
+          case Button.ChooseSpellWest:
+            isTargetTileButton=true
+            spellOrientation=Orientation.West
+            break
+
+          default:
+            console.log("*** ERROR - Unsupported button")
+            break
         }
+        if (isMainTileButton){
+          const activeLocation=uiTileTools.activePlayerWizardLocation(context)
+          if (activeLocation!==undefined){
+            baseCoordinates=this.locationDescription.getCoordinates(
+              activeLocation,
+              context
+            )
+          }
+        } else if (isTargetTileButton){
+          const targetCoords=uiTileTools.activeSpellTargetCoordinates(context, spellOrientation)
+          if (targetCoords!==undefined){
+            baseCoordinates=this.locationDescription.getCoordinatesFromXY(
+              targetCoords,
+              context
+            )
+          }
+        }
+
         delta=this.getPositionDeltaButton(item, context)
         break
     }

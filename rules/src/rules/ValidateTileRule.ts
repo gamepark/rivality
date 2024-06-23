@@ -1,4 +1,5 @@
-import { CustomMove, isSelectItemType, ItemMove, MaterialMove, PlayerTurnRule, XYCoordinates } from '@gamepark/rules-api'
+import { CustomMove, isSelectItemType, ItemMove, MaterialItem, MaterialMove, PlayerTurnRule, XYCoordinates } from '@gamepark/rules-api'
+import { BoardSpace } from '../material/BoardSpace'
 import { Button } from '../material/Button'
 import { CustomMoveType } from './CustomMoveType'
 import { LocationType } from '../material/LocationType'
@@ -8,13 +9,48 @@ import { RuleId } from './RuleId'
 import { wizardTools } from '../logic/WizardTools'
 
 export class ValidateTileRule extends PlayerTurnRule {
+  onRuleStart(){
+    const moves:MaterialMove[]=[]
+    // Remove any previous button
+    moves.push(this.material(MaterialType.Button).location(LocationType.Board).deleteItemsAtOnce())
+
+    // Add needed buttons
+    const newButtons:MaterialItem[]=[]
+    const boardButtons=[
+      Button.Rotator,
+      Button.Validate,
+      Button.Cancel
+    ]
+    boardButtons.forEach(button => {
+      newButtons.push({
+        id: button,
+        location: {
+          type: LocationType.Board,
+          id: BoardSpace.Button
+        }
+      })
+    })
+    moves.push(this.material(MaterialType.Button).createItemsAtOnce(newButtons))
+
+    return moves
+  }
+
+  onRuleEnd(){
+    // Remove all buttons
+    return [this.material(MaterialType.Button).location(LocationType.Board).deleteItemsAtOnce()]
+  }
+
   getPlayerMoves(): MaterialMove[] {
     // Possible actions: Validate, Turn tile, Abort
     return [
       this.rules().customMove(CustomMoveType.Validate),
       this.rules().customMove(CustomMoveType.RotateClockwise),
       this.rules().customMove(CustomMoveType.Cancel),
-      ...this.material(MaterialType.Button).location(LocationType.Board).selectItems()
+      ...this.material(MaterialType.Button)
+        .location(LocationType.Board)
+        .filter(item =>
+          [Button.Cancel, Button.Rotator, Button.Validate].includes(item.id))
+        .selectItems()
     ]
   }
 

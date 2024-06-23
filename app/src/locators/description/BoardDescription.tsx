@@ -1,9 +1,9 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
+import { Coordinates, Location, XYCoordinates } from '@gamepark/rules-api'
 import { LocationType } from '@gamepark/rivality/material/LocationType'
 import { MaterialType } from '@gamepark/rivality/material/MaterialType'
 import { LocationContext, LocationDescription, MaterialContext } from '@gamepark/react-game'
-import { Coordinates, Location } from '@gamepark/rules-api'
 import { spaceBetweenTiles, tileDescription } from '../../material/TileDescription'
 import { tableDesign } from '../position/TableDesign'
 
@@ -50,15 +50,22 @@ export class BoardDescription extends LocationDescription {
   }
 
   getCoordinates(location: Location, context: LocationContext): Coordinates  {
-    const baseCoordinates = this.getRegionCoordinates(location, context)
+    return this.getCoordinatesFromXY(
+      {x:location.x!, y:location.y!},
+      context
+    )
+  }
+
+  getCoordinatesFromXY(coords: XYCoordinates, context: LocationContext): Coordinates  {
+    const baseCoordinates = this.getRegionCoordinates(context)
     return {
-      x: baseCoordinates.x + (tileDescription.width +spaceBetweenTiles) * location.x!,
-      y: baseCoordinates.y + (tileDescription.height+spaceBetweenTiles) * location.y!,
+      x: baseCoordinates.x + (tileDescription.width +spaceBetweenTiles) * coords.x,
+      y: baseCoordinates.y + (tileDescription.height+spaceBetweenTiles) * coords.y,
       z: 0
     }
   }
 
-  getRegionCoordinates(location: Location, context: LocationContext) {
-    return tableDesign.boardCoordinates(location, context)
+  getRegionCoordinates(context: LocationContext) {
+    return tableDesign.boardCoordinates(context)
   }
 }
