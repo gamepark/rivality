@@ -1,7 +1,6 @@
 /** @jsxImportSource @emotion/react */
-//import { Trans } from 'react-i18next'
+import { Trans } from 'react-i18next'
 
 export const ApplySpellEffectHeader = () => {
-  return <>Apply spell effect</>
-//  return <><Trans defaults="header.cast.spell"></Trans></>
+  return <><Trans defaults="header.apply.spell.effect"></Trans></>
 }

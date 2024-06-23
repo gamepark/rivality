@@ -28,5 +28,4 @@ export const AskGolemRemovalHeader = () => {
   } else {
     return <>{t('header.ask.golem.removal.player', { player })}</>
   }
-
 }

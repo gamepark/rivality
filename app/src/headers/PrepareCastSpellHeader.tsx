@@ -1,7 +1,6 @@
 /** @jsxImportSource @emotion/react */
-//import { Trans } from 'react-i18next'
+import { Trans } from 'react-i18next'
 
 export const PrepareCastSpellHeader = () => {
-  return <>Prepare cast spell</>
-//  return <><Trans defaults="header.cast.spell"></Trans></>
+  return <><Trans defaults="header.prepare.cast.spell"></Trans></>
 }
