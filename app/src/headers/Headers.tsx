@@ -4,14 +4,13 @@ import { ComponentType } from 'react'
 import { ApplySpellEffectHeader } from './ApplySpellEffectHeader'
 import { AskGolemRemovalHeader } from './AskGolemRemovalHeader'
 import { AskSpellOrientationHeader } from './AskSpellOrientationHeader'
-import { SelectCastSpellOrientationHeader } from './SelectCastSpellOrientationHeader'
 import { ChooseTileHeader } from './ChooseTileHeader'
 import { EndTurnHeader } from './EndTurnHeader'
 import { PrepareCastSpellHeader } from './PrepareCastSpellHeader'
 import { RemoveGolemHeader } from './RemoveGolemHeader'
-import { StartHeader } from './StartHeader'
+import { SelectCastSpellOrientationHeader } from './SelectCastSpellOrientationHeader'
 import { ShufflePlayer1DeckHeader } from './ShufflePlayer1DeckHeader'
-import { ValidateTileHeader } from './ValidateTileHeader'
+import { StartHeader } from './StartHeader'
 
 export const Headers: Partial<Record<RuleId, ComponentType>> = {
   [RuleId.Start]: StartHeader,
@@ -21,7 +20,6 @@ export const Headers: Partial<Record<RuleId, ComponentType>> = {
   [RuleId.AskGolemRemoval]: AskGolemRemovalHeader,
   [RuleId.EndTurn]: EndTurnHeader,
   [RuleId.ShufflePlayer1Deck]: ShufflePlayer1DeckHeader,
-  [RuleId.ValidateTile]: ValidateTileHeader,
   [RuleId.PrepareCastSpell]: PrepareCastSpellHeader,
   [RuleId.ApplySpellEffect]: ApplySpellEffectHeader,
   [RuleId.AskSpellOrientation]: AskSpellOrientationHeader

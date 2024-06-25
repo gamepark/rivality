@@ -1,17 +1,16 @@
 /** @jsxImportSource @emotion/react */
-import { MaterialTutorial, TutorialStep } from '@gamepark/react-game'
-import { isCustomMoveType, isMoveItemType, isSelectItemType, MaterialGame, MaterialMove, MoveItem } from '@gamepark/rules-api'
 import { css } from '@emotion/react'
-import { Button } from '@gamepark/rivality/material/Button'
-import { CustomMoveType } from '@gamepark/rivality/rules/CustomMoveType'
+import { MaterialTutorial, TutorialStep } from '@gamepark/react-game'
+import { Spell } from '@gamepark/rivality/logic/TileSpells'
 import { LocationType } from '@gamepark/rivality/material/LocationType'
 import { MaterialType } from '@gamepark/rivality/material/MaterialType'
-import { PlayerId } from '@gamepark/rivality/PlayerId'
-import { Spell } from '@gamepark/rivality/logic/TileSpells'
 import { Tile } from '@gamepark/rivality/material/Tile'
+import { PlayerId } from '@gamepark/rivality/PlayerId'
+import { CustomMoveType } from '@gamepark/rivality/rules/CustomMoveType'
+import { isCustomMoveType, isMoveItemType, MaterialGame, MaterialMove, MoveItem } from '@gamepark/rules-api'
+import { Trans } from 'react-i18next'
 import { SpellSymbols, SymbolBreakShields, SymbolShield } from '../material/help/HelpTools'
 import { TutorialSetup } from './TutorialSetup'
-import { Trans } from 'react-i18next'
 
 const me = 1
 const opponent = 2
@@ -793,31 +792,32 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     }
   ]
 
-  validateMove(move:MaterialMove, game:MaterialGame){
-    let value1=isCustomMoveType(CustomMoveType.Validate)(move)
-    let value2=false
+  validateMove(_move:MaterialMove, _game:MaterialGame){
+    //let value1=isCustomMoveType(CustomMoveType.Validate)(move)
+    //let value2=false
 
-    if (isSelectItemType(MaterialType.Button)(move)){
+    /*if (isSelectItemType(MaterialType.Button)(move)){
       const buttonItems=game.items[MaterialType.Button]
       if (buttonItems!==undefined){
         const buttonId=buttonItems[move.itemIndex].id
         value2=(buttonId===Button.Validate)
       }
-    }
-    return value1 || value2
+    }*/
+    //return value1 || value2
+    return false
   }
 
-  rotateMove(move:MaterialMove, game:MaterialGame){
+  rotateMove(move:MaterialMove, _game:MaterialGame){
     let value1=isCustomMoveType(CustomMoveType.RotateClockwise)(move)
     let value2=false
 
-    if (isSelectItemType(MaterialType.Button)(move)){
+    /*if (isSelectItemType(MaterialType.Button)(move)){
       const buttonItems=game.items[MaterialType.Button]
       if (buttonItems!==undefined){
         const buttonId=buttonItems[move.itemIndex].id
         value2=(buttonId===Button.Rotator)
       }
-    }
+    }*/
     return value1 || value2
   }
 }

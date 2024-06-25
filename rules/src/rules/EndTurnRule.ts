@@ -1,9 +1,9 @@
 import { MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
-import { Memory } from './Memory'
 import { Orientation } from '../Orientation'
 import { RuleId } from '../rules/RuleId'
+import { Memory } from './Memory'
 
 export class EndTurnRule extends PlayerTurnRule {
   onRuleStart(): MaterialMove[] {
@@ -14,19 +14,6 @@ export class EndTurnRule extends PlayerTurnRule {
     this.forget(Memory.SpellTileX)
     this.forget(Memory.SpellTileY)
 
-    // Find current hand orientation
-    let handTilesItems=this
-      .material(MaterialType.Tile)
-      .location(LocationType.PlayerHand)
-      .player(this.getActivePlayer())
-      .getItems()
-    let currentOrientation=Orientation.North
-    let newCardCoord=1
-    if (handTilesItems.length>0){
-      currentOrientation=handTilesItems[0].location.rotation
-      newCardCoord=3-handTilesItems[0].location.x!
-    }
-
     // Draw card if possible
     moves.push(...this
       .material(MaterialType.Tile)
@@ -35,8 +22,7 @@ export class EndTurnRule extends PlayerTurnRule {
       .deck().deal({
         type:LocationType.PlayerHand,
         player:this.getActivePlayer(),
-        x:newCardCoord,
-        rotation:currentOrientation
+        rotation:Orientation.North
       }, 1)
     )
 

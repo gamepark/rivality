@@ -59,16 +59,12 @@ export class StartRule extends PlayerTurnRule {
           })
         )
 
-      // Deal 2 cards
-      for (let i=1; i<=2; i++){
         moves.push(...initialDeck.deal({
           type: LocationType.PlayerHand,
           player:1,
-          x:i,
           rotation: Orientation.North
-          }, 1)
+          }, 2)
         )
-      }
 
       // Rebuild deck
       // Nothing to do

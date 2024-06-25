@@ -33,10 +33,6 @@ export class ButtonDescription extends TokenDescription  {
             // TODO - Rely on rules to know if a move is possible or not
 
             if (
-              // Display the buttons on board at validation step
-              (item.location.type===LocationType.Board &&
-               currentRule===RuleId.ValidateTile) ||
-
               // Display the buttons next to player's hand on tile selection step
               (item.location.type===LocationType.PlayerButton &&
                currentRule===RuleId.ChooseTile) ||

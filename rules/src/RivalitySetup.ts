@@ -1,19 +1,18 @@
-import { MaterialGameSetup, MaterialItem } from '@gamepark/rules-api'
-import { RivalityOptions } from './RivalityOptions'
-import { RivalityRules } from './RivalityRules'
+import { MaterialGameSetup } from '@gamepark/rules-api'
+import { tileTools } from './logic/TileTools'
 import { BoardSpace } from './material/BoardSpace'
-import { Button } from './material/Button'
+import { Golem, golems } from './material/Golem'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
-import { Memory } from './rules/Memory'
-import { tiles, Tile } from './material/Tile'
-import { golems, Golem } from './material/Golem'
-import { wizards, Wizard } from './material/Wizard'
-import { tileTools } from './logic/TileTools'
+import { Tile, tiles } from './material/Tile'
+import { Wizard, wizards } from './material/Wizard'
 import { Orientation } from './Orientation'
 import { PlayerId } from './PlayerId'
-import { RuleId } from './rules/RuleId'
+import { RivalityOptions } from './RivalityOptions'
+import { RivalityRules } from './RivalityRules'
 import { tests } from './RivalityTests'
+import { Memory } from './rules/Memory'
+import { RuleId } from './rules/RuleId'
 
 function isTest(options: RivalityOptions) : boolean {
   return (options.test !==undefined && options.test>0)
@@ -29,7 +28,6 @@ export class RivalitySetup extends MaterialGameSetup<PlayerId, MaterialType, Loc
     // Global parameters
     this.memorize(Memory.RealTimeScore, options.realTimeScore ?? false)
 
-    this.setupButtons()
     this.setupTiles(options)
     this.setupGolems(options)
     this.setupWizards(options)
@@ -42,40 +40,6 @@ export class RivalitySetup extends MaterialGameSetup<PlayerId, MaterialType, Loc
     }
 
     this.setupPlayerHands(options)
-  }
-
-  setupButtons() {
-    const newButtons:MaterialItem[]=[
-      {
-        id: Button.Rotator,
-        location: {
-          type: LocationType.PlayerButton
-        }
-      }
-    ]
-
-/*
-    const boardButtons=[
-      Button.Rotator,
-      Button.Validate,
-      Button.Cancel,
-      Button.ChooseSpellNorth,
-      Button.ChooseSpellEast,
-      Button.ChooseSpellSouth,
-      Button.ChooseSpellWest
-    ]
-    boardButtons.forEach(button => {
-      newButtons.push({
-        id: button,
-        location: {
-          type: LocationType.Board,
-          id: BoardSpace.Button
-        }
-      })
-    })
-*/
-
-    this.material(MaterialType.Button).createItems(newButtons)
   }
 
   setupTiles(options: RivalityOptions) {
@@ -338,14 +302,11 @@ export class RivalitySetup extends MaterialGameSetup<PlayerId, MaterialType, Loc
       }
 
       const deck = this.material(MaterialType.Tile).location(LocationType.PlayerDeck).player(player).deck()
-      for (let i=1; i<=2; i++){
-        deck.deal({
+      deck.deal({
           type:LocationType.PlayerHand,
           player:player,
-          x:i,
           rotation: defaultOrientation
-        }, 1)
-      }
+        }, 2)
     }
   }
 

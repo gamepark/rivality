@@ -1,13 +1,13 @@
-import { CustomMove, isMoveItemType, isSelectItemType, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
+import { isMoveItemType, ItemMove, MaterialMove, PlayerTurnRule, PlayMoveContext } from '@gamepark/rules-api'
 import { tileTools } from '../logic/TileTools'
 import { wizardTools } from '../logic/WizardTools'
 import { BoardSpace } from '../material/BoardSpace'
 import { Golem } from '../material/Golem'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
-import { RuleId } from '../rules/RuleId'
-import { Orientation } from '../Orientation'
-import { CustomMoveType } from './CustomMoveType'
+import { orientations } from '../Orientation'
+import { Memory } from './Memory'
+import { RuleId } from './RuleId'
 
 export class ChooseTileRule extends PlayerTurnRule {
   onRuleStart(): MaterialMove[] {
@@ -57,99 +57,64 @@ export class ChooseTileRule extends PlayerTurnRule {
       .location(LocationType.PlayerHand)
       .player(this.getActivePlayer())
 
-    // Orientation of hand cards
-    moves.push(this.rules().customMove(CustomMoveType.RotateClockwise))
-
-    moves.push(...this.material(MaterialType.Button).location(LocationType.PlayerButton).selectItems())
-
-    // Tile moves
-    let handTilesItems=handTiles.getItems()
-    let currentOrientation=Orientation.North
-    if (handTilesItems.length>0){
-      currentOrientation=handTilesItems[0].location.rotation
-    }
-
     let availableBoardCoords=tileTools.possibleTileLocations(
       this.material(MaterialType.Tile)
       .location(LocationType.Board)
       .getItems()
     )
 
-    for (let i=0; i<availableBoardCoords.length; i++){
-      let coord=availableBoardCoords[i]
-      moves.push(...handTiles.moveItems({
-        type: LocationType.Board,
-        id: BoardSpace.Tile,
-        x: coord.x,
-        y: coord.y,
-        rotation: currentOrientation
-      }))
+    for (const orientation of orientations) {
+      for (let i = 0; i < availableBoardCoords.length; i++) {
+        let coord = availableBoardCoords[i]
+        moves.push(...handTiles.moveItems({
+          type: LocationType.Board,
+          id: BoardSpace.Tile,
+          x: coord.x,
+          y: coord.y,
+          rotation: orientation
+        }))
+      }
     }
 
     return moves
   }
 
-  rotateActions(){
-    // 1 - Get current orientation
-    let currentOrientation=Orientation.North
-    let handTilesItems=this
-      .material(MaterialType.Tile)
-      .location(LocationType.PlayerHand)
-      .player(this.getActivePlayer())
-      .getItems()
-    if (handTilesItems.length>0){
-      currentOrientation=handTilesItems[0].location.rotation
-    }
-
-    // 2 - Compute new orientation
-    let orientation=Orientation.North
-    switch (currentOrientation){
-      case Orientation.West:  orientation=Orientation.North; break
-      case Orientation.North: orientation=Orientation.East; break
-      case Orientation.East:  orientation=Orientation.South; break
-      case Orientation.South: orientation=Orientation.West; break
-    }
-
-    // 3 - Apply new orientation
-    return [this.material(MaterialType.Tile).location(LocationType.PlayerHand).player(this.getActivePlayer()).moveItemsAtOnce({ rotation:orientation })]
-  }
-
-  afterItemMove(move: ItemMove): MaterialMove[] {
-    if (isSelectItemType(MaterialType.Button)(move)){
-      return this.rotateActions()
-    } else if (isMoveItemType(MaterialType.Tile)(move)){
-      // Move the wizard and a golem to the tile
-      // Then apply tile effects
-      return [
-        ...this.material(MaterialType.Wizard).filter(item => item.id==wizardTools.playerWizard(this.getActivePlayer())).moveItems(
-          {
-            type: LocationType.Board,
-            id: BoardSpace.Wizard,
-            x:move.location.x,
-            y:move.location.y
-          }
-        ),
-        this.material(MaterialType.Golem)
-          .location(LocationType.PlayerGolemStack)
-          .player(this.getActivePlayer())
-          .sort(item => -item.location.x!)
-          .limit(1).moveItemsAtOnce(
-          {
-            type: LocationType.Board,
-            id: BoardSpace.Golem,
-            x:move.location.x,
-            y:move.location.y
-          }
-        ),
-        this.rules().startPlayerTurn(RuleId.ValidateTile, this.getActivePlayer())
-      ]
-    }
-    return []
-  }
-
-  onCustomMove(move: CustomMove): MaterialMove[] {
-    if (move.type===CustomMoveType.RotateClockwise){
-      return this.rotateActions()
+  afterItemMove(move: ItemMove, context?: PlayMoveContext): MaterialMove[] {
+    if (isMoveItemType(MaterialType.Tile)(move)) {
+      if (move.location.type === LocationType.Board) {
+        if (context?.local) {
+          this.memorize(Memory.TilePreview, move.itemIndex)
+        } else {
+          this.forget(Memory.TilePreview)
+          // Move the wizard and a golem to the tile
+          // Then apply tile effects
+          return [
+            ...this.material(MaterialType.Wizard).filter(item => item.id == wizardTools.playerWizard(this.getActivePlayer())).moveItems(
+              {
+                type: LocationType.Board,
+                id: BoardSpace.Wizard,
+                x: move.location.x,
+                y: move.location.y
+              }
+            ),
+            this.material(MaterialType.Golem)
+              .location(LocationType.PlayerGolemStack)
+              .player(this.getActivePlayer())
+              .sort(item => -item.location.x!)
+              .limit(1).moveItemsAtOnce(
+              {
+                type: LocationType.Board,
+                id: BoardSpace.Golem,
+                x: move.location.x,
+                y: move.location.y
+              }
+            ),
+            this.rules().startPlayerTurn(RuleId.PrepareCastSpell, this.getActivePlayer())
+          ]
+        }
+      } else if (move.location.type === LocationType.PlayerHand) {
+        this.forget(Memory.TilePreview)
+      }
     }
     return []
   }

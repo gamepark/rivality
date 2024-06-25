@@ -1,33 +1,35 @@
 import { css } from '@emotion/react'
-import { Tile } from '@gamepark/rivality/material/Tile'
 import { CardDescription, ItemContext } from '@gamepark/react-game'
+import { LocationType } from '@gamepark/rivality/material/LocationType'
+import { Tile } from '@gamepark/rivality/material/Tile'
+import { Memory } from '@gamepark/rivality/rules/Memory'
 import { MaterialItem } from '@gamepark/rules-api'
-import TileBack from '../images/TileBack.jpg'
-import WellOfMana from '../images/WellOfMana.jpg'
-import StoneCircle_x_41 from '../images/StoneCircle_x_41.jpg'
-import StoneCircle_x_41_star from '../images/StoneCircle_x_41_star.jpg'
-import StoneCircle_31_11 from '../images/StoneCircle_31_11.jpg'
-import StoneCircle_11_31 from '../images/StoneCircle_11_31.jpg'
-import StoneCircle_12_31 from '../images/StoneCircle_12_31.jpg'
-import StoneCircle_31_12 from '../images/StoneCircle_31_12.jpg'
-import StoneCircle_11_32 from '../images/StoneCircle_11_32.jpg'
-import StoneCircle_32_11 from '../images/StoneCircle_32_11.jpg'
-import StoneCircle_21_22 from '../images/StoneCircle_21_22.jpg'
-import StoneCircle_22_21 from '../images/StoneCircle_22_21.jpg'
-import Cottage_12_21_23B from '../images/Cottage_12_21_23b.jpg'
-import Cottage_23B_12_21 from '../images/Cottage_23b_12_21.jpg'
-import Cottage_22_23B_11 from '../images/Cottage_22_23b_11.jpg'
-import Cottage_31_23B_x from '../images/Cottage_31_23b_x.jpg'
 import Cottage_11_23B_22 from '../images/Cottage_11_23b_22.jpg'
+import Cottage_12_21_23B from '../images/Cottage_12_21_23b.jpg'
+import Cottage_22_23B_11 from '../images/Cottage_22_23b_11.jpg'
+import Cottage_23B_12_21 from '../images/Cottage_23b_12_21.jpg'
 import Cottage_23B_31_x from '../images/Cottage_23b_31_x.jpg'
-import Cottage_32_23B_x from '../images/Cottage_32_23b_x.jpg'
 import Cottage_23B_32_x from '../images/Cottage_23b_32_x.jpg'
+import Cottage_31_23B_x from '../images/Cottage_31_23b_x.jpg'
+import Cottage_32_23B_x from '../images/Cottage_32_23b_x.jpg'
 import Fortress_21_23B_22 from '../images/Fortress_21_23b_22.jpg'
 import Fortress_22_13B_31 from '../images/Fortress_22_13b_31.jpg'
+import Fortress_22_22_23B from '../images/Fortress_22_22_23b.jpg'
+import Fortress_22_23B_21 from '../images/Fortress_22_23b_21.jpg'
 import Fortress_23B_22_22 from '../images/Fortress_23b_22_22.jpg'
 import Fortress_31_22_13B from '../images/Fortress_31_22_13b.jpg'
-import Fortress_22_23B_21 from '../images/Fortress_22_23b_21.jpg'
-import Fortress_22_22_23B from '../images/Fortress_22_22_23b.jpg'
+import StoneCircle_11_31 from '../images/StoneCircle_11_31.jpg'
+import StoneCircle_11_32 from '../images/StoneCircle_11_32.jpg'
+import StoneCircle_12_31 from '../images/StoneCircle_12_31.jpg'
+import StoneCircle_21_22 from '../images/StoneCircle_21_22.jpg'
+import StoneCircle_22_21 from '../images/StoneCircle_22_21.jpg'
+import StoneCircle_31_11 from '../images/StoneCircle_31_11.jpg'
+import StoneCircle_31_12 from '../images/StoneCircle_31_12.jpg'
+import StoneCircle_32_11 from '../images/StoneCircle_32_11.jpg'
+import StoneCircle_x_41 from '../images/StoneCircle_x_41.jpg'
+import StoneCircle_x_41_star from '../images/StoneCircle_x_41_star.jpg'
+import TileBack from '../images/TileBack.jpg'
+import WellOfMana from '../images/WellOfMana.jpg'
 import { TileHelp } from './help/TileHelp'
 import { uiTileTools } from './UITileTools'
 
@@ -67,18 +69,28 @@ export class TileDescription extends CardDescription {
     [Tile.Fortress_22_22_23B]: Fortress_22_22_23B
   }
 
-  getItemExtraCss(item: MaterialItem, context: ItemContext){
-    const location=item.location
+  getItemExtraCss(item: MaterialItem, context: ItemContext) {
+    const location = item.location
     if (
       uiTileTools.isHighlightedSquare(location, context) ||
       uiTileTools.isActiveWizardSquare(location, context)
-    ){
+    ) {
       return css`filter: contrast(1.5)`
     }
-    if (uiTileTools.isUnderAttackSquare(location, context)){
+    if (uiTileTools.isUnderAttackSquare(location, context)) {
       return css`filter: opacity(0.5) drop-shadow(0 0 0 red)`
     }
     return css``
+  }
+
+  getShortClickLocalMove({ rules, player, index, type }: ItemContext) {
+    const material = rules.material(type).index(index)
+    const item = material.getItem()!
+    if ((item.location.type === LocationType.PlayerHand && item.location.player === player)
+      || rules.remind(Memory.TilePreview) === index) {
+      return material.moveItem({ ...item.location, rotation: (item.location.rotation % 4) + 1 })
+    }
+    return
   }
 }
 

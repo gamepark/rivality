@@ -45,10 +45,6 @@ export class PlayerHandLocator extends HandLocator {
     return res
   }
 
-  getItemIndex(item: MaterialItem, _context: ItemContext): number {
-    return item.location.x!-1
-  }
-
   getRotateZ(item: MaterialItem, context: ItemContext): number {
     const nbPlayers=context.rules.game.players.length
 

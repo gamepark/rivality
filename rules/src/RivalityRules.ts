@@ -1,51 +1,42 @@
 import {
+  CompetitiveRank,
   FillGapStrategy,
   hideItemId,
   hideItemIdToOthers,
-  HidingStrategy,
-  MaterialItem,
-  SecretMaterialRules,
+  isMoveItemType,
+  LocalMovePreview,
+  MaterialGame,
+  MaterialMove,
   PositiveSequenceStrategy,
-  CompetitiveRank, MaterialGame, MaterialMove
+  SecretMaterialRules
 } from '@gamepark/rules-api'
+import { score } from './logic/Score'
+import { tileTools } from './logic/TileTools'
+import { wizardTools } from './logic/WizardTools'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
+import { PlayerId } from './PlayerId'
 import { ApplySpellEffectRule } from './rules/ApplySpellEffectRule'
 import { AskGolemRemovalRule } from './rules/AskGolemRemovalRule'
 import { AskSpellOrientationRule } from './rules/AskSpellOrientationRule'
 import { ChooseTileRule } from './rules/ChooseTileRule'
 import { EndTurnRule } from './rules/EndTurnRule'
+import { Memory } from './rules/Memory'
 import { PrepareCastSpellRule } from './rules/PrepareCastSpellRule'
 import { RemoveGolemRule } from './rules/RemoveGolemRule'
+import { RuleId } from './rules/RuleId'
 import { SelectCastSpellOrientationRule } from './rules/SelectCastSpellOrientationRule'
 import { ShufflePlayer1DeckRule } from './rules/ShufflePlayer1DeckRule'
 import { StartRule } from './rules/StartRule'
-import { ValidateTileRule } from './rules/ValidateTileRule'
-import { PlayerId } from './PlayerId'
-import { RuleId } from './rules/RuleId'
-import { score } from './logic/Score'
-import { tileTools } from './logic/TileTools'
-import { wizardTools } from './logic/WizardTools'
-
-export const hideCardWhenNotRotated: HidingStrategy = (
-  item: MaterialItem
-) => {
-  return item.location.rotation ? [] : ['id']
-}
-export const alwaysHide: HidingStrategy = () => {
-  return ['id']
-}
-
-export const alwaysShow: HidingStrategy = () => {
-  return []
-}
+import isEqual from 'lodash/isEqual'
 
 /**
  * This class implements the rules of the board game.
  * It must follow Game Park "Rules" API so that the Game Park server can enforce the rules.
  */
 export class RivalityRules extends SecretMaterialRules<PlayerId, MaterialType, LocationType>
-  implements CompetitiveRank<MaterialGame<PlayerId, MaterialType, LocationType>, MaterialMove<PlayerId, MaterialType, LocationType>, PlayerId> {
+  implements CompetitiveRank<MaterialGame<PlayerId, MaterialType, LocationType>, MaterialMove<PlayerId, MaterialType, LocationType>, PlayerId>,
+    LocalMovePreview<MaterialMove<PlayerId, MaterialType, LocationType>> {
   rules = {
     [RuleId.Start]: StartRule,
     [RuleId.ChooseTile]: ChooseTileRule,
@@ -54,7 +45,6 @@ export class RivalityRules extends SecretMaterialRules<PlayerId, MaterialType, L
     [RuleId.AskGolemRemoval]: AskGolemRemovalRule,
     [RuleId.EndTurn]: EndTurnRule,
     [RuleId.ShufflePlayer1Deck]: ShufflePlayer1DeckRule,
-    [RuleId.ValidateTile]: ValidateTileRule,
     [RuleId.PrepareCastSpell]: PrepareCastSpellRule,
     [RuleId.ApplySpellEffect]: ApplySpellEffectRule,
     [RuleId.AskSpellOrientation]: AskSpellOrientationRule
@@ -62,10 +52,10 @@ export class RivalityRules extends SecretMaterialRules<PlayerId, MaterialType, L
 
   locationsStrategies = {
     [MaterialType.Tile]: {
+      [LocationType.PlayerHand]: new PositiveSequenceStrategy(),
       [LocationType.PlayerDeck]: new PositiveSequenceStrategy()
     },
-    [MaterialType.Wizard]: {
-    },
+    [MaterialType.Wizard]: {},
     [MaterialType.Golem]: {
       [LocationType.Board]: new PositiveSequenceStrategy('z'), // sequence on Z
       [LocationType.PlayerGolemStack]: new FillGapStrategy()
@@ -75,8 +65,7 @@ export class RivalityRules extends SecretMaterialRules<PlayerId, MaterialType, L
   hidingStrategies = {
     [MaterialType.Tile]: {
       [LocationType.PlayerDeck]: hideItemId, // alwaysHide,
-      [LocationType.PlayerHand]: hideItemIdToOthers,
-      [LocationType.Board]: alwaysShow
+      [LocationType.PlayerHand]: hideItemIdToOthers
     }
   }
 
@@ -84,20 +73,28 @@ export class RivalityRules extends SecretMaterialRules<PlayerId, MaterialType, L
     return false
   }
 
+  previewMove(move: MaterialMove) {
+    if (isMoveItemType(MaterialType.Tile)(move) && move.location.type === LocationType.Board) {
+      const tilePreview = this.remind(Memory.TilePreview)
+      return tilePreview !== move.itemIndex || !isEqual(this.material(MaterialType.Tile).getItem(move.itemIndex)?.location, move.location)
+    }
+    return false
+  }
+
   rankPlayers(playerA: PlayerId, playerB: PlayerId): number {
-    const playerScores=[
+    const playerScores = [
       this.computeScore(1),
       this.computeScore(2),
       this.computeScore(3)
     ]
-    const playerControllingWellOfMana:PlayerId|undefined=this.getPlayerControllingWellOfMana()
+    const playerControllingWellOfMana: PlayerId | undefined = this.getPlayerControllingWellOfMana()
 
-    let highscore=playerScores[0]
-    if (playerScores[1]>highscore) highscore=playerScores[1]
-    if (playerScores[2]>highscore) highscore=playerScores[2]
+    let highscore = playerScores[0]
+    if (playerScores[1] > highscore) highscore = playerScores[1]
+    if (playerScores[2] > highscore) highscore = playerScores[2]
 
-    let nbPlayersWithHighScore=0
-    for (let i=0; i<3; i++){
+    let nbPlayersWithHighScore = 0
+    for (let i = 0; i < 3; i++) {
       if (playerScores[i] == highscore)
         nbPlayersWithHighScore++
     }
@@ -107,16 +104,16 @@ export class RivalityRules extends SecretMaterialRules<PlayerId, MaterialType, L
     // even if his/her score is lower than the highscore
     //
     // then players are ranked through their score
-    if (nbPlayersWithHighScore>1){
-      if (playerA===playerControllingWellOfMana)
+    if (nbPlayersWithHighScore > 1) {
+      if (playerA === playerControllingWellOfMana)
         return -1
-      if (playerB===playerControllingWellOfMana)
+      if (playerB === playerControllingWellOfMana)
         return 1
     }
 
     // Then rank by score
-    const scoreA=playerScores[playerA-1]
-    const scoreB=playerScores[playerB-1]
+    const scoreA = playerScores[playerA - 1]
+    const scoreB = playerScores[playerB - 1]
 
     if (scoreA < scoreB)
       return 1
@@ -126,7 +123,7 @@ export class RivalityRules extends SecretMaterialRules<PlayerId, MaterialType, L
   }
 
   // Do not use getScore() in order to rank players according to the rules of the game
-  computeScore(player: PlayerId){
+  computeScore(player: PlayerId) {
     return score.playerScore(
       player,
       this.material(MaterialType.Tile).location(LocationType.Board),
@@ -135,28 +132,28 @@ export class RivalityRules extends SecretMaterialRules<PlayerId, MaterialType, L
     )
   }
 
-  getPlayerControllingWellOfMana() : PlayerId|undefined {
+  getPlayerControllingWellOfMana(): PlayerId | undefined {
     return score.playerControllingWellOfMana(
       this.material(MaterialType.Golem).location(LocationType.Board)
     )
   }
 
   // To get the value of the tile occupied by the wizard of the given player
-  computeWizardTileScore(player: PlayerId){
-    const playerWizard=wizardTools.playerWizard(player)
+  computeWizardTileScore(player: PlayerId) {
+    const playerWizard = wizardTools.playerWizard(player)
 
-    const wizardLocation=this.material(MaterialType.Wizard)
+    const wizardLocation = this.material(MaterialType.Wizard)
       .location(LocationType.Board)
-      .filter(item => item.id===playerWizard)
+      .filter(item => item.id === playerWizard)
       .getItem()!
       .location!
 
-    if (wizardLocation!==undefined){
-      const tileAtWizardLocation=this.material(MaterialType.Tile)
+    if (wizardLocation !== undefined) {
+      const tileAtWizardLocation = this.material(MaterialType.Tile)
         .location(LocationType.Board)
-        .filter(item => item.location.x===wizardLocation.x && item.location.y===wizardLocation.y)
-      if (tileAtWizardLocation.length>0){
-        const tile=tileAtWizardLocation.limit(1).getItem()!.id
+        .filter(item => item.location.x === wizardLocation.x && item.location.y === wizardLocation.y)
+      if (tileAtWizardLocation.length > 0) {
+        const tile = tileAtWizardLocation.limit(1).getItem()!.id
         return tileTools.tileScore(tile)
       }
     }

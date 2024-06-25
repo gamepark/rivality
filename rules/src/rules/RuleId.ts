@@ -6,8 +6,7 @@ export enum RuleId {
   AskGolemRemoval      = 5,
   EndTurn              = 6,
   ShufflePlayer1Deck   = 7,
-  ValidateTile         = 8,
-  PrepareCastSpell     = 9,
-  ApplySpellEffect     = 10,
-  AskSpellOrientation  = 11
+  PrepareCastSpell     = 8,
+  ApplySpellEffect     = 9,
+  AskSpellOrientation  = 10
 }

@@ -6,5 +6,6 @@ export enum Memory {
   AppliedSpellNorth = 5,
   AppliedSpellEast  = 6,
   AppliedSpellSouth = 7,
-  AppliedSpellWest  = 8
+  AppliedSpellWest  = 8,
+  TilePreview       = 9
 }
