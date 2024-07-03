@@ -488,30 +488,19 @@ export class RivalityTests {
     }
 
     // Players' hands
-    if (player1Tile1!==undefined){
-      this.getTile(setup, player1Tile1)
-        .moveItems({
-          type:LocationType.PlayerHand,
-          player:1,
-          x:2,
-          rotation: Orientation.North
-        })
-    }
     if (player1Tile2!==undefined){
       this.getTile(setup, player1Tile2)
         .moveItems({
           type:LocationType.PlayerHand,
           player:1,
-          x:1,
           rotation: Orientation.North
         })
     }
-    if (player2Tile1!==undefined){
-      this.getTile(setup, player2Tile1)
+    if (player1Tile1!==undefined){
+      this.getTile(setup, player1Tile1)
         .moveItems({
           type:LocationType.PlayerHand,
-          player:2,
-          x:2,
+          player:1,
           rotation: Orientation.North
         })
     }
@@ -520,16 +509,14 @@ export class RivalityTests {
         .moveItems({
           type:LocationType.PlayerHand,
           player:2,
-          x:1,
           rotation: Orientation.North
         })
     }
-    if (player3Tile1!==undefined){
-      this.getTile(setup, player3Tile1)
+    if (player2Tile1!==undefined){
+      this.getTile(setup, player2Tile1)
         .moveItems({
           type:LocationType.PlayerHand,
-          player:3,
-          x:2,
+          player:2,
           rotation: Orientation.North
         })
     }
@@ -538,7 +525,14 @@ export class RivalityTests {
         .moveItems({
           type:LocationType.PlayerHand,
           player:3,
-          x:1,
+          rotation: Orientation.North
+        })
+    }
+    if (player3Tile1!==undefined){
+      this.getTile(setup, player3Tile1)
+        .moveItems({
+          type:LocationType.PlayerHand,
+          player:3,
           rotation: Orientation.North
         })
     }
@@ -573,7 +567,7 @@ export class RivalityTests {
     // Move the Well of Mana to the center of the board
     setup
       .material(MaterialType.Tile)
-      .filter(item => item.id==Tile.WellOfMana)
+      .filter(item => item.id===Tile.WellOfMana)
       .moveItems({
         type: LocationType.Board,
         id: BoardSpace.Tile,
@@ -609,7 +603,7 @@ export class RivalityTests {
         type: LocationType.PlayerDeck,
         player: 2
       }, nbTilesForPlayer2)
-    } else if (nbPlayers==3){
+    } else if (nbPlayers===3){
       // 3 players
       let nbTilesForPlayer1=Math.floor(nbTilesInDeck/3)
       let nbTilesForPlayer2=nbTilesForPlayer1
@@ -810,11 +804,11 @@ export class RivalityTests {
       if (nbShields>1)
         title+="s"
 
-      if (tileControl==TileControl.ControlledByOpponent){
+      if (tileControl===TileControl.ControlledByOpponent){
         title+=" - tile controlled by opponent"
-      } else if (tileControl==TileControl.ControlledByPlayer){
+      } else if (tileControl===TileControl.ControlledByPlayer){
         title+=" - tile controlled by player"
-      } else if (tileControl==TileControl.FiveOpponentGolems){
+      } else if (tileControl===TileControl.FiveOpponentGolems){
         title+=" - tile with 5 opponent golems"
       }
 
@@ -835,32 +829,32 @@ export class RivalityTests {
       )
 
       let targetTile=Tile.StoneCircle_22_21
-      if (nbShields==1){
+      if (nbShields===1){
         targetTile=Tile.Cottage_23B_32_x
-      } else if (nbShields==2){
+      } else if (nbShields===2){
         targetTile=Tile.Fortress_22_22_23B
       }
 
       let firstHandTile=Tile.StoneCircle_x_41
-      if (spellNbGolems==1){
+      if (spellNbGolems===1){
         firstHandTile=Tile.StoneCircle_31_11
-      } else if (spellNbGolems==2){
+      } else if (spellNbGolems===2){
         firstHandTile=Tile.Cottage_12_21_23B
-      } else if (spellNbGolems==3){
+      } else if (spellNbGolems===3){
         firstHandTile=Tile.StoneCircle_11_31
-      } else if (spellNbGolems==4){
+      } else if (spellNbGolems===4){
         firstHandTile=Tile.StoneCircle_x_41
       }
 
       let nbGolems1=0
       let nbGolems2=0
-      if (tileControl==TileControl.ControlledByPlayer){
+      if (tileControl===TileControl.ControlledByPlayer){
         nbGolems1=2
         nbGolems2=1
-      } else if (tileControl==TileControl.ControlledByOpponent){
+      } else if (tileControl===TileControl.ControlledByOpponent){
         nbGolems1=0
         nbGolems2=2
-      } else if (tileControl==TileControl.FiveOpponentGolems){
+      } else if (tileControl===TileControl.FiveOpponentGolems){
         nbGolems1=0
         nbGolems2=5
       }
@@ -1093,14 +1087,14 @@ export class RivalityTests {
       )
 
       let targetTile=Tile.StoneCircle_22_21
-      if (nbShields==1){
+      if (nbShields===1){
         targetTile=Tile.Cottage_23B_32_x
-      } else if (nbShields==2){
+      } else if (nbShields===2){
         targetTile=Tile.Fortress_22_22_23B
       }
 
       let firstHandTile=Tile.Fortress_22_13B_31
-      if (spellNbGolems==2){
+      if (spellNbGolems===2){
         firstHandTile=Tile.Cottage_22_23B_11
       }
 
@@ -1187,13 +1181,13 @@ export class RivalityTests {
       )
 
       let firstHandTile=Tile.StoneCircle_x_41
-      if (spellNbGolems==1){
+      if (spellNbGolems===1){
         firstHandTile=Tile.StoneCircle_31_11
-      } else if (spellNbGolems==2){
+      } else if (spellNbGolems===2){
         firstHandTile=Tile.Cottage_12_21_23B
-      } else if (spellNbGolems==3){
+      } else if (spellNbGolems===3){
         firstHandTile=Tile.StoneCircle_11_31
-      } else if (spellNbGolems==4){
+      } else if (spellNbGolems===4){
         firstHandTile=Tile.StoneCircle_x_41
       }
 
@@ -1369,9 +1363,9 @@ export class RivalityTests {
     let nbGolems1=0
     let nbGolems2=0
     let nbGolems3=0
-    if (player==1) nbGolems1=3
-    if (player==2) nbGolems2=3
-    if (player==3) nbGolems3=3
+    if (player===1) nbGolems1=3
+    if (player===2) nbGolems2=3
+    if (player===3) nbGolems3=3
 
     const squares=[
       new Square( 1,  0, Tile.Cottage_12_21_23B, Orientation.North, nbGolems1, nbGolems2, nbGolems3),
@@ -1489,27 +1483,27 @@ export class RivalityTests {
       new Square( 1,  0, Tile.StoneCircle_31_11, Orientation.North,
         player1StoneCircle ? 1 : 0, 0, 0),
       new Square( 2,  0, Tile.StoneCircle_11_31, Orientation.North,
-        (player1StoneCircle && playerWithMajorityOnWellOfMana!=1) ? 1 : 0, 0, 0),
+        (player1StoneCircle && playerWithMajorityOnWellOfMana!==1) ? 1 : 0, 0, 0),
       new Square( 3,  0, Tile.StoneCircle_12_31, Orientation.North,
         0, player2StoneCircle ? 1 : 0, 0),
       new Square( 4,  0, Tile.StoneCircle_31_12, Orientation.North,
-        0, (player2StoneCircle && playerWithMajorityOnWellOfMana!=2) ? 1 : 0, 0),
+        0, (player2StoneCircle && playerWithMajorityOnWellOfMana!==2) ? 1 : 0, 0),
       new Square( 0,  1, Tile.StoneCircle_11_32, Orientation.North,
         0, 0, player3StoneCircle ? 1 : 0),
       new Square( 1,  1, Tile.StoneCircle_32_11, Orientation.North,
-        0, 0, (player3StoneCircle && playerWithMajorityOnWellOfMana!=3) ? 1 : 0),
+        0, 0, (player3StoneCircle && playerWithMajorityOnWellOfMana!==3) ? 1 : 0),
       new Square( 2,  1, Tile.Cottage_12_21_23B, Orientation.North,
         player1Cottage ? 1 : 0, 0, 0),
       new Square( 3,  1, Tile.Cottage_23B_12_21, Orientation.North,
-        (player1Cottage && playerWithMajorityOnWellOfMana!=1) ? 1 : 0, 0, 0),
+        (player1Cottage && playerWithMajorityOnWellOfMana!==1) ? 1 : 0, 0, 0),
       new Square( 4,  1, Tile.Cottage_22_23B_11, Orientation.North,
         0, player2Cottage ? 1 : 0, 0),
       new Square( 0,  2, Tile.Cottage_31_23B_x, Orientation.North,
-        0, (player2Cottage && playerWithMajorityOnWellOfMana!=2) ? 1 : 0, 0),
+        0, (player2Cottage && playerWithMajorityOnWellOfMana!==2) ? 1 : 0, 0),
       new Square( 1,  2, Tile.Cottage_11_23B_22, Orientation.North,
         0, 0, player3Cottage ? 1 : 0),
       new Square( 2,  2, Tile.Cottage_23B_31_x, Orientation.North,
-        0, 0, (player3Cottage && playerWithMajorityOnWellOfMana!=3) ? 1 : 0),
+        0, 0, (player3Cottage && playerWithMajorityOnWellOfMana!==3) ? 1 : 0),
       new Square( 3,  2, Tile.Cottage_32_23B_x, Orientation.North, 0, 0, 0),
       new Square( 4,  2, Tile.Cottage_23B_32_x, Orientation.North, 0, 0, 0),
       new Square( 0,  3, Tile.Fortress_21_23B_22, Orientation.North, 0, 0, 0),
@@ -1539,7 +1533,7 @@ export class RivalityTests {
         rotation: Orientation.South
       }, 1)
 
-    if (playerWithMajorityOnWellOfMana!=0){
+    if (playerWithMajorityOnWellOfMana!==0){
       setup
         .material(MaterialType.Golem)
         .location(LocationType.PlayerGolemStack)
