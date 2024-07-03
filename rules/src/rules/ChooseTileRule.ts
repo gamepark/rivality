@@ -11,56 +11,58 @@ import { RuleId } from './RuleId'
 
 export class ChooseTileRule extends PlayerTurnRule {
   onRuleStart(): MaterialMove[] {
-    const nbPlayers=this.game.players.length
+    const nbPlayers = this.game.players.length
 
     // End of game ?
-    let nbUnplayedTiles=this
+    let nbUnplayedTiles = this
       .material(MaterialType.Tile)
-      .filter(item => item.location.type!=LocationType.Board)
+      .filter(item => item.location.type != LocationType.Board)
       .length
 
-    let nbUnplayedGolems1=this
+    let nbUnplayedGolems1 = this
       .material(MaterialType.Golem)
       .location(LocationType.PlayerGolemStack)
-      .filter(item => item.id==Golem.Golem1)
+      .filter(item => item.id == Golem.Golem1)
       .length
 
-    let nbUnplayedGolems2=this
+    let nbUnplayedGolems2 = this
       .material(MaterialType.Golem)
       .location(LocationType.PlayerGolemStack)
-      .filter(item => item.id==Golem.Golem2)
+      .filter(item => item.id == Golem.Golem2)
       .length
 
-    let nbUnplayedGolems3=this
+    let nbUnplayedGolems3 = this
       .material(MaterialType.Golem)
       .location(LocationType.PlayerGolemStack)
-      .filter(item => item.id==Golem.Golem3)
+      .filter(item => item.id == Golem.Golem3)
       .length
 
     if (
-      nbUnplayedTiles==0
-      || nbUnplayedGolems1==0
-      || nbUnplayedGolems2==0
-      || (nbPlayers== 3 && nbUnplayedGolems3==0)
+      nbUnplayedTiles == 0
+      || nbUnplayedGolems1 == 0
+      || nbUnplayedGolems2 == 0
+      || (nbPlayers == 3 && nbUnplayedGolems3 == 0)
     )
-      return [ this.rules().endGame() ]
+      return [this.rules().endGame()]
 
     // The game goes on
     return []
   }
 
   getPlayerMoves(): MaterialMove[] {
-    let moves:MaterialMove[]=[]
+    let moves: MaterialMove[] = []
 
-    let handTiles=this
+    if (this.remind(Memory.TilePreview) !== undefined) return []
+
+    let handTiles = this
       .material(MaterialType.Tile)
       .location(LocationType.PlayerHand)
       .player(this.getActivePlayer())
 
-    let availableBoardCoords=tileTools.possibleTileLocations(
+    let availableBoardCoords = tileTools.possibleTileLocations(
       this.material(MaterialType.Tile)
-      .location(LocationType.Board)
-      .getItems()
+        .location(LocationType.Board)
+        .getItems()
     )
 
     for (const orientation of orientations) {
@@ -77,6 +79,14 @@ export class ChooseTileRule extends PlayerTurnRule {
     }
 
     return moves
+  }
+
+  beforeItemMove(move: ItemMove): MaterialMove[] {
+    if (isMoveItemType(MaterialType.Tile)(move) && move.location.type === LocationType.PlayerHand
+      && this.material(MaterialType.Tile).getItem(move.itemIndex)?.location.type === LocationType.Board) {
+      this.forget(Memory.TilePreview)
+    }
+    return []
   }
 
   afterItemMove(move: ItemMove, context?: PlayMoveContext): MaterialMove[] {
@@ -112,8 +122,6 @@ export class ChooseTileRule extends PlayerTurnRule {
             this.rules().startPlayerTurn(RuleId.PrepareCastSpell, this.getActivePlayer())
           ]
         }
-      } else if (move.location.type === LocationType.PlayerHand) {
-        this.forget(Memory.TilePreview)
       }
     }
     return []
