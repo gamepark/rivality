@@ -5,6 +5,7 @@ import { Spell } from '@gamepark/rivality/logic/TileSpells'
 import { LocationType } from '@gamepark/rivality/material/LocationType'
 import { MaterialType } from '@gamepark/rivality/material/MaterialType'
 import { Tile } from '@gamepark/rivality/material/Tile'
+import { Orientation } from '@gamepark/rivality/Orientation'
 import { PlayerId } from '@gamepark/rivality/PlayerId'
 import { CustomMoveType } from '@gamepark/rivality/rules/CustomMoveType'
 import { isCustomMoveType, isMoveItemType, MaterialGame, MaterialMove, MoveItem } from '@gamepark/rules-api'
@@ -153,6 +154,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           return tile===Tile.StoneCircle_32_11
           && move.location.x===0
           && move.location.y===1
+          && move.location.rotation===Orientation.North
         }
       }
     },

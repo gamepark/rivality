@@ -1,10 +1,12 @@
 /** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react'
+import { css, Interpolation, Theme } from '@emotion/react'
 import { LocationContext, LocationDescription, MaterialContext } from '@gamepark/react-game'
 import { LocationType } from '@gamepark/rivality/material/LocationType'
 import { MaterialType } from '@gamepark/rivality/material/MaterialType'
+import { Tile } from '@gamepark/rivality/material/Tile'
+import { Orientation } from '@gamepark/rivality/Orientation'
 import { Memory } from '@gamepark/rivality/rules/Memory'
-import { Location } from '@gamepark/rules-api'
+import { Location, MaterialRules } from '@gamepark/rules-api'
 import Cancel from '../../images/icon/cancel.png'
 import Rotator from '../../images/icon/rotator.png'
 import Validate from '../../images/icon/validate.png'
@@ -17,9 +19,17 @@ export class TileButtonDescription extends LocationDescription {
   borderRadius = 1.5
   alwaysVisible = true
 
-  extraCss = css`
-    box-shadow: 0 0 0.3em black;
-  `
+  getExtraCss(location: Location, { rules }: LocationContext): Interpolation<Theme> {
+    if (this.isDisabled(location, rules)) {
+      return css`
+        filter: grayscale(1);
+        box-shadow: 0 0 0.3em black;
+      `
+    }
+    return css`
+      box-shadow: 0 0 0.3em black;
+    `
+  }
 
   getImage(location: Location) {
     switch (location.id) {
@@ -73,6 +83,7 @@ export class TileButtonDescription extends LocationDescription {
   }
 
   getShortClickMove(location: Location, { rules }: MaterialContext) {
+    if (this.isDisabled(location, rules)) return
     if (location.id === TileButtonId.Validate) {
       return rules.material(MaterialType.Tile).index(location.parent!).moveItem(item => item.location)
     }
@@ -86,6 +97,16 @@ export class TileButtonDescription extends LocationDescription {
       return rules.material(MaterialType.Tile).index(location.parent!).moveItem(item => ({ ...item.location, rotation: item.location.rotation % 4 + 1 }))
     }
     return
+  }
+
+  isDisabled(location: Location, rules: MaterialRules) {
+    if (rules.game.tutorialStep === undefined || location.id !== TileButtonId.Validate) return false
+    const tile = rules.material(MaterialType.Tile).index(location.parent!).getItem()!
+    switch (tile.id) {
+      case Tile.StoneCircle_32_11:
+        return tile.location.rotation !== Orientation.North
+    }
+    return false
   }
 }
 
