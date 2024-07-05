@@ -21,19 +21,17 @@ export class TutorialSetup extends RivalitySetup {
 
     // My hand
     this.material(MaterialType.Tile).location(LocationType.PlayerDeck).player(me)
-      .filter(item => item.id===Tile.StoneCircle_32_11)
-      .moveItems({
-        type:LocationType.PlayerHand,
-        player:me,
-        x:2,
-        rotation: Orientation.North
-      })
-    this.material(MaterialType.Tile).location(LocationType.PlayerDeck).player(me)
       .filter(item => item.id===Tile.StoneCircle_21_22)
       .moveItems({
         type:LocationType.PlayerHand,
         player:me,
-        x:1,
+        rotation: Orientation.North
+      })
+    this.material(MaterialType.Tile).location(LocationType.PlayerDeck).player(me)
+      .filter(item => item.id===Tile.StoneCircle_32_11)
+      .moveItems({
+        type:LocationType.PlayerHand,
+        player:me,
         rotation: Orientation.North
       })
 
@@ -43,7 +41,6 @@ export class TutorialSetup extends RivalitySetup {
       .moveItems({
         type:LocationType.PlayerHand,
         player:opponent,
-        x:1,
         rotation: Orientation.North
       })
     this.material(MaterialType.Tile).location(LocationType.PlayerDeck).player(opponent)
@@ -51,7 +48,6 @@ export class TutorialSetup extends RivalitySetup {
       .moveItems({
         type:LocationType.PlayerHand,
         player:opponent,
-        x:2,
         rotation: Orientation.North
       })
 
