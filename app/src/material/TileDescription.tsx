@@ -1,8 +1,6 @@
 import { css } from '@emotion/react'
 import { CardDescription, ItemContext } from '@gamepark/react-game'
-import { LocationType } from '@gamepark/rivality/material/LocationType'
 import { Tile } from '@gamepark/rivality/material/Tile'
-import { Memory } from '@gamepark/rivality/rules/Memory'
 import { MaterialItem } from '@gamepark/rules-api'
 import Cottage_11_23B_22 from '../images/Cottage_11_23b_22.jpg'
 import Cottage_12_21_23B from '../images/Cottage_12_21_23b.jpg'
@@ -81,16 +79,6 @@ export class TileDescription extends CardDescription {
       return css`filter: opacity(0.5) drop-shadow(0 0 0 red)`
     }
     return css``
-  }
-
-  getShortClickLocalMove({ rules, player, index, type }: ItemContext) {
-    const material = rules.material(type).index(index)
-    const item = material.getItem()!
-    if ((item.location.type === LocationType.PlayerHand && item.location.player === player)
-      || rules.remind(Memory.TilePreview) === index) {
-      return material.moveItem({ ...item.location, rotation: (item.location.rotation % 4) + 1 })
-    }
-    return
   }
 }
 

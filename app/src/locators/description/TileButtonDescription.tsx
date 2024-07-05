@@ -9,7 +9,7 @@ import Cancel from '../../images/icon/cancel.png'
 import Rotator from '../../images/icon/rotator.png'
 import Validate from '../../images/icon/validate.png'
 import { buttonDescription } from '../../material/ButtonDescription'
-import { spaceBetweenTiles, tileDescription } from '../../material/TileDescription'
+import { tileDescription } from '../../material/TileDescription'
 
 export class TileButtonDescription extends LocationDescription {
   height = buttonDescription.height
@@ -33,58 +33,57 @@ export class TileButtonDescription extends LocationDescription {
     return
   }
 
-  getLocations({ rules }: MaterialContext): Location[] {
+  getLocations({ rules, player }: MaterialContext): Location[] {
+    const locations: Location[] = []
     const tilePreview = rules.remind<number | undefined>(Memory.TilePreview)
     if (tilePreview !== undefined) {
-      return [
-        { type: LocationType.TileButton, id: TileButtonId.Cancel },
-        { type: LocationType.TileButton, id: TileButtonId.Rotate },
-        { type: LocationType.TileButton, id: TileButtonId.Validate }
-      ]
+      locations.push(
+        { type: LocationType.TileButton, id: TileButtonId.Cancel, parent: tilePreview },
+        { type: LocationType.TileButton, id: TileButtonId.Rotate, parent: tilePreview },
+        { type: LocationType.TileButton, id: TileButtonId.Validate, parent: tilePreview }
+      )
     }
-    return []
+    if (player !== undefined) {
+      for (const index of rules.material(MaterialType.Tile).location(LocationType.PlayerHand).player(player).getIndexes()) {
+        locations.push({ type: LocationType.TileButton, id: TileButtonId.Rotate, parent: index })
+      }
+    }
+    return locations
   }
 
-  getCoordinates(location: Location, { rules }: LocationContext) {
-    const tilePreview = rules.remind<number>(Memory.TilePreview)
-    const tile = rules.material(MaterialType.Tile).getItem(tilePreview)!
-    const coordinates = {
-      x: tile.location.x! * (tileDescription.width + spaceBetweenTiles),
-      y: tile.location.y! * (tileDescription.height + spaceBetweenTiles),
-      z: 1
-    }
+  transformOwnLocation(location: Location, context: LocationContext): string[] {
+    const { rules, locators } = context
+    const tile = rules.material(MaterialType.Tile).getItem(location.parent!)!
+    return [
+      locators[tile.location.type]!.getTranslate3d(tile, { ...context, type: MaterialType.Tile, index: location.parent!, displayIndex: 0 }),
+      ...super.transformOwnLocation(location, context)
+    ]
+  }
+
+  getCoordinates(location: Location) {
     switch (location.id) {
       case TileButtonId.Cancel:
-        coordinates.x -= tileDescription.width / 2
-        coordinates.y -= tileDescription.height / 2
-        break
+        return { x: -tileDescription.width / 2, y: -tileDescription.height / 2, z: 0.1 }
       case TileButtonId.Rotate:
-        coordinates.x += tileDescription.width / 2
-        coordinates.y -= tileDescription.height / 2
-        break
+        return { x: tileDescription.width / 2, y: -tileDescription.height / 2, z: 0.1 }
       case TileButtonId.Validate:
-        coordinates.x += tileDescription.width / 2
-        coordinates.y += tileDescription.height / 2
-        break
+      default:
+        return { x: tileDescription.width / 2, y: tileDescription.height / 2, z: 0.1 }
     }
-    return coordinates
   }
 
   getShortClickMove(location: Location, { rules }: MaterialContext) {
     if (location.id === TileButtonId.Validate) {
-      const tilePreview = rules.remind(Memory.TilePreview)
-      return rules.material(MaterialType.Tile).index(tilePreview).moveItem(item => item.location)
+      return rules.material(MaterialType.Tile).index(location.parent!).moveItem(item => item.location)
     }
     return
   }
 
   getShortClickLocalMove(location: Location, { rules, player }: MaterialContext) {
     if (location.id === TileButtonId.Cancel) {
-      const tilePreview = rules.remind(Memory.TilePreview)
-      return rules.material(MaterialType.Tile).index(tilePreview).moveItem({ type: LocationType.PlayerHand, player })
+      return rules.material(MaterialType.Tile).index(location.parent!).moveItem({ type: LocationType.PlayerHand, player })
     } else if (location.id === TileButtonId.Rotate) {
-      const tilePreview = rules.remind(Memory.TilePreview)
-      return rules.material(MaterialType.Tile).index(tilePreview).moveItem(item => ({ ...item.location, rotation: item.location.rotation % 4 + 1 }))
+      return rules.material(MaterialType.Tile).index(location.parent!).moveItem(item => ({ ...item.location, rotation: item.location.rotation % 4 + 1 }))
     }
     return
   }
