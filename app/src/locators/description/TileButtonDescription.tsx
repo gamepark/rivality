@@ -13,6 +13,19 @@ import Validate from '../../images/icon/validate.png'
 import { buttonDescription } from '../../material/ButtonDescription'
 import { tileDescription } from '../../material/TileDescription'
 
+export enum TileButtonId {
+  Cancel,
+  Rotate,
+  Validate
+/*
+  ,
+  SelectSpellNorth,
+  SelectSpellEast,
+  SelectSpellSouth,
+  SelectSpellWest
+*/
+}
+
 export class TileButtonDescription extends LocationDescription {
   height = buttonDescription.height
   width = buttonDescription.width
@@ -118,17 +131,4 @@ export class TileButtonDescription extends LocationDescription {
     }
     return false
   }
-}
-
-export enum TileButtonId {
-  Cancel,
-  Rotate,
-  Validate
-/*
-  ,
-  SelectSpellNorth,
-  SelectSpellEast,
-  SelectSpellSouth,
-  SelectSpellWest
-*/
 }

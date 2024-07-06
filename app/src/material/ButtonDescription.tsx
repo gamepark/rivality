@@ -44,35 +44,37 @@ export class ButtonDescription extends TokenDescription  {
                currentRule===RuleId.ChooseTile) ||
 
               (item.location.type===LocationType.Board &&
-                // Display the buttons on board at spell orientation selection step
                 (
-                  currentRule===RuleId.AskSpellOrientation &&
-                  item.id==Button.ChooseSpellNorth &&
-                  context.rules.remind(Memory.AppliedSpellNorth)!==true
-                ) ||
-                (
-                  currentRule===RuleId.AskSpellOrientation &&
-                  item.id==Button.ChooseSpellEast &&
-                  context.rules.remind(Memory.AppliedSpellEast)!==true
-                ) ||
-                (
-                  currentRule===RuleId.AskSpellOrientation &&
-                  item.id==Button.ChooseSpellSouth &&
-                  context.rules.remind(Memory.AppliedSpellSouth)!==true
-                ) ||
-                (
-                  currentRule===RuleId.AskSpellOrientation &&
-                  item.id==Button.ChooseSpellWest &&
-                  context.rules.remind(Memory.AppliedSpellWest)!==true
-                ) ||
-
-                // Display the buttons on board at golem selection step
-                (
-                  currentRule===RuleId.AskGolemRemoval &&
+                  // Display the buttons on board at spell orientation selection step
                   (
-                    item.id==Button.RemoveGolem1 ||
-                    item.id==Button.RemoveGolem2 ||
-                    item.id==Button.RemoveGolem3
+                    currentRule===RuleId.AskSpellOrientation &&
+                    item.id===Button.ChooseSpellNorth &&
+                    context.rules.remind(Memory.AppliedSpellNorth)!==true
+                  ) ||
+                  (
+                    currentRule===RuleId.AskSpellOrientation &&
+                    item.id===Button.ChooseSpellEast &&
+                    context.rules.remind(Memory.AppliedSpellEast)!==true
+                  ) ||
+                  (
+                    currentRule===RuleId.AskSpellOrientation &&
+                    item.id===Button.ChooseSpellSouth &&
+                    context.rules.remind(Memory.AppliedSpellSouth)!==true
+                  ) ||
+                  (
+                    currentRule===RuleId.AskSpellOrientation &&
+                    item.id===Button.ChooseSpellWest &&
+                    context.rules.remind(Memory.AppliedSpellWest)!==true
+                  ) ||
+
+                  // Display the buttons on board at golem selection step
+                  (
+                    currentRule===RuleId.AskGolemRemoval &&
+                    (
+                      item.id===Button.RemoveGolem1 ||
+                      item.id===Button.RemoveGolem2 ||
+                      item.id===Button.RemoveGolem3
+                    )
                   )
                 )
               )
