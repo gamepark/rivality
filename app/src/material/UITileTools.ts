@@ -33,6 +33,19 @@ export class UITileTools {
     if (activePlayer===undefined)
       return undefined
 
+    // If there's a tile preview, the wizard is supposed to be on this tile
+    // even if it's not the case due to local moves
+    // If there's no tile preview, the actual square of the wizard is considered
+
+    const tilePreview=(context.rules.remind(Memory.TilePreview)!==undefined)
+    if (tilePreview){
+      // Tile preview
+      const tileId=context.rules.remind(Memory.TilePreview)
+      const tile=context.rules.material(MaterialType.Tile).getItem(tileId)!
+      return tile.location
+    }
+
+    // No tile preview => actual wizard' square
     const wizardItem=context.rules.material(MaterialType.Wizard)
       .location(LocationType.Board)
       .filter(item => item.id===wizardTools.playerWizard(activePlayer))
@@ -44,9 +57,8 @@ export class UITileTools {
     const activePlayer=context.player
     if (activePlayer!==undefined){
       const ruleId=context.rules.state.rule?.id
-      if (
-        ruleId===RuleId.AskSpellOrientation
-      ){
+      const tilePreview=(context.rules.remind(Memory.TilePreview)!==undefined)
+      if (tilePreview){
         const thisX=location.x!
         const thisY=location.y!
 
