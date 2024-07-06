@@ -58,7 +58,9 @@ export class UITileTools {
     if (activePlayer!==undefined){
       const ruleId=context.rules.state.rule?.id
       const tilePreview=(context.rules.remind(Memory.TilePreview)!==undefined)
-      if (tilePreview){
+      const isSpellOrderSelection=(ruleId==RuleId.AskSpellOrientation)
+
+      if (tilePreview || isSpellOrderSelection){
         const thisX=location.x!
         const thisY=location.y!
 

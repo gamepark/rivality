@@ -86,6 +86,16 @@ export class TileButtonDescription extends LocationDescription {
     if (this.isDisabled(location, rules)) return
     if (location.id === TileButtonId.Validate) {
       return rules.material(MaterialType.Tile).index(location.parent!).moveItem(item => item.location)
+/*
+    } else if (location.id === TileButtonId.SelectSpellNorth) {
+      return rules.customMove(CustomMoveType.North)
+    } else if (location.id === TileButtonId.SelectSpellEast) {
+      return rules.customMove(CustomMoveType.East)
+    } else if (location.id === TileButtonId.SelectSpellSouth) {
+      return rules.customMove(CustomMoveType.South)
+    } else if (location.id === TileButtonId.SelectSpellWest) {
+      return rules.customMove(CustomMoveType.West)
+*/
     }
     return
   }
@@ -111,5 +121,14 @@ export class TileButtonDescription extends LocationDescription {
 }
 
 export enum TileButtonId {
-  Cancel, Rotate, Validate
+  Cancel,
+  Rotate,
+  Validate
+/*
+  ,
+  SelectSpellNorth,
+  SelectSpellEast,
+  SelectSpellSouth,
+  SelectSpellWest
+*/
 }

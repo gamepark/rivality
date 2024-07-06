@@ -3,6 +3,7 @@ import { GridLocator, ItemContext } from '@gamepark/react-game'
 import { MaterialItem } from '@gamepark/rules-api'
 import { BoardSpace } from '@gamepark/rivality/material/BoardSpace'
 import { Button } from '@gamepark/rivality/material/Button'
+import { Memory } from '@gamepark/rivality/rules/Memory'
 import { Orientation } from '@gamepark/rivality/Orientation'
 import { BoardDescription } from './description/BoardDescription'
 import { tileDescription, spaceBetweenTiles } from '../material/TileDescription'
@@ -49,15 +50,21 @@ export class BoardLocator extends GridLocator {
 
   getPositionDeltaButton(item: MaterialItem, _context: ItemContext){
     switch (item.id){
+      // Top right
       case Button.Rotator:
+      case Button.RemoveGolem3:
         return {x:tileDescription.width/2, y:-tileDescription.height/2, z:1}
+      // Bottom right
       case Button.Validate:
       case Button.ChooseSpellNorth:
       case Button.ChooseSpellEast:
       case Button.ChooseSpellSouth:
       case Button.ChooseSpellWest:
+      case Button.RemoveGolem1:
         return {x:tileDescription.width/2, y:tileDescription.height/2, z:1}
+      // Top left
       case Button.Cancel:
+      case Button.RemoveGolem2:
         return {x:-tileDescription.width/2, y:-tileDescription.height/2, z:1}
     }
     console.log("*** ERROR - Unsupported button")
@@ -70,6 +77,7 @@ export class BoardLocator extends GridLocator {
 
     let isMainTileButton=false
     let isTargetTileButton=false
+    let isSpellTileButton=false
     let spellOrientation=Orientation.North
     switch (item.location.id){
       case BoardSpace.Tile:
@@ -88,6 +96,13 @@ export class BoardLocator extends GridLocator {
           case Button.Rotator:
           case Button.Validate:
             isMainTileButton=true
+            break
+
+          // Buttons around the current target tile
+          case Button.RemoveGolem1:
+          case Button.RemoveGolem2:
+          case Button.RemoveGolem3:
+            isSpellTileButton=true
             break
 
           // Buttons around specific tiles
@@ -128,6 +143,13 @@ export class BoardLocator extends GridLocator {
               context
             )
           }
+        } else if (isSpellTileButton){
+          const tileX=context.rules.remind(Memory.SpellTileX)
+          const tileY=context.rules.remind(Memory.SpellTileY)
+          baseCoordinates=this.locationDescription.getCoordinatesFromXY(
+            {x:tileX, y:tileY},
+            context
+          )
         }
 
         delta=this.getPositionDeltaButton(item, context)
@@ -142,7 +164,6 @@ export class BoardLocator extends GridLocator {
   }
 
   getRotateZ(item: MaterialItem, _context: ItemContext): number {
-//    const nbPlayers=context.rules.game.players.length
     if (item.location.id===BoardSpace.Tile){
       if (item.location.rotation===Orientation.North)
         return 0
@@ -155,45 +176,9 @@ export class BoardLocator extends GridLocator {
     }
     if (item.location.id===BoardSpace.Wizard){
       return 0
-/*
-      if (nbPlayers===2){
-        if (item.id===Wizard.Wizard1)
-          return 0
-        if (item.id===Wizard.Wizard2)
-          return 180
-      } else if (nbPlayers===3){
-        if (item.id===Wizard.Wizard1)
-          return 0
-        if (item.id===Wizard.Wizard2)
-          return 90
-        if (item.id===Wizard.Wizard3)
-          return 180
-      } else {
-        console.log("*** Unsupported nb of players")
-      }
-      return 90
-*/
     }
     if (item.location.id===BoardSpace.Golem){
       return 0
-/*
-      if (nbPlayers===2){
-        if (item.id===Golem.Golem1)
-          return 0
-        if (item.id===Golem.Golem2)
-          return 180
-      } else if (nbPlayers===3){
-        if (item.id===Golem.Golem1)
-          return 0
-        if (item.id===Golem.Golem2)
-          return 90
-        if (item.id===Golem.Golem3)
-          return 180
-      } else {
-        console.log("*** Unsupported nb of players")
-      }
-      return 90
-*/
     }
 
     // Default: no rotation

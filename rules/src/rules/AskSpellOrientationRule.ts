@@ -1,7 +1,7 @@
 import { CustomMove, isSelectItemType, ItemMove, isCustomMove, MaterialItem, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
-import { CustomMoveType } from './CustomMoveType'
 import { BoardSpace } from '../material/BoardSpace'
 import { Button } from '../material/Button'
+import { CustomMoveType } from './CustomMoveType'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { Memory } from './Memory'

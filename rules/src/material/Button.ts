@@ -7,7 +7,10 @@ export enum Button {
   ChooseSpellNorth = 4,
   ChooseSpellEast  = 5,
   ChooseSpellSouth = 6,
-  ChooseSpellWest  = 7
+  ChooseSpellWest  = 7,
+  RemoveGolem1 = 8,
+  RemoveGolem2 = 9,
+  RemoveGolem3 = 10
 }
 
 export const buttons = Object.values(Button).filter(isEnumValue)
