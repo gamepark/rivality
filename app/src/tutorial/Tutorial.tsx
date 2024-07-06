@@ -292,30 +292,11 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       popup: {
         text: () => (
           <>
-            <b><Trans defaults="tuto.validate.move"></Trans></b>
-          </>
-        ),
-        position: { x: 40, y: -15 },
-        size: { width: 50 }
-      },
-      move: {
-        player: me,
-        filter: this.validateMove
-      }
-    },
-    {
-      popup: {
-        text: () => (
-          <>
           <Trans defaults="tuto.round.2"></Trans>
           </>
         ),
         position: { x: 40, y: -15 },
         size: { width: 50 }
-      },
-      move: {
-        player: opponent,
-        filter: this.rotateMove
       }
     },
     {
@@ -330,58 +311,8 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           return tile===Tile.Cottage_22_23B_11
           && move.location.x===-2
           && move.location.y===1
+          && move.location.rotation===Orientation.South
         }
-      }
-    },
-    {
-      move: {
-        player: opponent,
-        filter: this.validateMove
-      }
-    },
-    {
-      popup: {
-        text: () => (
-          <>
-          <b><Trans defaults="tuto.round.3"></Trans> (<Trans defaults="tuto.rotations.3"></Trans>)</b>
-          </>
-        ),
-        position: { x: 40, y: -15 },
-        size: { width: 72 }
-      },
-      move: {
-        player: me,
-        filter: this.rotateMove
-      }
-    },
-    {
-      popup: {
-        text: () => (
-          <>
-          <b><Trans defaults="tuto.round.3"></Trans> (<Trans defaults="tuto.rotations.2"></Trans>)</b>
-          </>
-        ),
-        position: { x: 40, y: -15 },
-        size: { width: 72 }
-      },
-      move: {
-        player: me,
-        filter: this.rotateMove
-      }
-    },
-    {
-      popup: {
-        text: () => (
-          <>
-          <b><Trans defaults="tuto.round.3"></Trans> (<Trans defaults="tuto.rotations.1"></Trans>)</b>
-          </>
-        ),
-        position: { x: 40, y: -15 },
-        size: { width: 72 }
-      },
-      move: {
-        player: me,
-        filter: this.rotateMove
       }
     },
     {
@@ -420,22 +351,8 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           return tile===Tile.Cottage_23B_31_x
           && move.location.x===-1
           && move.location.y===1
+          && move.location.rotation===Orientation.North
         }
-      }
-    },
-    {
-      popup: {
-        text: () => (
-          <>
-            <b><Trans defaults="tuto.validate.move"></Trans></b>
-          </>
-        ),
-        position: { x: 40, y: -15 },
-        size: { width: 50 }
-      },
-      move: {
-        player: me,
-        filter: this.validateMove
       }
     },
     {
@@ -463,13 +380,8 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           return tile===Tile.StoneCircle_x_41_star
           && move.location.x===-2
           && move.location.y===-1
+          && move.location.rotation===Orientation.South
         }
-      }
-    },
-    {
-      move: {
-        player: opponent,
-        filter: this.validateMove
       }
     },
     {
@@ -506,54 +418,8 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           return tile===Tile.Fortress_31_22_13B
           && move.location.x===1
           && move.location.y===1
+          && move.location.rotation===Orientation.South
         }
-      }
-    },
-    {
-      popup: {
-        text: () => (
-          <>
-          <Trans defaults="tuto.round.4b"></Trans><br/>
-          &nbsp;<br/>
-          <b><Trans defaults="tuto.round.5"></Trans> (<Trans defaults="tuto.rotations.2"></Trans>)</b>
-          </>
-        ),
-        position: { x: 40, y: -15 },
-        size: { width: 72 }
-      },
-      move: {
-        player: me,
-        filter: this.rotateMove
-      }
-    },
-    {
-      popup: {
-        text: () => (
-          <>
-          <b><Trans defaults="tuto.round.5"></Trans> (<Trans defaults="tuto.rotations.1"></Trans>)</b>
-          </>
-        ),
-        position: { x: 40, y: -15 },
-        size: { width: 72 }
-      },
-      move: {
-        player: me,
-        filter: this.rotateMove
-      }
-    },
-    {
-      popup: {
-        text: () => (
-          <>
-            <b><Trans defaults="tuto.validate.move"></Trans></b>
-          </>
-        ),
-        position: { x: 40, y: -15 },
-        size: { width: 50 }
-      },
-      move: {
-        player: me,
-        filter: this.validateMove
       }
     },
     {
@@ -572,18 +438,6 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     {
       move: {
         player: opponent,
-        filter: this.rotateMove
-      }
-    },
-    {
-      move: {
-        player: opponent,
-        filter: this.rotateMove
-      }
-    },
-    {
-      move: {
-        player: opponent,
         filter: (move, game) => {
           if (!isMoveItemType(MaterialType.Tile)(move))
             return false
@@ -593,13 +447,8 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           return tile===Tile.StoneCircle_11_32
           && move.location.x===-1
           && move.location.y===2
+          && move.location.rotation===Orientation.North
         }
-      }
-    },
-    {
-      move: {
-        player: opponent,
-        filter: this.validateMove
       }
     },
     {
@@ -615,51 +464,6 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
         ),
         position: { x: 40, y: -15 },
         size: { width: 72 }
-      }
-    },
-    {
-      popup: {
-        text: () => (
-          <>
-          <b><Trans defaults="tuto.round.7"></Trans> (<Trans defaults="tuto.rotations.3"></Trans>)</b>
-          </>
-        ),
-        position: { x: 40, y: -15 },
-        size: { width: 72 }
-      },
-      move: {
-        player: me,
-        filter: this.rotateMove
-      }
-    },
-    {
-      popup: {
-        text: () => (
-          <>
-          <b><Trans defaults="tuto.round.7"></Trans> (<Trans defaults="tuto.rotations.2"></Trans>)</b>
-          </>
-        ),
-        position: { x: 40, y: -15 },
-        size: { width: 72 }
-      },
-      move: {
-        player: me,
-        filter: this.rotateMove
-      }
-    },
-    {
-      popup: {
-        text: () => (
-          <>
-          <b><Trans defaults="tuto.round.7"></Trans> (<Trans defaults="tuto.rotations.1"></Trans>)</b>
-          </>
-        ),
-        position: { x: 40, y: -15 },
-        size: { width: 72 }
-      },
-      move: {
-        player: me,
-        filter: this.rotateMove
       }
     },
     {
@@ -683,22 +487,8 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           return tile===Tile.StoneCircle_31_12
           && move.location.x===0
           && move.location.y===-1
+          && move.location.rotation===Orientation.West
         }
-      }
-    },
-    {
-      popup: {
-        text: () => (
-          <>
-            <b><Trans defaults="tuto.validate.move"></Trans></b>
-          </>
-        ),
-        position: { x: 40, y: -15 },
-        size: { width: 50 }
-      },
-      move: {
-        player: me,
-        filter: this.validateMove
       }
     },
     {
