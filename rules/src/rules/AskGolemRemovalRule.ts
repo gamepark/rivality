@@ -1,5 +1,4 @@
-import { CustomMove, isSelectItemType, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
-import { Button } from '../material/Button'
+import { CustomMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { CustomMoveType } from './CustomMoveType'
 import { golemTools } from '../logic/GolemTools'
 import { LocationType } from '../material/LocationType'
@@ -8,7 +7,7 @@ import { Memory } from './Memory'
 import { RuleId } from '../rules/RuleId'
 
 export class AskGolemRemovalRule extends PlayerTurnRule {
-  listPossiblePlayerMoves(): MaterialMove[] {
+  getPlayerMoves(): MaterialMove[] {
     let moves:MaterialMove[]=[]
 
     const activePlayer = this.getActivePlayer()
@@ -21,18 +20,6 @@ export class AskGolemRemovalRule extends PlayerTurnRule {
     if (activePlayer!=3){
       moves.push(this.rules().customMove(CustomMoveType.Player3))
     }
-
-    return moves
-  }
-
-  getPlayerMoves(): MaterialMove[] {
-    let moves:MaterialMove[]=[]
-
-    // Header moves
-    moves.push(...this.listPossiblePlayerMoves())
-
-    // Button moves
-    moves.push(...this.material(MaterialType.Button).location(LocationType.Board).selectItems())
 
     return moves
   }
@@ -73,29 +60,5 @@ export class AskGolemRemovalRule extends PlayerTurnRule {
     }
 
     return this.applyEffect(player)
-  }
-
-  afterItemMove(move: ItemMove): MaterialMove[] {
-    if (isSelectItemType(MaterialType.Button)(move)){
-      const buttonId=this.material(MaterialType.Button).getItem(move.itemIndex)?.id
-      let player:number|undefined=undefined
-      switch (buttonId){
-        case Button.RemoveGolem1:
-          player=1
-          break
-        case Button.RemoveGolem2:
-          player=2
-          break
-        case Button.RemoveGolem3:
-          player=3
-          break
-      }
-      if (player===undefined){
-        console.log("*** ERROR - Unknown player")
-        return []
-      }
-      return this.applyEffect(player)
-    }
-    return []
   }
 }

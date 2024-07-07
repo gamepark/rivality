@@ -15,8 +15,8 @@ import RemoveGolem2 from '../../images/icon/no_golem2.png'
 import RemoveGolem3 from '../../images/icon/no_golem3.png'
 import Rotator from '../../images/icon/rotator.png'
 import Validate from '../../images/icon/validate.png'
-import { buttonDescription } from '../../material/ButtonDescription'
 import { tileDescription } from '../../material/TileDescription'
+import { uiTileTools } from '../../material/UITileTools'
 
 export enum TileButtonId {
   Cancel,
@@ -32,8 +32,8 @@ export enum TileButtonId {
 }
 
 export class TileButtonDescription extends LocationDescription {
-  height = buttonDescription.height
-  width = buttonDescription.width
+  height = 3
+  width = 3
   borderRadius = 1.5
   alwaysVisible = true
 
@@ -56,6 +56,10 @@ export class TileButtonDescription extends LocationDescription {
       case TileButtonId.Rotate:
         return Rotator
       case TileButtonId.Validate:
+      case TileButtonId.SelectSpellNorth:
+      case TileButtonId.SelectSpellEast:
+      case TileButtonId.SelectSpellSouth:
+      case TileButtonId.SelectSpellWest:
         return Validate
       case TileButtonId.RemoveGolem1:
         return RemoveGolem1
@@ -67,8 +71,10 @@ export class TileButtonDescription extends LocationDescription {
     return
   }
 
-  getLocations({ rules, player }: MaterialContext): Location[] {
+  getLocations(context: MaterialContext): Location[] {
     const locations: Location[] = []
+    const rules=context.rules
+    const player=context.player
 
     // Buttons around the tile being placed
     const tilePreview = rules.remind<number | undefined>(Memory.TilePreview)
@@ -112,6 +118,41 @@ export class TileButtonDescription extends LocationDescription {
       }
     }
 
+    // Buttons around target tile
+    if (ruleId===RuleId.AskSpellOrientation){
+      if (player!==undefined){
+        const hasSpellNorth = rules.remind(Memory.AppliedSpellNorth)!==true
+        const hasSpellEast = rules.remind(Memory.AppliedSpellEast)!==true
+        const hasSpellSouth = rules.remind(Memory.AppliedSpellSouth)!==true
+        const hasSpellWest = rules.remind(Memory.AppliedSpellWest)!==true
+
+        if (hasSpellNorth){
+          const tileIndex=uiTileTools.activeSpellTargetItemIndex(context, Orientation.North)
+          if (tileIndex!==undefined){
+            locations.push({ type: LocationType.TileButton, id: TileButtonId.SelectSpellNorth, parent: tileIndex })
+          }
+        }
+        if (hasSpellEast){
+          const tileIndex=uiTileTools.activeSpellTargetItemIndex(context, Orientation.East)
+          if (tileIndex!==undefined){
+            locations.push({ type: LocationType.TileButton, id: TileButtonId.SelectSpellEast, parent: tileIndex })
+          }
+        }
+        if (hasSpellSouth){
+          const tileIndex=uiTileTools.activeSpellTargetItemIndex(context, Orientation.South)
+          if (tileIndex!==undefined){
+            locations.push({ type: LocationType.TileButton, id: TileButtonId.SelectSpellSouth, parent: tileIndex })
+          }
+        }
+        if (hasSpellWest){
+          const tileIndex=uiTileTools.activeSpellTargetItemIndex(context, Orientation.West)
+          if (tileIndex!==undefined){
+            locations.push({ type: LocationType.TileButton, id: TileButtonId.SelectSpellWest, parent: tileIndex })
+          }
+        }
+      }
+    }
+
     return locations
   }
 
@@ -137,6 +178,10 @@ export class TileButtonDescription extends LocationDescription {
       // Bottom right
       case TileButtonId.Validate:
       case TileButtonId.RemoveGolem1:
+      case TileButtonId.SelectSpellNorth:
+      case TileButtonId.SelectSpellEast:
+      case TileButtonId.SelectSpellSouth:
+      case TileButtonId.SelectSpellWest:
         return { x: tileDescription.width / 2, y: tileDescription.height / 2, z: 0.1 }
       default:
         console.log("*** ERROR - Unsupported button")

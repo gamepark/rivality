@@ -164,6 +164,16 @@ export class UITileTools {
     }
     return undefined
   }
+
+  activeSpellTargetItemIndex(context: MaterialContext, spellOrientation:Orientation): number|undefined {
+    const coords=this.activeSpellTargetCoordinates(context, spellOrientation)
+    if (coords===undefined)
+      return
+    return context.rules.material(MaterialType.Tile)
+      .location(LocationType.Board)
+      .filter(item => item.location.x===coords.x && item.location.y===coords.y)
+      .getIndex()
+  }
 }
 
 export const uiTileTools = new UITileTools()
