@@ -9,6 +9,4 @@ export const Material: Partial<Record<MaterialType, MaterialDescription>> = {
   [MaterialType.Tile]: tileDescription,
   [MaterialType.Wizard]: wizardDescription,
   [MaterialType.Golem]: golemDescription
-//,
-//  [MaterialType.Button]: buttonDescription
 }
