@@ -123,11 +123,19 @@ export class TileButtonDescription extends LocationDescription {
   }
 
   isDisabled(location: Location, rules: MaterialRules) {
+    // Filter moves for the tutorial only
     if (rules.game.tutorialStep === undefined || location.id !== TileButtonId.Validate) return false
     const tile = rules.material(MaterialType.Tile).index(location.parent!).getItem()!
     switch (tile.id) {
       case Tile.StoneCircle_32_11:
+      case Tile.Cottage_23B_31_x:
         return tile.location.rotation !== Orientation.North
+      case Tile.StoneCircle_21_22:
+        return tile.location.rotation !== Orientation.East
+      case Tile.Fortress_31_22_13B:
+        return tile.location.rotation !== Orientation.South
+      case Tile.StoneCircle_31_12:
+        return tile.location.rotation !== Orientation.West
     }
     return false
   }

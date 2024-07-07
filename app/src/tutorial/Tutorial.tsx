@@ -7,8 +7,7 @@ import { MaterialType } from '@gamepark/rivality/material/MaterialType'
 import { Tile } from '@gamepark/rivality/material/Tile'
 import { Orientation } from '@gamepark/rivality/Orientation'
 import { PlayerId } from '@gamepark/rivality/PlayerId'
-import { CustomMoveType } from '@gamepark/rivality/rules/CustomMoveType'
-import { isCustomMoveType, isMoveItemType, MaterialGame, MaterialMove, MoveItem } from '@gamepark/rules-api'
+import { isMoveItemType, MoveItem } from '@gamepark/rules-api'
 import { Trans } from 'react-i18next'
 import { SpellSymbols, SymbolBreakShields, SymbolShield } from '../material/help/HelpTools'
 import { TutorialSetup } from './TutorialSetup'
@@ -281,10 +280,9 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           return tile===Tile.StoneCircle_21_22
           && move.location.x===-2
           && move.location.y===0
-          && move.location.rotation===Orientation.East
-
-          // Issue 1 - Rotation restricted for the local moves
-          // Issue 2 - Allow validation of other rotations
+          // Note: The orientation is forced through TileButtonDescription.isDisabled()
+          // No forced orientation here allows the user to test the rotation button
+          // && move.location.rotation===Orientation.East
         }
       }
     },
@@ -351,7 +349,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           return tile===Tile.Cottage_23B_31_x
           && move.location.x===-1
           && move.location.y===1
-          && move.location.rotation===Orientation.North
+//          && move.location.rotation===Orientation.North
         }
       }
     },
@@ -418,7 +416,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           return tile===Tile.Fortress_31_22_13B
           && move.location.x===1
           && move.location.y===1
-          && move.location.rotation===Orientation.South
+//          && move.location.rotation===Orientation.South
         }
       }
     },
@@ -487,7 +485,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           return tile===Tile.StoneCircle_31_12
           && move.location.x===0
           && move.location.y===-1
-          && move.location.rotation===Orientation.West
+//          && move.location.rotation===Orientation.West
         }
       }
     },
@@ -555,35 +553,6 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       }
     }
   ]
-
-  validateMove(_move:MaterialMove, _game:MaterialGame){
-    //let value1=isCustomMoveType(CustomMoveType.Validate)(move)
-    //let value2=false
-
-    /*if (isSelectItemType(MaterialType.Button)(move)){
-      const buttonItems=game.items[MaterialType.Button]
-      if (buttonItems!==undefined){
-        const buttonId=buttonItems[move.itemIndex].id
-        value2=(buttonId===Button.Validate)
-      }
-    }*/
-    //return value1 || value2
-    return false
-  }
-
-  rotateMove(move:MaterialMove, _game:MaterialGame){
-    let value1=isCustomMoveType(CustomMoveType.RotateClockwise)(move)
-    let value2=false
-
-    /*if (isSelectItemType(MaterialType.Button)(move)){
-      const buttonItems=game.items[MaterialType.Button]
-      if (buttonItems!==undefined){
-        const buttonId=buttonItems[move.itemIndex].id
-        value2=(buttonId===Button.Rotator)
-      }
-    }*/
-    return value1 || value2
-  }
 }
 
 export const alignIcon = css`
