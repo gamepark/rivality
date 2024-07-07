@@ -6,11 +6,11 @@ import { LocationType } from '@gamepark/rivality/material/LocationType'
 import { MaterialItem } from '@gamepark/rules-api'
 import { Memory } from '@gamepark/rivality/rules/Memory'
 import { RuleId } from '@gamepark/rivality/rules/RuleId'
-import Cancel from '../images/icon/cancel.png'
-import RemoveGolem1 from '../images/icon/no_golem1.png'
-import RemoveGolem2 from '../images/icon/no_golem2.png'
-import RemoveGolem3 from '../images/icon/no_golem3.png'
-import Rotator from '../images/icon/rotator.png'
+//import Cancel from '../images/icon/cancel.png'
+//import RemoveGolem1 from '../images/icon/no_golem1.png'
+//import RemoveGolem2 from '../images/icon/no_golem2.png'
+//import RemoveGolem3 from '../images/icon/no_golem3.png'
+//import Rotator from '../images/icon/rotator.png'
 import Validate from '../images/icon/validate.png'
 
 export class ButtonDescription extends TokenDescription  {
@@ -18,16 +18,16 @@ export class ButtonDescription extends TokenDescription  {
   height=3
   borderRadius = 1.5
   images = {
-    [Button.Rotator]: Rotator,
-    [Button.Validate]: Validate,
-    [Button.Cancel]: Cancel,
+//    [Button.Rotator]: Rotator,
+//    [Button.Validate]: Validate,
+//    [Button.Cancel]: Cancel,
     [Button.ChooseSpellNorth]: Validate,
     [Button.ChooseSpellEast]: Validate,
     [Button.ChooseSpellSouth]: Validate,
     [Button.ChooseSpellWest]: Validate,
-    [Button.RemoveGolem1]: RemoveGolem1,
-    [Button.RemoveGolem2]: RemoveGolem2,
-    [Button.RemoveGolem3]: RemoveGolem3
+//    [Button.RemoveGolem1]: RemoveGolem1,
+//    [Button.RemoveGolem2]: RemoveGolem2,
+//    [Button.RemoveGolem3]: RemoveGolem3
   }
 
   getItemExtraCss(item: MaterialItem, context: ItemContext){

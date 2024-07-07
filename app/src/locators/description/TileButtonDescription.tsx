@@ -1,13 +1,18 @@
 /** @jsxImportSource @emotion/react */
 import { css, Interpolation, Theme } from '@emotion/react'
 import { LocationContext, LocationDescription, MaterialContext } from '@gamepark/react-game'
+import { CustomMove, isCustomMoveType, Location, MaterialRules, MoveKind } from '@gamepark/rules-api'
+import { CustomMoveType } from '@gamepark/rivality/rules/CustomMoveType'
 import { LocationType } from '@gamepark/rivality/material/LocationType'
 import { MaterialType } from '@gamepark/rivality/material/MaterialType'
-import { Tile } from '@gamepark/rivality/material/Tile'
-import { Orientation } from '@gamepark/rivality/Orientation'
 import { Memory } from '@gamepark/rivality/rules/Memory'
-import { Location, MaterialRules } from '@gamepark/rules-api'
+import { Orientation } from '@gamepark/rivality/Orientation'
+import { RuleId } from '@gamepark/rivality/rules/RuleId'
+import { Tile } from '@gamepark/rivality/material/Tile'
 import Cancel from '../../images/icon/cancel.png'
+import RemoveGolem1 from '../../images/icon/no_golem1.png'
+import RemoveGolem2 from '../../images/icon/no_golem2.png'
+import RemoveGolem3 from '../../images/icon/no_golem3.png'
 import Rotator from '../../images/icon/rotator.png'
 import Validate from '../../images/icon/validate.png'
 import { buttonDescription } from '../../material/ButtonDescription'
@@ -16,14 +21,14 @@ import { tileDescription } from '../../material/TileDescription'
 export enum TileButtonId {
   Cancel,
   Rotate,
-  Validate
-/*
-  ,
+  Validate,
   SelectSpellNorth,
   SelectSpellEast,
   SelectSpellSouth,
-  SelectSpellWest
-*/
+  SelectSpellWest,
+  RemoveGolem1,
+  RemoveGolem2,
+  RemoveGolem3
 }
 
 export class TileButtonDescription extends LocationDescription {
@@ -52,12 +57,20 @@ export class TileButtonDescription extends LocationDescription {
         return Rotator
       case TileButtonId.Validate:
         return Validate
+      case TileButtonId.RemoveGolem1:
+        return RemoveGolem1
+      case TileButtonId.RemoveGolem2:
+        return RemoveGolem2
+      case TileButtonId.RemoveGolem3:
+        return RemoveGolem3
     }
     return
   }
 
   getLocations({ rules, player }: MaterialContext): Location[] {
     const locations: Location[] = []
+
+    // Buttons around the tile being placed
     const tilePreview = rules.remind<number | undefined>(Memory.TilePreview)
     if (tilePreview !== undefined) {
       locations.push(
@@ -66,11 +79,39 @@ export class TileButtonDescription extends LocationDescription {
         { type: LocationType.TileButton, id: TileButtonId.Validate, parent: tilePreview }
       )
     }
+
+    // Buttons around tiles in player's hand
     if (player !== undefined) {
       for (const index of rules.material(MaterialType.Tile).location(LocationType.PlayerHand).player(player).getIndexes()) {
         locations.push({ type: LocationType.TileButton, id: TileButtonId.Rotate, parent: index })
       }
     }
+
+    // Buttons around tile with golems to be removed
+    const ruleId=rules.game.rule?.id
+    if (ruleId===RuleId.AskGolemRemoval){
+      if (player!==undefined){
+        const tileX = rules.remind<number | undefined>(Memory.SpellTileX)
+        const tileY = rules.remind<number | undefined>(Memory.SpellTileY)
+        const tileIndex = rules.material(MaterialType.Tile)
+          .location(LocationType.Board)
+          .filter(item => item.location.x===tileX && item.location.y===tileY)
+          .getIndex()
+
+        rules.getLegalMoves(player).forEach(move => {
+          if (isCustomMoveType(CustomMoveType.Player1)(move)){
+            locations.push({ type: LocationType.TileButton, id: TileButtonId.RemoveGolem1, parent: tileIndex })
+          }
+          if (isCustomMoveType(CustomMoveType.Player2)(move)){
+            locations.push({ type: LocationType.TileButton, id: TileButtonId.RemoveGolem2, parent: tileIndex })
+          }
+          if (isCustomMoveType(CustomMoveType.Player3)(move)){
+            locations.push({ type: LocationType.TileButton, id: TileButtonId.RemoveGolem3, parent: tileIndex })
+          }
+        })
+      }
+    }
+
     return locations
   }
 
@@ -85,12 +126,20 @@ export class TileButtonDescription extends LocationDescription {
 
   getCoordinates(location: Location) {
     switch (location.id) {
+      // Top left
       case TileButtonId.Cancel:
+      case TileButtonId.RemoveGolem2:
         return { x: -tileDescription.width / 2, y: -tileDescription.height / 2, z: 0.1 }
+      // Top right
       case TileButtonId.Rotate:
+      case TileButtonId.RemoveGolem3:
         return { x: tileDescription.width / 2, y: -tileDescription.height / 2, z: 0.1 }
+      // Bottom right
       case TileButtonId.Validate:
+      case TileButtonId.RemoveGolem1:
+        return { x: tileDescription.width / 2, y: tileDescription.height / 2, z: 0.1 }
       default:
+        console.log("*** ERROR - Unsupported button")
         return { x: tileDescription.width / 2, y: tileDescription.height / 2, z: 0.1 }
     }
   }
@@ -99,16 +148,27 @@ export class TileButtonDescription extends LocationDescription {
     if (this.isDisabled(location, rules)) return
     if (location.id === TileButtonId.Validate) {
       return rules.material(MaterialType.Tile).index(location.parent!).moveItem(item => item.location)
-/*
     } else if (location.id === TileButtonId.SelectSpellNorth) {
-      return rules.customMove(CustomMoveType.North)
+      let customMove:CustomMove={kind: MoveKind.CustomMove, type: CustomMoveType.North}
+      return customMove
     } else if (location.id === TileButtonId.SelectSpellEast) {
-      return rules.customMove(CustomMoveType.East)
+      let customMove:CustomMove={kind: MoveKind.CustomMove, type: CustomMoveType.East}
+      return customMove
     } else if (location.id === TileButtonId.SelectSpellSouth) {
-      return rules.customMove(CustomMoveType.South)
+      let customMove:CustomMove={kind: MoveKind.CustomMove, type: CustomMoveType.South}
+      return customMove
     } else if (location.id === TileButtonId.SelectSpellWest) {
-      return rules.customMove(CustomMoveType.West)
-*/
+      let customMove:CustomMove={kind: MoveKind.CustomMove, type: CustomMoveType.West}
+      return customMove
+    } else if (location.id === TileButtonId.RemoveGolem1) {
+      let customMove:CustomMove={kind: MoveKind.CustomMove, type: CustomMoveType.Player1}
+      return customMove
+    } else if (location.id === TileButtonId.RemoveGolem2) {
+      let customMove:CustomMove={kind: MoveKind.CustomMove, type: CustomMoveType.Player2}
+      return customMove
+    } else if (location.id === TileButtonId.RemoveGolem3) {
+      let customMove:CustomMove={kind: MoveKind.CustomMove, type: CustomMoveType.Player3}
+      return customMove
     }
     return
   }

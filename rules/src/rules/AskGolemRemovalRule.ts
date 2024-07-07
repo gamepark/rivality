@@ -1,5 +1,4 @@
-import { CustomMove, isCustomMove, isSelectItemType, ItemMove, MaterialItem, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
-import { BoardSpace } from '../material/BoardSpace'
+import { CustomMove, isSelectItemType, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { Button } from '../material/Button'
 import { CustomMoveType } from './CustomMoveType'
 import { golemTools } from '../logic/GolemTools'
@@ -9,53 +8,6 @@ import { Memory } from './Memory'
 import { RuleId } from '../rules/RuleId'
 
 export class AskGolemRemovalRule extends PlayerTurnRule {
-  onRuleStart(): MaterialMove[] {
-    const moves:MaterialMove[]=[]
-    // Remove any previous button
-    moves.push(this.material(MaterialType.Button).location(LocationType.Board).deleteItemsAtOnce())
-
-    // Add needed buttons
-    const legalMoves:MaterialMove[]=this.listPossiblePlayerMoves()
-    const newButtons:MaterialItem[]=[]
-    let boardButtons:Button[]=[]
-
-    if (legalMoves
-      .filter((move) =>
-        isCustomMove(move) && move.type===CustomMoveType.Player1)
-      .length > 0)
-      boardButtons.push(Button.RemoveGolem1)
-
-    if (legalMoves
-      .filter((move) =>
-        isCustomMove(move) && move.type===CustomMoveType.Player2)
-      .length > 0)
-      boardButtons.push(Button.RemoveGolem2)
-
-    if (legalMoves
-      .filter((move) =>
-        isCustomMove(move) && move.type===CustomMoveType.Player3)
-      .length > 0)
-      boardButtons.push(Button.RemoveGolem3)
-
-    boardButtons.forEach(button => {
-      newButtons.push({
-        id: button,
-        location: {
-          type: LocationType.Board,
-          id: BoardSpace.Button
-        }
-      })
-    })
-    moves.push(this.material(MaterialType.Button).createItemsAtOnce(newButtons))
-
-    return moves
-  }
-
-  onRuleEnd(){
-    // Remove all buttons
-    return [this.material(MaterialType.Button).location(LocationType.Board).deleteItemsAtOnce()]
-  }
-
   listPossiblePlayerMoves(): MaterialMove[] {
     let moves:MaterialMove[]=[]
 
