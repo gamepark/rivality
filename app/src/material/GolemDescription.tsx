@@ -37,8 +37,10 @@ export class GolemDescription extends TokenDescription  {
 }
 
 const emptyCss=css``
+
 const haloCss=css`
-  filter: drop-shadow(0 -0.5em 0.25em rgb(255, 255, 255));
+  -webkit-filter: drop-shadow(0 -0.5em 0.25em white);
+  filter: drop-shadow(0 -0.5em 0.25em white);
 `
 
 export const golemDescription = new GolemDescription()
