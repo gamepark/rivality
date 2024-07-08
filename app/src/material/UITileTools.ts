@@ -18,7 +18,8 @@ export class UITileTools {
 
   isActiveWizardSquare(location:Location, context: MaterialContext){
     const ruleId=context.rules.state.rule?.id
-    if (ruleId!==RuleId.AskSpellOrientation)
+    const tilePreview=(context.rules.remind(Memory.TilePreview)!==undefined)
+    if (ruleId!==RuleId.AskSpellOrientation && !tilePreview)
       return false
 
     const wizardLocation=this.activePlayerWizardLocation(context)
