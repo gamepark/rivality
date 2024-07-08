@@ -1,5 +1,4 @@
 /** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react'
 import { MaterialTutorial, TutorialStep } from '@gamepark/react-game'
 import { Spell } from '@gamepark/rivality/logic/TileSpells'
 import { LocationType } from '@gamepark/rivality/material/LocationType'
@@ -16,7 +15,7 @@ const me = 1
 const opponent = 2
 
 export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationType> {
-  version = 2
+  version = 3
   options = { players: 2 }
   setup = new TutorialSetup()
 
@@ -554,15 +553,3 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     }
   ]
 }
-
-export const alignIcon = css`
-  > * {
-    vertical-align: middle;
-  }
-
-  picture, img {
-    vertical-align: middle;
-    height: 1.5em;
-    margin-right: 0.1em;
-  }
-`

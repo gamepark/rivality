@@ -8,7 +8,7 @@ import { RuleId } from './RuleId'
 
 export class AskGolemRemovalRule extends PlayerTurnRule {
   getPlayerMoves(): MaterialMove[] {
-    return this.game.players.filter(p => p !== this.getActivePlayer()).map(p => this.rules().customMove(CustomMoveType.ChoosePlayer, p))
+    return this.game.players.filter(p => p !== this.getActivePlayer()).map(p => this.customMove(CustomMoveType.ChoosePlayer, p))
   }
 
   applyEffect(player: number): MaterialMove[] {
@@ -32,7 +32,7 @@ export class AskGolemRemovalRule extends PlayerTurnRule {
           player: player
         }
       ))
-    moves.push(this.rules().startPlayerTurn(RuleId.RemoveGolem, this.getActivePlayer()))
+    moves.push(this.startPlayerTurn(RuleId.RemoveGolem, this.getActivePlayer()))
     return moves
   }
 

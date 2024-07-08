@@ -1,14 +1,14 @@
 /** @jsxImportSource @emotion/react */
 import { css, Interpolation, Theme } from '@emotion/react'
 import { LocationContext, LocationDescription, MaterialContext } from '@gamepark/react-game'
-import { CustomMove, isCustomMoveType, Location, MaterialRules, MoveKind } from '@gamepark/rules-api'
-import { CustomMoveType } from '@gamepark/rivality/rules/CustomMoveType'
 import { LocationType } from '@gamepark/rivality/material/LocationType'
 import { MaterialType } from '@gamepark/rivality/material/MaterialType'
-import { Memory } from '@gamepark/rivality/rules/Memory'
-import { Orientation } from '@gamepark/rivality/Orientation'
-import { RuleId } from '@gamepark/rivality/rules/RuleId'
 import { Tile } from '@gamepark/rivality/material/Tile'
+import { Orientation } from '@gamepark/rivality/Orientation'
+import { CustomMoveType } from '@gamepark/rivality/rules/CustomMoveType'
+import { Memory } from '@gamepark/rivality/rules/Memory'
+import { RuleId } from '@gamepark/rivality/rules/RuleId'
+import { isCustomMoveType, Location, MaterialMoveBuilder, MaterialRules } from '@gamepark/rules-api'
 import Cancel from '../../images/icon/cancel.png'
 import RemoveGolem1 from '../../images/icon/no_golem1.png'
 import RemoveGolem2 from '../../images/icon/no_golem2.png'
@@ -192,26 +192,19 @@ export class TileButtonDescription extends LocationDescription {
     if (location.id === TileButtonId.Validate) {
       return rules.material(MaterialType.Tile).index(location.parent!).moveItem(item => item.location)
     } else if (location.id === TileButtonId.SelectSpellNorth) {
-      let customMove:CustomMove={kind: MoveKind.CustomMove, type: CustomMoveType.ChooseOrientation, data: Orientation.North}
-      return customMove
+      return MaterialMoveBuilder.customMove(CustomMoveType.ChooseOrientation, Orientation.North)
     } else if (location.id === TileButtonId.SelectSpellEast) {
-      let customMove:CustomMove={kind: MoveKind.CustomMove, type: CustomMoveType.ChooseOrientation, data: Orientation.East}
-      return customMove
+      return MaterialMoveBuilder.customMove(CustomMoveType.ChooseOrientation, Orientation.East)
     } else if (location.id === TileButtonId.SelectSpellSouth) {
-      let customMove:CustomMove={kind: MoveKind.CustomMove, type: CustomMoveType.ChooseOrientation, data: Orientation.South}
-      return customMove
+      return MaterialMoveBuilder.customMove(CustomMoveType.ChooseOrientation, Orientation.South)
     } else if (location.id === TileButtonId.SelectSpellWest) {
-      let customMove:CustomMove={kind: MoveKind.CustomMove, type: CustomMoveType.ChooseOrientation, data: Orientation.West}
-      return customMove
+      return MaterialMoveBuilder.customMove(CustomMoveType.ChooseOrientation, Orientation.West)
     } else if (location.id === TileButtonId.RemoveGolem1) {
-      let customMove:CustomMove={kind: MoveKind.CustomMove, type: CustomMoveType.ChoosePlayer, data: 1}
-      return customMove
+      return MaterialMoveBuilder.customMove(CustomMoveType.ChoosePlayer, 1)
     } else if (location.id === TileButtonId.RemoveGolem2) {
-      let customMove:CustomMove={kind: MoveKind.CustomMove, type: CustomMoveType.ChoosePlayer, data: 2}
-      return customMove
+      return MaterialMoveBuilder.customMove(CustomMoveType.ChoosePlayer, 2)
     } else if (location.id === TileButtonId.RemoveGolem3) {
-      let customMove:CustomMove={kind: MoveKind.CustomMove, type: CustomMoveType.ChoosePlayer, data: 3}
-      return customMove
+      return MaterialMoveBuilder.customMove(CustomMoveType.ChoosePlayer, 3)
     }
     return
   }

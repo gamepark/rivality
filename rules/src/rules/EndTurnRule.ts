@@ -27,7 +27,7 @@ export class EndTurnRule extends PlayerTurnRule {
     )
 
     // Go to next player's turn
-    moves.push(this.rules().startPlayerTurn(RuleId.ChooseTile,
+    moves.push(this.startPlayerTurn(RuleId.ChooseTile,
       this.nextPlayer))
 
     return moves

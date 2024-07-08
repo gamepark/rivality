@@ -11,7 +11,7 @@ import { tileSpells } from '../logic/TileSpells'
 export class StartRule extends PlayerTurnRule {
   onRuleStart(){
     if (this.firstPlayerMayPlaceAGolem()){
-      return [this.rules().startPlayerTurn(RuleId.ChooseTile, this.getActivePlayer())]
+      return [this.startPlayerTurn(RuleId.ChooseTile, this.getActivePlayer())]
     }
     return []
   }
@@ -37,14 +37,14 @@ export class StartRule extends PlayerTurnRule {
     if (this.firstPlayerMayPlaceAGolem())
       return []
     return [
-      this.rules().customMove(CustomMoveType.KeepHand),
-      this.rules().customMove(CustomMoveType.NewHand)
+      this.customMove(CustomMoveType.KeepHand),
+      this.customMove(CustomMoveType.NewHand)
     ]
   }
 
   onCustomMove(move: CustomMove): MaterialMove[] {
     if (move.type === CustomMoveType.KeepHand) {
-      return [this.rules().startPlayerTurn(RuleId.ChooseTile, this.getActivePlayer())]
+      return [this.startPlayerTurn(RuleId.ChooseTile, this.getActivePlayer())]
     } else if (move.type === CustomMoveType.NewHand) {
       let moves:MaterialMove[]=[]
 
@@ -71,7 +71,7 @@ export class StartRule extends PlayerTurnRule {
 
       // Shuffle deck then Start game
       // Note: The shuffle is delayed to ensure that the hiding strategy for all cards is the same
-      moves.push(this.rules().startPlayerTurn(RuleId.ShufflePlayer1Deck, this.getActivePlayer()))
+      moves.push(this.startPlayerTurn(RuleId.ShufflePlayer1Deck, this.getActivePlayer()))
       return moves
     }
     return []

@@ -8,7 +8,7 @@ export class ShufflePlayer1DeckRule extends PlayerTurnRule {
   onRuleStart(){
     return [
       this.material(MaterialType.Tile).location(LocationType.PlayerDeck).player(1).shuffle(),
-      this.rules().startPlayerTurn(RuleId.ChooseTile, this.getActivePlayer())
+      this.startPlayerTurn(RuleId.ChooseTile, this.getActivePlayer())
     ]
   }
 }

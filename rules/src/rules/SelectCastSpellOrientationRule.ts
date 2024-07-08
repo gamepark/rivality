@@ -47,9 +47,9 @@ export class SelectCastSpellOrientationRule extends SpellRule {
     const orientationChoice=this.selectSpellOrientation()
     switch (orientationChoice){
       case OrientationChoice.AskPlayer:
-        return [this.rules().startPlayerTurn(RuleId.AskSpellOrientation, this.getActivePlayer())]
+        return [this.startPlayerTurn(RuleId.AskSpellOrientation, this.getActivePlayer())]
       case OrientationChoice.NoRemainingOrientation:
-        return [this.rules().startPlayerTurn(RuleId.EndTurn, this.getActivePlayer())]
+        return [this.startPlayerTurn(RuleId.EndTurn, this.getActivePlayer())]
       case OrientationChoice.North:
         spellOrientation=Orientation.North
         break
@@ -71,7 +71,7 @@ export class SelectCastSpellOrientationRule extends SpellRule {
 
     // Apply spell effects
     this.memorize(Memory.SpellOrientation, spellOrientation)
-    return [this.rules().startPlayerTurn(RuleId.ApplySpellEffect, this.getActivePlayer())]
+    return [this.startPlayerTurn(RuleId.ApplySpellEffect, this.getActivePlayer())]
   }
 
   mayAutoplay(

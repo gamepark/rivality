@@ -9,20 +9,20 @@ export class AskSpellOrientationRule extends PlayerTurnRule {
     let moves:MaterialMove[]=[]
 
     if (!this.remind(Memory.AppliedSpellNorth))
-      moves.push(this.rules().customMove(CustomMoveType.ChooseOrientation, Orientation.North))
+      moves.push(this.customMove(CustomMoveType.ChooseOrientation, Orientation.North))
     if (!this.remind(Memory.AppliedSpellEast))
-      moves.push(this.rules().customMove(CustomMoveType.ChooseOrientation, Orientation.East))
+      moves.push(this.customMove(CustomMoveType.ChooseOrientation, Orientation.East))
     if (!this.remind(Memory.AppliedSpellSouth))
-      moves.push(this.rules().customMove(CustomMoveType.ChooseOrientation, Orientation.South))
+      moves.push(this.customMove(CustomMoveType.ChooseOrientation, Orientation.South))
     if (!this.remind(Memory.AppliedSpellWest))
-      moves.push(this.rules().customMove(CustomMoveType.ChooseOrientation, Orientation.West))
+      moves.push(this.customMove(CustomMoveType.ChooseOrientation, Orientation.West))
 
     return moves
   }
 
   applyEffect(spellOrientation:Orientation): MaterialMove[] {
     this.memorize(Memory.SpellOrientation, spellOrientation)
-    return [this.rules().startPlayerTurn(RuleId.ApplySpellEffect, this.getActivePlayer())]
+    return [this.startPlayerTurn(RuleId.ApplySpellEffect, this.getActivePlayer())]
   }
 
   onCustomMove(move: CustomMove): MaterialMove[] {

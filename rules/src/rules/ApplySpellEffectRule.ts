@@ -32,7 +32,7 @@ export class ApplySpellEffectRule extends SpellRule {
     if (moves.length>0)
       return moves
 
-    return [this.rules().startPlayerTurn(RuleId.SelectCastSpellOrientation, this.getActivePlayer())]
+    return [this.startPlayerTurn(RuleId.SelectCastSpellOrientation, this.getActivePlayer())]
   }
 
   castEffects(spellOrientation:Orientation):MaterialMove[] {

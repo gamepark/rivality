@@ -42,7 +42,7 @@ export class RemoveGolemRule extends SpellRule {
   }
 
   nextSpellAction() : MaterialMove {
-    return this.rules().startPlayerTurn(RuleId.SelectCastSpellOrientation, this.getActivePlayer())
+    return this.startPlayerTurn(RuleId.SelectCastSpellOrientation, this.getActivePlayer())
   }
 
   removeGolems() : MaterialMove[] {
@@ -170,7 +170,7 @@ export class RemoveGolemRule extends SpellRule {
 
     // 5. Go to next spell rule
     if (requiresQuestionToPlayer){
-      moves.push(this.rules().startPlayerTurn(RuleId.AskGolemRemoval, this.getActivePlayer()))
+      moves.push(this.startPlayerTurn(RuleId.AskGolemRemoval, this.getActivePlayer()))
     } else {
       moves.push(this.nextSpellAction())
     }

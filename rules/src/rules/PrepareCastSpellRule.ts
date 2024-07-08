@@ -10,7 +10,7 @@ export class PrepareCastSpellRule extends PlayerTurnRule {
     this.forget(Memory.AppliedSpellWest)
 
     return [
-      this.rules().startPlayerTurn(RuleId.SelectCastSpellOrientation, this.getActivePlayer())
+      this.startPlayerTurn(RuleId.SelectCastSpellOrientation, this.getActivePlayer())
     ]
   }
 }

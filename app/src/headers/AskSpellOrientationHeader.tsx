@@ -3,7 +3,7 @@ import { PlayMoveButton, usePlayerId, usePlayerName, useRules } from '@gamepark/
 import { Orientation, orientations } from '@gamepark/rivality/Orientation'
 import { RivalityRules } from '@gamepark/rivality/RivalityRules'
 import { CustomMoveType } from '@gamepark/rivality/rules/CustomMoveType'
-import { MoveKind } from '@gamepark/rules-api'
+import { MaterialMoveBuilder } from '@gamepark/rules-api'
 import { Trans, useTranslation } from 'react-i18next'
 
 export const AskSpellOrientationHeader = () => {
@@ -18,7 +18,7 @@ export const AskSpellOrientationHeader = () => {
       {orientations.map(orientation => <>
         &nbsp;
         <PlayMoveButton
-          move={{ kind: MoveKind.CustomMove, type: CustomMoveType.ChooseOrientation, data: orientation }}>{orientationChar[orientation]}</PlayMoveButton>
+          move={MaterialMoveBuilder.customMove(CustomMoveType.ChooseOrientation, orientation)}>{orientationChar[orientation]}</PlayMoveButton>
       </>)}
     </>
   } else {

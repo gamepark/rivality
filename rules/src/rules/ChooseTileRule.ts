@@ -43,7 +43,7 @@ export class ChooseTileRule extends PlayerTurnRule {
       || nbUnplayedGolems2 == 0
       || (nbPlayers == 3 && nbUnplayedGolems3 == 0)
     )
-      return [this.rules().endGame()]
+      return [this.endGame()]
 
     // The game goes on
     return []
@@ -119,7 +119,7 @@ export class ChooseTileRule extends PlayerTurnRule {
                 y: move.location.y
               }
             ),
-            this.rules().startPlayerTurn(RuleId.PrepareCastSpell, this.getActivePlayer())
+            this.startPlayerTurn(RuleId.PrepareCastSpell, this.getActivePlayer())
           ]
         }
       }
