@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
-import { MaterialTutorial, TutorialStep } from '@gamepark/react-game'
+import { css } from '@emotion/react'
+import { MaterialTutorial, Picture, TutorialStep } from '@gamepark/react-game'
 import { Spell } from '@gamepark/rivality/logic/TileSpells'
 import { LocationType } from '@gamepark/rivality/material/LocationType'
 import { MaterialType } from '@gamepark/rivality/material/MaterialType'
@@ -10,6 +11,8 @@ import { isMoveItemType, MoveItem } from '@gamepark/rules-api'
 import { Trans } from 'react-i18next'
 import { SpellSymbols, SymbolBreakShields, SymbolShield } from '../material/help/HelpTools'
 import { TutorialSetup } from './TutorialSetup'
+import rotateIcon from '../images/icon/rotator.png'
+import validateIcon from '../images/icon/validate.png'
 
 const me = 1
 const opponent = 2
@@ -147,6 +150,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
         text: () => (
           <>
           <b><Trans defaults="tuto.tiles.4"></Trans></b>
+          &nbsp;<Picture css={iconCss} src={validateIcon}/>
           </>
         ),
         position: { x: 40, y: -15 },
@@ -261,7 +265,10 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           <ul>
           <li><b><Trans defaults="tuto.turn.tile.3"></Trans></b></li>
           <li><b><Trans defaults="tuto.turn.tile.4"></Trans></b></li>
-          <li><b><Trans defaults="tuto.turn.tile.5"></Trans></b></li>
+          &nbsp;<Picture css={iconCss} src={rotateIcon}/>
+          <li><b><Trans defaults="tuto.turn.tile.5"></Trans></b>
+          &nbsp;<Picture css={iconCss} src={validateIcon}/>
+          </li>
           </ul>
           </>
         ),
@@ -553,3 +560,9 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     }
   ]
 }
+
+const iconCss=css`
+  border-radius: 50%;
+  vertical-align: top;
+  max-height: 1em;
+`
