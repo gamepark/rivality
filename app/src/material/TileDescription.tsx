@@ -69,14 +69,37 @@ export class TileDescription extends CardDescription {
 
   getItemExtraCss(item: MaterialItem, context: ItemContext) {
     const location = item.location
+    console.log(location)
     if (
       uiTileTools.isHighlightedSquare(location, context) ||
       uiTileTools.isActiveWizardSquare(location, context)
     ) {
-      return css`filter: contrast(1.5)`
+      return css`box-shadow:
+      rgba(46, 255, 46, 0.3)  0.5em  0.5em,
+      rgba(46, 255, 46, 0.3) -0.5em  0.5em,
+      rgba(46, 255, 46, 0.3) -0.5em -0.5em,
+      rgba(46, 255, 46, 0.3)  0.5em -0.5em;`
+
+/*
+      return css`
+        -webkit-filter: contrast(1.5);
+        filter: contrast(1.5);
+      `
+*/
     }
     if (uiTileTools.isUnderAttackSquare(location, context)) {
-      return css`filter: opacity(0.5) drop-shadow(0 0 0 red)`
+      return css`box-shadow:
+        rgba(255, 46, 46, 0.3)  0.5em  0.5em,
+        rgba(255, 46, 46, 0.3) -0.5em  0.5em,
+        rgba(255, 46, 46, 0.3) -0.5em -0.5em,
+        rgba(255, 46, 46, 0.3)  0.5em -0.5em;`
+
+/*
+      return css`
+        -webkit-filter: drop-shadow(0 -0.5em 0.25em red);
+        filter: drop-shadow(0 -0.5em 0.25em red);
+      `
+*/
     }
     return css``
   }
