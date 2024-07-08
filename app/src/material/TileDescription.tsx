@@ -69,7 +69,6 @@ export class TileDescription extends CardDescription {
 
   getItemExtraCss(item: MaterialItem, context: ItemContext) {
     const location = item.location
-    console.log(location)
     if (
       uiTileTools.isHighlightedSquare(location, context) ||
       uiTileTools.isActiveWizardSquare(location, context)
