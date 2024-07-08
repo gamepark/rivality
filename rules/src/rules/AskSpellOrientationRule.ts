@@ -9,13 +9,13 @@ export class AskSpellOrientationRule extends PlayerTurnRule {
     let moves:MaterialMove[]=[]
 
     if (!this.remind(Memory.AppliedSpellNorth))
-      moves.push(this.rules().customMove(CustomMoveType.North))
+      moves.push(this.rules().customMove(CustomMoveType.ChooseOrientation, Orientation.North))
     if (!this.remind(Memory.AppliedSpellEast))
-      moves.push(this.rules().customMove(CustomMoveType.East))
+      moves.push(this.rules().customMove(CustomMoveType.ChooseOrientation, Orientation.East))
     if (!this.remind(Memory.AppliedSpellSouth))
-      moves.push(this.rules().customMove(CustomMoveType.South))
+      moves.push(this.rules().customMove(CustomMoveType.ChooseOrientation, Orientation.South))
     if (!this.remind(Memory.AppliedSpellWest))
-      moves.push(this.rules().customMove(CustomMoveType.West))
+      moves.push(this.rules().customMove(CustomMoveType.ChooseOrientation, Orientation.West))
 
     return moves
   }
@@ -26,25 +26,7 @@ export class AskSpellOrientationRule extends PlayerTurnRule {
   }
 
   onCustomMove(move: CustomMove): MaterialMove[] {
-    let spellOrientation:Orientation|undefined=undefined
-    switch (move.type){
-      case CustomMoveType.North:
-        spellOrientation=Orientation.North
-        break
-      case CustomMoveType.East:
-        spellOrientation=Orientation.East
-        break
-      case CustomMoveType.South:
-        spellOrientation=Orientation.South
-        break
-      case CustomMoveType.West:
-        spellOrientation=Orientation.West
-        break
-    }
-    if (spellOrientation===undefined){
-      console.log("*** ERROR - Unknown spell orientation => Game is stuck")
-      return []
-    }
-    return this.applyEffect(spellOrientation)
+    if (move.type !== CustomMoveType.ChooseOrientation) return []
+    return this.applyEffect(move.data)
   }
 }
