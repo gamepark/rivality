@@ -201,9 +201,22 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           </ul>
           </>
         ),
-        position: { x: 40, y: -10 },
+        position: { x: 50, y: -10 },
         size: { width: 72 }
-      }
+      },
+      focus: (game) => ({
+        materials: [
+          this.material(game, MaterialType.Tile)
+            .location(LocationType.Board)
+            .filter(item => item.location.x===0 && item.location.y===1)
+        ],
+        margin: {
+          right: 10,
+          top: 10,
+          bottom: 10,
+          left:10
+        }
+      })
     },
     {
       popup: {
@@ -216,7 +229,23 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
         ),
         position: { x: 40, y: -15 },
         size: { width: 72 }
-      }
+      },
+      focus: (game) => ({
+        materials: [
+          this.material(game, MaterialType.Tile)
+            .location(LocationType.Board)
+            .filter(item => item.location.x===0 && item.location.y===1),
+          this.material(game, MaterialType.Golem)
+            .location(LocationType.Board)
+            .filter(item => item.location.x===0 && item.location.y===0)
+        ],
+        margin: {
+          right: 10,
+          top: 10,
+          bottom: 10,
+          left:10
+        }
+      })
     },
     {
       popup: {
