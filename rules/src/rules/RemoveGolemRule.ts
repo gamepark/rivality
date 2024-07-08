@@ -6,7 +6,7 @@ import { MaterialType } from '../material/MaterialType'
 import { Memory } from './Memory'
 import { PlayerId } from '../PlayerId'
 import { SpellRule } from './SpellRule'
-import { RuleId } from '../rules/RuleId'
+import { RuleId } from './RuleId'
 
 /*
  * If the number of golems exceeds 5 on the current spell tile,

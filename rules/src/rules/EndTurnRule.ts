@@ -2,7 +2,7 @@ import { MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { Orientation } from '../Orientation'
-import { RuleId } from '../rules/RuleId'
+import { RuleId } from './RuleId'
 import { Memory } from './Memory'
 
 export class EndTurnRule extends PlayerTurnRule {

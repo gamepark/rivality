@@ -1,12 +1,12 @@
 import { MaterialItem, PlayerTurnRule, XYCoordinates } from '@gamepark/rules-api'
 import { GolemCount, golemTools } from '../logic/GolemTools'
-import { LocationType } from '../material/LocationType'
-import { MaterialType } from '../material/MaterialType'
-import { Orientation } from '../Orientation'
 import { Spell, tileSpells } from '../logic/TileSpells'
-import { Tile } from '../material/Tile'
 import { tileTools } from '../logic/TileTools'
 import { wizardTools } from '../logic/WizardTools'
+import { LocationType } from '../material/LocationType'
+import { MaterialType } from '../material/MaterialType'
+import { Tile } from '../material/Tile'
+import { Orientation } from '../Orientation'
 
 export abstract class SpellRule extends PlayerTurnRule {
   getActiveTileCoordinates(): XYCoordinates {
@@ -35,11 +35,10 @@ export abstract class SpellRule extends PlayerTurnRule {
     const tileId:Tile=tile.id
     const tileOrientation:Orientation=tile.location.rotation
 
-    const spell:Spell=tileSpells.spell(
+    return tileSpells.spell(
       tileId,
       tileTools.tileSideFromOrientations(spellOrientation, tileOrientation)
     )
-    return spell
   }
 
   getTargetTileCoordinates(tileCoordinates:XYCoordinates, spellOrientation:Orientation, spell:Spell): XYCoordinates {
@@ -73,11 +72,6 @@ export abstract class SpellRule extends PlayerTurnRule {
       .location(LocationType.Board)
       .filter(item => item.location.x==tileCoordinates.x && item.location.y==tileCoordinates.y)
       .getItem()
-  }
-
-  existsTile(tileCoordinates: XYCoordinates): boolean {
-    const tile=this.getTile(tileCoordinates)
-    return (tile !== undefined)
   }
 
   hasTileWizard(tileCoordinates: XYCoordinates): boolean {

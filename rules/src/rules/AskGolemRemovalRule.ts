@@ -4,7 +4,7 @@ import { golemTools } from '../logic/GolemTools'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { Memory } from './Memory'
-import { RuleId } from '../rules/RuleId'
+import { RuleId } from './RuleId'
 
 export class AskGolemRemovalRule extends PlayerTurnRule {
   getPlayerMoves(): MaterialMove[] {

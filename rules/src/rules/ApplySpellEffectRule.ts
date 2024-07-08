@@ -7,7 +7,7 @@ import { Spell } from '../logic/TileSpells'
 import { tileTools } from '../logic/TileTools'
 import { Orientation } from '../Orientation'
 import { Memory } from './Memory'
-import { RuleId } from '../rules/RuleId'
+import { RuleId } from './RuleId'
 import { SpellRule } from './SpellRule'
 
 /*

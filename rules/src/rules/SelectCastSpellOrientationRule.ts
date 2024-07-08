@@ -3,7 +3,7 @@ import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { Orientation } from '../Orientation'
 import { Memory } from './Memory'
-import { RuleId } from '../rules/RuleId'
+import { RuleId } from './RuleId'
 import { SpellRule } from './SpellRule'
 import { tileTools } from '../logic/TileTools'
 

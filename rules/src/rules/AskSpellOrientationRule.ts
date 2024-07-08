@@ -8,13 +8,13 @@ export class AskSpellOrientationRule extends PlayerTurnRule {
   getPlayerMoves(): MaterialMove[] {
     let moves:MaterialMove[]=[]
 
-    if (!this.remind(Memory.AppliedSpellNorth)===true)
+    if (!this.remind(Memory.AppliedSpellNorth))
       moves.push(this.rules().customMove(CustomMoveType.North))
-    if (!this.remind(Memory.AppliedSpellEast)===true)
+    if (!this.remind(Memory.AppliedSpellEast))
       moves.push(this.rules().customMove(CustomMoveType.East))
-    if (!this.remind(Memory.AppliedSpellSouth)===true)
+    if (!this.remind(Memory.AppliedSpellSouth))
       moves.push(this.rules().customMove(CustomMoveType.South))
-    if (!this.remind(Memory.AppliedSpellWest)===true)
+    if (!this.remind(Memory.AppliedSpellWest))
       moves.push(this.rules().customMove(CustomMoveType.West))
 
     return moves

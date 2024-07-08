@@ -4,7 +4,7 @@ import { Direction } from '../logic/Direction'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { Orientation } from '../Orientation'
-import { RuleId } from '../rules/RuleId'
+import { RuleId } from './RuleId'
 import { Tile } from '../material/Tile'
 import { tileSpells } from '../logic/TileSpells'
 
