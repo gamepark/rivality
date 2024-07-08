@@ -105,14 +105,12 @@ export class TileButtonDescription extends LocationDescription {
           .getIndex()
 
         rules.getLegalMoves(player).forEach(move => {
-          if (isCustomMoveType(CustomMoveType.Player1)(move)){
-            locations.push({ type: LocationType.TileButton, id: TileButtonId.RemoveGolem1, parent: tileIndex })
-          }
-          if (isCustomMoveType(CustomMoveType.Player2)(move)){
-            locations.push({ type: LocationType.TileButton, id: TileButtonId.RemoveGolem2, parent: tileIndex })
-          }
-          if (isCustomMoveType(CustomMoveType.Player3)(move)){
-            locations.push({ type: LocationType.TileButton, id: TileButtonId.RemoveGolem3, parent: tileIndex })
+          if (isCustomMoveType(CustomMoveType.ChoosePlayer)(move)){
+            locations.push({
+              type: LocationType.TileButton,
+              id: move.data === 1 ? TileButtonId.RemoveGolem1 : move.data === 2 ? TileButtonId.RemoveGolem2 : TileButtonId.RemoveGolem3,
+              parent: tileIndex
+            })
           }
         })
       }
@@ -206,13 +204,13 @@ export class TileButtonDescription extends LocationDescription {
       let customMove:CustomMove={kind: MoveKind.CustomMove, type: CustomMoveType.West}
       return customMove
     } else if (location.id === TileButtonId.RemoveGolem1) {
-      let customMove:CustomMove={kind: MoveKind.CustomMove, type: CustomMoveType.Player1}
+      let customMove:CustomMove={kind: MoveKind.CustomMove, type: CustomMoveType.ChoosePlayer, data: 1}
       return customMove
     } else if (location.id === TileButtonId.RemoveGolem2) {
-      let customMove:CustomMove={kind: MoveKind.CustomMove, type: CustomMoveType.Player2}
+      let customMove:CustomMove={kind: MoveKind.CustomMove, type: CustomMoveType.ChoosePlayer, data: 2}
       return customMove
     } else if (location.id === TileButtonId.RemoveGolem3) {
-      let customMove:CustomMove={kind: MoveKind.CustomMove, type: CustomMoveType.Player3}
+      let customMove:CustomMove={kind: MoveKind.CustomMove, type: CustomMoveType.ChoosePlayer, data: 3}
       return customMove
     }
     return

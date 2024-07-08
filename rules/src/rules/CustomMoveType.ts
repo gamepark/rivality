@@ -1,7 +1,5 @@
 export enum CustomMoveType {
-  Player1  = 5,
-  Player2  = 6,
-  Player3  = 7,
+  ChoosePlayer = 1,
   KeepHand = 8,
   NewHand  = 9,
   North    = 13,

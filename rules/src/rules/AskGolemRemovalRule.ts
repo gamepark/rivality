@@ -8,20 +8,7 @@ import { RuleId } from './RuleId'
 
 export class AskGolemRemovalRule extends PlayerTurnRule {
   getPlayerMoves(): MaterialMove[] {
-    let moves:MaterialMove[]=[]
-
-    const activePlayer = this.getActivePlayer()
-    if (activePlayer!=1){
-      moves.push(this.rules().customMove(CustomMoveType.Player1))
-    }
-    if (activePlayer!=2){
-      moves.push(this.rules().customMove(CustomMoveType.Player2))
-    }
-    if (activePlayer!=3){
-      moves.push(this.rules().customMove(CustomMoveType.Player3))
-    }
-
-    return moves
+    return this.game.players.filter(p => p !== this.getActivePlayer()).map(p => this.rules().customMove(CustomMoveType.ChoosePlayer, p))
   }
 
   applyEffect(player: number): MaterialMove[] {
@@ -50,15 +37,7 @@ export class AskGolemRemovalRule extends PlayerTurnRule {
   }
 
   onCustomMove(move: CustomMove): MaterialMove[] {
-    let player=1
-    if (move.type === CustomMoveType.Player1) {
-      player=1
-    } else if (move.type === CustomMoveType.Player2) {
-      player=2
-    } else if (move.type === CustomMoveType.Player3) {
-      player=3
-    }
-
-    return this.applyEffect(player)
+    if (move.type !== CustomMoveType.ChoosePlayer) return []
+    return this.applyEffect(move.data)
   }
 }
