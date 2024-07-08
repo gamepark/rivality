@@ -74,32 +74,32 @@ export class TileDescription extends CardDescription {
       uiTileTools.isHighlightedSquare(location, context) ||
       uiTileTools.isActiveWizardSquare(location, context)
     ) {
-      return css`box-shadow:
-      rgba(46, 255, 46, 0.3)  0.5em  0.5em,
-      rgba(46, 255, 46, 0.3) -0.5em  0.5em,
-      rgba(46, 255, 46, 0.3) -0.5em -0.5em,
-      rgba(46, 255, 46, 0.3)  0.5em -0.5em;`
-
-/*
       return css`
-        -webkit-filter: contrast(1.5);
+      @supports not (-moz-appearance:none) {
         filter: contrast(1.5);
+      }
+      @-moz-document url-prefix() {
+        box-shadow:
+          rgba(46, 255, 46, 0.3)  0.5em  0.5em,
+          rgba(46, 255, 46, 0.3) -0.5em  0.5em,
+          rgba(46, 255, 46, 0.3) -0.5em -0.5em,
+          rgba(46, 255, 46, 0.3)  0.5em -0.5em;
+      }
       `
-*/
     }
     if (uiTileTools.isUnderAttackSquare(location, context)) {
-      return css`box-shadow:
-        rgba(255, 46, 46, 0.3)  0.5em  0.5em,
-        rgba(255, 46, 46, 0.3) -0.5em  0.5em,
-        rgba(255, 46, 46, 0.3) -0.5em -0.5em,
-        rgba(255, 46, 46, 0.3)  0.5em -0.5em;`
-
-/*
       return css`
-        -webkit-filter: drop-shadow(0 -0.5em 0.25em red);
-        filter: drop-shadow(0 -0.5em 0.25em red);
+        @supports not (-moz-appearance:none) {
+          filter: opacity(0.5) drop-shadow(0 0 0 red);
+        }
+        @-moz-document url-prefix() {
+          box-shadow:
+            rgba(255, 46, 46, 0.3)  0.5em  0.5em,
+            rgba(255, 46, 46, 0.3) -0.5em  0.5em,
+            rgba(255, 46, 46, 0.3) -0.5em -0.5em,
+            rgba(255, 46, 46, 0.3)  0.5em -0.5em;
+        }
       `
-*/
     }
     return css``
   }

@@ -39,8 +39,11 @@ export class GolemDescription extends TokenDescription  {
 const emptyCss=css``
 
 const haloCss=css`
-  -webkit-filter: drop-shadow(0 -0.5em 0.25em white);
-  filter: drop-shadow(0 -0.5em 0.25em white);
+  @supports not (-moz-appearance:none) {
+    filter: drop-shadow(0 -0.5em 0.25em white);
+  }
+  @-moz-document url-prefix() {
+  }
 `
 
 export const golemDescription = new GolemDescription()
