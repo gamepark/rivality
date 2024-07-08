@@ -168,11 +168,11 @@ export class TileButtonDescription extends LocationDescription {
       // Top left
       case TileButtonId.Cancel:
       case TileButtonId.RemoveGolem2:
-        return { x: -tileDescription.width / 2, y: -tileDescription.height / 2, z: 0.1 }
+        return { x: -tileDescription.width / 2, y: -tileDescription.height / 2, z: 10 }
       // Top right
       case TileButtonId.Rotate:
       case TileButtonId.RemoveGolem3:
-        return { x: tileDescription.width / 2, y: -tileDescription.height / 2, z: 0.1 }
+        return { x: tileDescription.width / 2, y: -tileDescription.height / 2, z: 10 }
       // Bottom right
       case TileButtonId.Validate:
       case TileButtonId.RemoveGolem1:
@@ -180,10 +180,10 @@ export class TileButtonDescription extends LocationDescription {
       case TileButtonId.SelectSpellEast:
       case TileButtonId.SelectSpellSouth:
       case TileButtonId.SelectSpellWest:
-        return { x: tileDescription.width / 2, y: tileDescription.height / 2, z: 0.1 }
+        return { x: tileDescription.width / 2, y: tileDescription.height / 2, z: 10 }
       default:
         console.log("*** ERROR - Unsupported button")
-        return { x: tileDescription.width / 2, y: tileDescription.height / 2, z: 0.1 }
+        return { x: tileDescription.width / 2, y: tileDescription.height / 2, z: 10 }
     }
   }
 
