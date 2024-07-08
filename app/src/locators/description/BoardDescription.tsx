@@ -13,7 +13,7 @@ export class BoardDescription extends LocationDescription {
   borderRadius = tileDescription.borderRadius
 
 //  alwaysVisible = true
-  extraCss = css`border: 0.05em solid lightgrey`
+  extraCss = css`border: 0.1em solid lightgrey`
 
   isAlwaysVisible(location:Location, context: MaterialContext) : boolean {
     // Set as visible the locations around the tiles on the board
