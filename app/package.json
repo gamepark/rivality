@@ -1,6 +1,6 @@
 {
   "name": "@gamepark/rivality-app",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
   "description": "The user interface of Rivality adaptation for Game Park",
   "author": "Romain Fromi <romain@game-park.com> (https://game-park.com/)",
