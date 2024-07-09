@@ -149,12 +149,16 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       popup: {
         text: () => (
           <>
-          <b><Trans defaults="tuto.tiles.4"></Trans></b>
+          <Trans defaults="tuto.tiles.4a"></Trans><br/>
+          <Trans defaults="tuto.tiles.4b"></Trans><br/>
+          <Trans defaults="tuto.tiles.4c"></Trans><br/>
+          &nbsp;<br/>
+          <b><Trans defaults="tuto.tiles.4d"></Trans></b>
           &nbsp;<Picture css={iconCss} src={validateIcon}/>
           </>
         ),
         position: { x: 40, y: -15 },
-        size: { width: 72 }
+        size: { width: 75 }
       },
       move: {
         player: me,
@@ -180,9 +184,28 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           <Trans defaults="tuto.wizard.2"></Trans>
           </>
         ),
-        position: { x: 40, y: -15 },
+        position: { x: 50, y: -15 },
         size: { width: 72 }
-      }
+      },
+      focus: (game) => ({
+        materials: [
+          this.material(game, MaterialType.Tile)
+            .location(LocationType.Board)
+            .filter(item => item.location.x===0 && item.location.y===1),
+          this.material(game, MaterialType.Golem)
+            .location(LocationType.Board)
+            .filter(item => item.location.x===0 && item.location.y===1),
+          this.material(game, MaterialType.Wizard)
+            .location(LocationType.Board)
+            .filter(item => item.location.x===0 && item.location.y===1)
+        ],
+        margin: {
+          right: 10,
+          top: 10,
+          bottom: 10,
+          left:10
+        }
+      })
     },
     {
       popup: {
@@ -207,6 +230,12 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       focus: (game) => ({
         materials: [
           this.material(game, MaterialType.Tile)
+            .location(LocationType.Board)
+            .filter(item => item.location.x===0 && item.location.y===1),
+          this.material(game, MaterialType.Golem)
+            .location(LocationType.Board)
+            .filter(item => item.location.x===0 && item.location.y===1),
+          this.material(game, MaterialType.Wizard)
             .location(LocationType.Board)
             .filter(item => item.location.x===0 && item.location.y===1)
         ],
