@@ -1,14 +1,13 @@
+import { Material } from '@gamepark/rules-api'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
-import { Material } from '@gamepark/rules-api'
-import { Golem } from '../material/Golem'
 import { Tile } from '../material/Tile'
-import { PlayerId } from '../PlayerId'
+import { PlayerColor } from '../PlayerColor'
 import { tileTools } from './TileTools'
 
 export class Score {
   playerScore(
-    playerId:PlayerId,
+    playerId:PlayerColor,
     tiles:Material<number, MaterialType, LocationType>,
     golems:Material<number, MaterialType, LocationType>,
     wizards:Material<number, MaterialType, LocationType>):number {
@@ -35,7 +34,7 @@ export class Score {
     return res
   }
 
-  playerControllingWellOfMana(golems:Material<number, MaterialType, LocationType>):PlayerId | undefined {
+  playerControllingWellOfMana(golems:Material<number, MaterialType, LocationType>):PlayerColor | undefined {
     return this.playerControllingTile(golems, 0, 0, undefined)
   }
 
@@ -43,10 +42,10 @@ export class Score {
     golems:Material<number, MaterialType, LocationType>,
     x:number,
     y:number,
-    wellController:PlayerId|undefined):PlayerId | undefined {
-    let nbGolems1=golems.filter(item => item.id==Golem.Golem1 && item.location.x==x && item.location.y==y).length
-    let nbGolems2=golems.filter(item => item.id==Golem.Golem2 && item.location.x==x && item.location.y==y).length
-    let nbGolems3=golems.filter(item => item.id==Golem.Golem3 && item.location.x==x && item.location.y==y).length
+    wellController:PlayerColor|undefined):PlayerColor | undefined {
+    let nbGolems1=golems.filter(item => item.id==PlayerColor.Purple && item.location.x==x && item.location.y==y).length
+    let nbGolems2=golems.filter(item => item.id==PlayerColor.Orange && item.location.x==x && item.location.y==y).length
+    let nbGolems3=golems.filter(item => item.id==PlayerColor.Green && item.location.x==x && item.location.y==y).length
 
     // For tests: there must be at least one golem to control the tile
     if (nbGolems1+nbGolems2+nbGolems3 <= 0)

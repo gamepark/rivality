@@ -1,13 +1,12 @@
 import { MaterialContext } from '@gamepark/react-game'
-import { Location, XYCoordinates } from '@gamepark/rules-api'
-import { LocationType } from '@gamepark/rivality/material/LocationType'
-import { MaterialType } from '@gamepark/rivality/material/MaterialType'
-import { Memory } from '@gamepark/rivality/rules/Memory'
-import { Orientation } from '@gamepark/rivality/Orientation'
-import { RuleId } from '@gamepark/rivality/rules/RuleId'
 import { tileSpells } from '@gamepark/rivality/logic/TileSpells'
 import { tileTools } from '@gamepark/rivality/logic/TileTools'
-import { wizardTools } from '@gamepark/rivality/logic/WizardTools'
+import { LocationType } from '@gamepark/rivality/material/LocationType'
+import { MaterialType } from '@gamepark/rivality/material/MaterialType'
+import { Orientation } from '@gamepark/rivality/Orientation'
+import { Memory } from '@gamepark/rivality/rules/Memory'
+import { RuleId } from '@gamepark/rivality/rules/RuleId'
+import { Location, XYCoordinates } from '@gamepark/rules-api'
 
 export class UITileTools {
   isHighlightedSquare(location:Location, context: MaterialContext){
@@ -49,7 +48,7 @@ export class UITileTools {
     // No tile preview => actual wizard' square
     const wizardItem=context.rules.material(MaterialType.Wizard)
       .location(LocationType.Board)
-      .filter(item => item.id===wizardTools.playerWizard(activePlayer))
+      .filter(item => item.id===activePlayer)
       .getItem()!
     return wizardItem.location
   }

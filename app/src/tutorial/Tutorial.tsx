@@ -6,7 +6,7 @@ import { LocationType } from '@gamepark/rivality/material/LocationType'
 import { MaterialType } from '@gamepark/rivality/material/MaterialType'
 import { Tile } from '@gamepark/rivality/material/Tile'
 import { Orientation } from '@gamepark/rivality/Orientation'
-import { PlayerId } from '@gamepark/rivality/PlayerId'
+import { PlayerColor } from '@gamepark/rivality/PlayerColor'
 import { isMoveItemType, MoveItem } from '@gamepark/rules-api'
 import { Trans } from 'react-i18next'
 import { SpellSymbols, SymbolBreakShields, SymbolShield } from '../material/help/HelpTools'
@@ -17,7 +17,7 @@ import validateIcon from '../images/icon/validate.png'
 const me = 1
 const opponent = 2
 
-export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationType> {
+export class Tutorial extends MaterialTutorial<PlayerColor, MaterialType, LocationType> {
   version = 3
   options = { players: 2 }
   setup = new TutorialSetup()

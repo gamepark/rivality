@@ -1,8 +1,7 @@
 import { CustomMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
-import { CustomMoveType } from './CustomMoveType'
-import { golemTools } from '../logic/GolemTools'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
+import { CustomMoveType } from './CustomMoveType'
 import { Memory } from './Memory'
 import { RuleId } from './RuleId'
 
@@ -14,7 +13,6 @@ export class AskGolemRemovalRule extends PlayerTurnRule {
   applyEffect(player: number): MaterialMove[] {
     const tileX=this.remind(Memory.SpellTileX)
     const tileY=this.remind(Memory.SpellTileY)
-    const golemId=golemTools.playerGolem(player)
 
     let moves:MaterialMove[]=[]
     moves.push(...this
@@ -23,7 +21,7 @@ export class AskGolemRemovalRule extends PlayerTurnRule {
       .filter(item =>
         item.location.x==tileX
         && item.location.y==tileY
-        && item.id==golemId
+        && item.id==player
       )
       .limit(1)
       .moveItems(

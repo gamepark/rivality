@@ -8,18 +8,18 @@ export class RivalityTestSetup extends RivalitySetup {
     // Global parameters
     this.memorize(Memory.RealTimeScore, options.realTimeScore ?? false)
 
-    this.setupTiles(options)
-    this.setupGolems(options)
-    this.setupWizards(options)
+    this.setupTiles()
+    this.setupGolems()
+    this.setupWizards()
 
     // Tests
     if (options.test !== undefined) {
       console.log('Test mode')
-      tests.setupMaterial(this, options.test, options.players)
+      tests.setupMaterial(this, options.test, this.game.players.length)
       return
     }
 
-    this.setupPlayerHands(options)
+    this.setupPlayerHands()
   }
 
   start(options: RivalityOptions & { test?: number }) {

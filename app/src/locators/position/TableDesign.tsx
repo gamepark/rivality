@@ -1,9 +1,9 @@
 /** @jsxImportSource @emotion/react */
-import { LocationContext } from '@gamepark/react-game'
-import { MaterialRules, Location } from '@gamepark/rules-api'
+import { getRelativePlayerIndex, LocationContext, MaterialContext } from '@gamepark/react-game'
 import { LocationType } from '@gamepark/rivality/material/LocationType'
 import { MaterialType } from '@gamepark/rivality/material/MaterialType'
-import { tileDescription, spaceBetweenTiles } from '../../material/TileDescription'
+import { Location, MaterialRules } from '@gamepark/rules-api'
+import { spaceBetweenTiles, tileDescription } from '../../material/TileDescription'
 
 class TableDimensions {
   xMin:number=0
@@ -24,15 +24,16 @@ export class TableDesign {
     return rules.players.length
   }
 
-  playerCorner(player:number, _position:number, nbPlayers:number){
-    if (nbPlayers===2){
-      if (player===1)
+  playerCorner(player:number, context: MaterialContext){
+    const relativeIndex = getRelativePlayerIndex(context, player)
+    if (context.rules.players.length===2){
+      if (relativeIndex===0)
         return Corner.BottomRight
       return Corner.TopRight
-    } else if (nbPlayers===3){
-      if (player===1)
+    } else if (context.rules.players.length===3){
+      if (relativeIndex===0)
         return Corner.BottomRight
-      if (player===2)
+      if (relativeIndex===1)
         return Corner.TopLeft
       return Corner.TopRight
     }
@@ -185,12 +186,9 @@ export class TableDesign {
 
   playerDeckCoordinates(location: Location, context: LocationContext){
     const locationPlayer = location.player!
-    const { rules } = context
-    let nbPlayers=this.nbPlayers(rules)
 
     let handCoords=this.playerHandCoordinates(location, context)
-    const fakePosition=0
-    const corner=this.playerCorner(locationPlayer, fakePosition, nbPlayers)
+    const corner=this.playerCorner(locationPlayer, context)
 
     let x=0
     let y=0
@@ -224,8 +222,7 @@ export class TableDesign {
     const { rules } = context
     let nbPlayers=this.nbPlayers(rules)
 
-    const fakePosition=0
-    const corner=this.playerCorner(player, fakePosition, nbPlayers)
+    const corner=this.playerCorner(player, context)
 
     let tableSize=this.getTableSize(nbPlayers, rules)
 
@@ -259,8 +256,7 @@ export class TableDesign {
 
     let handCoords=this.playerHandCoordinates(location, context)
 
-    const fakePosition=0
-    const corner=this.playerCorner(locationPlayer, fakePosition, nbPlayers)
+    const corner=this.playerCorner(locationPlayer, context)
 
     let x=0
     let y=0

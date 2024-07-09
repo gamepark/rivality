@@ -1,14 +1,14 @@
 /** @jsxImportSource @emotion/react */
 import { MaterialHelpProps, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
-import { useTranslation } from 'react-i18next'
 import { Direction } from '@gamepark/rivality/logic/Direction'
-import { Golem } from '@gamepark/rivality/material/Golem'
+import { tileSpells } from '@gamepark/rivality/logic/TileSpells'
+import { tileTools } from '@gamepark/rivality/logic/TileTools'
 import { LocationType } from '@gamepark/rivality/material/LocationType'
 import { MaterialType } from '@gamepark/rivality/material/MaterialType'
-import { RivalityRules } from '@gamepark/rivality/RivalityRules'
-import { tileSpells } from '@gamepark/rivality/logic/TileSpells'
 import { Tile } from '@gamepark/rivality/material/Tile'
-import { tileTools } from '@gamepark/rivality/logic/TileTools'
+import { PlayerColor } from '@gamepark/rivality/PlayerColor'
+import { RivalityRules } from '@gamepark/rivality/RivalityRules'
+import { useTranslation } from 'react-i18next'
 import { GPTrans } from '../../Translator'
 import { SpellHelp, SymbolShield } from './HelpTools'
 
@@ -79,9 +79,9 @@ export const TileHelp = (props: MaterialHelpProps) => {
     .location(LocationType.Board)
     .filter(golem => golem.location.x===item.location!.x && golem.location.y===item.location!.y)
   const has5SimilarGolemsOnTile=(
-    ( golemsOnTile!.filter(golem => golem.id===Golem.Golem1).length >= 5 ) ||
-    ( golemsOnTile!.filter(golem => golem.id===Golem.Golem2).length >= 5 ) ||
-    ( golemsOnTile!.filter(golem => golem.id===Golem.Golem3).length >= 5 )
+    ( golemsOnTile!.filter(golem => golem.id===PlayerColor.Purple).length >= 5 ) ||
+    ( golemsOnTile!.filter(golem => golem.id===PlayerColor.Orange).length >= 5 ) ||
+    ( golemsOnTile!.filter(golem => golem.id===PlayerColor.Green).length >= 5 )
   )
 
   return <>

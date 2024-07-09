@@ -2,7 +2,6 @@ import { MaterialItem, PlayerTurnRule, XYCoordinates } from '@gamepark/rules-api
 import { GolemCount, golemTools } from '../logic/GolemTools'
 import { Spell, tileSpells } from '../logic/TileSpells'
 import { tileTools } from '../logic/TileTools'
-import { wizardTools } from '../logic/WizardTools'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { Tile } from '../material/Tile'
@@ -10,11 +9,10 @@ import { Orientation } from '../Orientation'
 
 export abstract class SpellRule extends PlayerTurnRule {
   getActiveTileCoordinates(): XYCoordinates {
-    const playerWizard=wizardTools.playerWizard(this.getActivePlayer())
     const wizardItem=this
       .material(MaterialType.Wizard)
       .location(LocationType.Board)
-      .filter(item => item.id==playerWizard)
+      .filter(item => item.id==this.getActivePlayer())
       .getItem()
     return {
       x:wizardItem!.location.x!,

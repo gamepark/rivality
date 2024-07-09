@@ -1,12 +1,13 @@
 import { LocationType } from '@gamepark/rivality/material/LocationType'
 import { MaterialType } from '@gamepark/rivality/material/MaterialType'
 import { Orientation } from '@gamepark/rivality/Orientation'
+import { PlayerColor } from '@gamepark/rivality/PlayerColor'
 import { RivalitySetup } from '@gamepark/rivality/RivalitySetup'
 import { RuleId } from '@gamepark/rivality/rules/RuleId'
 import { Tile } from '@gamepark/rivality/material/Tile'
 
-const me = 1
-const opponent = 2
+const me = PlayerColor.Purple
+const opponent = PlayerColor.Orange
 export class TutorialSetup extends RivalitySetup {
   start() {
     // Move back player's hands into their deck

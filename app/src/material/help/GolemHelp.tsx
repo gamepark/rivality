@@ -1,23 +1,14 @@
 /** @jsxImportSource @emotion/react */
 import { MaterialHelpProps, usePlayerId, usePlayerName } from '@gamepark/react-game'
 import { useTranslation } from 'react-i18next'
-import { Golem } from '@gamepark/rivality/material/Golem'
 
-export const GolemHelp = (props: MaterialHelpProps) => {
+export const GolemHelp = ({ item }: MaterialHelpProps) => {
   const playerId = usePlayerId()
   const { t } = useTranslation()
 
-  let owner=1
-  if (props.item.id===Golem.Golem1)
-    owner=1
-  else if (props.item.id===Golem.Golem2)
-    owner=2
-  else if (props.item.id===Golem.Golem3)
-    owner=3
+  const ownerName = usePlayerName(item.id)
 
-  const ownerName = usePlayerName(owner)
-
-  if (owner===playerId){
+  if (item.id === playerId) {
     return <>
       <h2>{t('help.golem')}</h2>
       {t('help.golem.you')}
@@ -25,7 +16,7 @@ export const GolemHelp = (props: MaterialHelpProps) => {
   } else {
     return <>
       <h2>{t('help.golem')}</h2>
-      {t('help.golem.player', {player: ownerName})}
+      {t('help.golem.player', { player: ownerName })}
     </>
   }
 }

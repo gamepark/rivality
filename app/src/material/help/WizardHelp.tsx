@@ -1,23 +1,14 @@
 /** @jsxImportSource @emotion/react */
 import { MaterialHelpProps, usePlayerId, usePlayerName } from '@gamepark/react-game'
 import { useTranslation } from 'react-i18next'
-import { Wizard } from '@gamepark/rivality/material/Wizard'
 
-export const WizardHelp = (props: MaterialHelpProps) => {
+export const WizardHelp = ({item}: MaterialHelpProps) => {
   const playerId = usePlayerId()
   const { t } = useTranslation()
 
-  let owner=1
-  if (props.item.id===Wizard.Wizard1)
-    owner=1
-  else if (props.item.id===Wizard.Wizard2)
-    owner=2
-  else if (props.item.id===Wizard.Wizard3)
-    owner=3
+  const ownerName = usePlayerName(item.id)
 
-  const ownerName = usePlayerName(owner)
-
-  if (owner===playerId){
+  if (item.id===playerId){
     return <>
       <h2>{t('help.wizard')}</h2>
       {t('help.wizard.you')}

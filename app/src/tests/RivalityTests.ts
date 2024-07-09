@@ -2,8 +2,8 @@ import { BoardSpace } from '@gamepark/rivality/material/BoardSpace'
 import { LocationType } from '@gamepark/rivality/material/LocationType'
 import { MaterialType } from '@gamepark/rivality/material/MaterialType'
 import { Tile } from '@gamepark/rivality/material/Tile'
-import { Wizard } from '@gamepark/rivality/material/Wizard'
 import { Orientation } from '@gamepark/rivality/Orientation'
+import { PlayerColor } from '@gamepark/rivality/PlayerColor'
 import { RuleId } from '@gamepark/rivality/rules/RuleId'
 import { RivalityTestSetup } from './RivalityTestSetup'
 
@@ -368,11 +368,11 @@ export class RivalityTests {
       .limit(1)
   }
 
-  getWizard(setup: RivalityTestSetup, wizard:Wizard){
+  getWizard(setup: RivalityTestSetup, player:PlayerColor){
     // Note: Few tiles are available in 2 specimens
     return setup
       .material(MaterialType.Wizard)
-      .filter(item => item.id===wizard)
+      .filter(item => item.id===player)
   }
 
   prepareBoard_2players(
@@ -537,7 +537,7 @@ export class RivalityTests {
         })
     }
     if (wizard1X!==undefined && wizard1Y!==undefined){
-      this.getWizard(setup, Wizard.Wizard1)
+      this.getWizard(setup, PlayerColor.Purple)
         .moveItems({
           type: LocationType.Board,
           id: BoardSpace.Wizard,
@@ -546,7 +546,7 @@ export class RivalityTests {
         })
     }
     if (wizard2X!==undefined && wizard2Y!==undefined){
-      this.getWizard(setup, Wizard.Wizard2)
+      this.getWizard(setup, PlayerColor.Orange)
         .moveItems({
           type: LocationType.Board,
           id: BoardSpace.Wizard,
@@ -555,7 +555,7 @@ export class RivalityTests {
         })
     }
     if (wizard3X!==undefined && wizard3Y!==undefined){
-      this.getWizard(setup, Wizard.Wizard3)
+      this.getWizard(setup, PlayerColor.Green)
         .moveItems({
           type: LocationType.Board,
           id: BoardSpace.Wizard,

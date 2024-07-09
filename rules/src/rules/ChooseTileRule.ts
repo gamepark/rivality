@@ -1,11 +1,10 @@
 import { isMoveItemType, ItemMove, MaterialMove, PlayerTurnRule, PlayMoveContext } from '@gamepark/rules-api'
 import { tileTools } from '../logic/TileTools'
-import { wizardTools } from '../logic/WizardTools'
 import { BoardSpace } from '../material/BoardSpace'
-import { Golem } from '../material/Golem'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { orientations } from '../Orientation'
+import { PlayerColor } from '../PlayerColor'
 import { Memory } from './Memory'
 import { RuleId } from './RuleId'
 
@@ -22,19 +21,19 @@ export class ChooseTileRule extends PlayerTurnRule {
     let nbUnplayedGolems1 = this
       .material(MaterialType.Golem)
       .location(LocationType.PlayerGolemStack)
-      .filter(item => item.id == Golem.Golem1)
+      .filter(item => item.id == PlayerColor.Purple)
       .length
 
     let nbUnplayedGolems2 = this
       .material(MaterialType.Golem)
       .location(LocationType.PlayerGolemStack)
-      .filter(item => item.id == Golem.Golem2)
+      .filter(item => item.id == PlayerColor.Orange)
       .length
 
     let nbUnplayedGolems3 = this
       .material(MaterialType.Golem)
       .location(LocationType.PlayerGolemStack)
-      .filter(item => item.id == Golem.Golem3)
+      .filter(item => item.id == PlayerColor.Green)
       .length
 
     if (
@@ -99,7 +98,7 @@ export class ChooseTileRule extends PlayerTurnRule {
           // Move the wizard and a golem to the tile
           // Then apply tile effects
           return [
-            ...this.material(MaterialType.Wizard).filter(item => item.id == wizardTools.playerWizard(this.getActivePlayer())).moveItems(
+            ...this.material(MaterialType.Wizard).filter(item => item.id == this.getActivePlayer()).moveItems(
               {
                 type: LocationType.Board,
                 id: BoardSpace.Wizard,

@@ -1,7 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
-import { PlayerId } from '@gamepark/rivality/PlayerId'
-import { getRelativePlayerIndex, /* PlayerPanel, /*usePlayers,*/ useMaterialContext /*, useRules*/ } from '@gamepark/react-game'
+import { useMaterialContext } from '@gamepark/react-game'
 import { FC } from 'react'
 import { createPortal } from 'react-dom'
 import { Corner, tableDesign } from '../locators/position/TableDesign'
@@ -9,7 +8,6 @@ import { RivalityPlayerPanel } from './RivalityPlayerPanel'
 
 export const PlayerPanels: FC<{players:number[]}> = ({players}) => {
   const context=useMaterialContext()
-  const nbPlayers=players.length
   const root = document.getElementById('root')
   if (!root) {
     return null
@@ -18,8 +16,7 @@ export const PlayerPanels: FC<{players:number[]}> = ({players}) => {
   return createPortal(
     <>
       {players.map((player) => {
-        const relativeIndex = getRelativePlayerIndex(context, player)
-        const corner=tableDesign.playerCorner(player, relativeIndex, nbPlayers)
+        const corner=tableDesign.playerCorner(player, context)
         return <RivalityPlayerPanel key={player} playerId={player} css={panelPosition(corner)}/>
       }
       )}
@@ -61,11 +58,4 @@ const panelPosition = (corner: Corner) => {
   width: 28em;
   height: 9em;
   `
-}
-
-export const playerColorCode: Record<PlayerId, string> = {
-  1: 'blue',
-  2: 'green',
-  3: 'yellow',
-  4: 'red'
 }

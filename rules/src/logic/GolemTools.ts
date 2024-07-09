@@ -1,6 +1,5 @@
 import { Material } from '@gamepark/rules-api'
-import { Golem } from '../material/Golem'
-import { PlayerId } from '../PlayerId'
+import { PlayerColor } from '../PlayerColor'
 
 export class GolemCount {
   hasFiveGolemsOfASingleOpponent:boolean
@@ -9,7 +8,7 @@ export class GolemCount {
   nbGolems2:number
   nbGolems3:number
 
-  nbPlayerGolems(player:PlayerId):number {
+  nbPlayerGolems(player:PlayerColor):number {
     if (player==1) return this.nbGolems1
     if (player==2) return this.nbGolems2
     if (player==3) return this.nbGolems3
@@ -17,10 +16,10 @@ export class GolemCount {
     return this.nbGolems1
   }
 
-  constructor(golems:Material, activePlayer:PlayerId){
-    this.nbGolems1=golems.filter(item => item.id==Golem.Golem1).length
-    this.nbGolems2=golems.filter(item => item.id==Golem.Golem2).length
-    this.nbGolems3=golems.filter(item => item.id==Golem.Golem3).length
+  constructor(golems:Material, activePlayer:PlayerColor){
+    this.nbGolems1=golems.filter(item => item.id==PlayerColor.Purple).length
+    this.nbGolems2=golems.filter(item => item.id==PlayerColor.Orange).length
+    this.nbGolems3=golems.filter(item => item.id==PlayerColor.Green).length
 
     this.hasFiveGolemsOfASingleOpponent=false
     this.isTileControlledByOpponent=false
@@ -50,18 +49,8 @@ export class GolemCount {
 }
 
 export class GolemTools {
-  playerGolem(player:PlayerId): Golem {
-    if (player==1)
-      return Golem.Golem1
-    if (player==2)
-      return Golem.Golem2
-    if (player==3)
-      return Golem.Golem3
-    console.log("*** ERROR - Invalid player for golem")
-    return Golem.Golem1
-  }
 
-  golemCount(golems:Material, activePlayer:PlayerId) : GolemCount {
+  golemCount(golems:Material, activePlayer:PlayerColor) : GolemCount {
     return new GolemCount(golems, activePlayer)
   }
 }

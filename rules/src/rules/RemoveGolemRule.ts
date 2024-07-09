@@ -3,10 +3,10 @@ import { golemTools } from '../logic/GolemTools'
 import { playerTools } from '../logic/PlayerTools'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
+import { PlayerColor } from '../PlayerColor'
 import { Memory } from './Memory'
-import { PlayerId } from '../PlayerId'
-import { SpellRule } from './SpellRule'
 import { RuleId } from './RuleId'
+import { SpellRule } from './SpellRule'
 
 /*
  * If the number of golems exceeds 5 on the current spell tile,
@@ -22,15 +22,14 @@ export class RemoveGolemRule extends SpellRule {
     return moves
   }
 
-  golemMoves(player:PlayerId, fromTileX:number, fromTileY:number, nbGolems:number){
-    const golemId=golemTools.playerGolem(player)
+  golemMoves(player:PlayerColor, fromTileX:number, fromTileY:number, nbGolems:number){
     return this.
       material(MaterialType.Golem)
       .location(LocationType.Board)
       .filter(item =>
         item.location.x==fromTileX
         && item.location.y==fromTileY
-        && item.id==golemId
+        && item.id==player
       )
       .limit(nbGolems)
       .moveItemsAtOnce(
@@ -57,8 +56,8 @@ export class RemoveGolemRule extends SpellRule {
       .location(LocationType.Board)
       .filter(item => item.location.x==tileX && item.location.y==tileY)
 
-    const activePlayer:PlayerId = this.getActivePlayer()
-    let opponentsId:PlayerId[]=playerTools.opponentsOf(activePlayer, nbPlayers)
+    const activePlayer:PlayerColor = this.getActivePlayer()
+    let opponentsId:PlayerColor[]=playerTools.opponentsOf(activePlayer, nbPlayers)
 
     let golemCount = golemTools.golemCount(golemsOnTarget, activePlayer)
 

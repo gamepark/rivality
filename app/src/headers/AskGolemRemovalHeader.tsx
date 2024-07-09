@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { Picture, PlayMoveButton, useLegalMoves, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
+import { PlayerColor } from '@gamepark/rivality/PlayerColor'
 import { RivalityRules } from '@gamepark/rivality/RivalityRules'
 import { CustomMoveType } from '@gamepark/rivality/rules/CustomMoveType'
 import { CustomMove, isCustomMoveType } from '@gamepark/rules-api'
@@ -30,10 +31,10 @@ export const AskGolemRemovalHeader = () => {
   }
 }
 
-const playerGolemRemoveIcon = {
-  [1]: removeGolem1Icon,
-  [2]: removeGolem2Icon,
-  [3]: removeGolem3Icon
+const playerGolemRemoveIcon: Record<PlayerColor, string> = {
+  [PlayerColor.Purple]: removeGolem1Icon,
+  [PlayerColor.Orange]: removeGolem2Icon,
+  [PlayerColor.Green]: removeGolem3Icon
 }
 
 const iconCss=css`

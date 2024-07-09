@@ -10,12 +10,12 @@ import {
   PositiveSequenceStrategy,
   SecretMaterialRules
 } from '@gamepark/rules-api'
+import isEqual from 'lodash/isEqual'
 import { score } from './logic/Score'
 import { tileTools } from './logic/TileTools'
-import { wizardTools } from './logic/WizardTools'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
-import { PlayerId } from './PlayerId'
+import { PlayerColor } from './PlayerColor'
 import { ApplySpellEffectRule } from './rules/ApplySpellEffectRule'
 import { AskGolemRemovalRule } from './rules/AskGolemRemovalRule'
 import { AskSpellOrientationRule } from './rules/AskSpellOrientationRule'
@@ -28,15 +28,14 @@ import { RuleId } from './rules/RuleId'
 import { SelectCastSpellOrientationRule } from './rules/SelectCastSpellOrientationRule'
 import { ShufflePlayer1DeckRule } from './rules/ShufflePlayer1DeckRule'
 import { StartRule } from './rules/StartRule'
-import isEqual from 'lodash/isEqual'
 
 /**
  * This class implements the rules of the board game.
  * It must follow Game Park "Rules" API so that the Game Park server can enforce the rules.
  */
-export class RivalityRules extends SecretMaterialRules<PlayerId, MaterialType, LocationType>
-  implements CompetitiveRank<MaterialGame<PlayerId, MaterialType, LocationType>, MaterialMove<PlayerId, MaterialType, LocationType>, PlayerId>,
-    LocalMovePreview<MaterialMove<PlayerId, MaterialType, LocationType>> {
+export class RivalityRules extends SecretMaterialRules<PlayerColor, MaterialType, LocationType>
+  implements CompetitiveRank<MaterialGame<PlayerColor, MaterialType, LocationType>, MaterialMove<PlayerColor, MaterialType, LocationType>, PlayerColor>,
+    LocalMovePreview<MaterialMove<PlayerColor, MaterialType, LocationType>> {
   rules = {
     [RuleId.Start]: StartRule,
     [RuleId.ChooseTile]: ChooseTileRule,
@@ -81,13 +80,13 @@ export class RivalityRules extends SecretMaterialRules<PlayerId, MaterialType, L
     return false
   }
 
-  rankPlayers(playerA: PlayerId, playerB: PlayerId): number {
+  rankPlayers(playerA: PlayerColor, playerB: PlayerColor): number {
     const playerScores = [
       this.computeScore(1),
       this.computeScore(2),
       this.computeScore(3)
     ]
-    const playerControllingWellOfMana: PlayerId | undefined = this.getPlayerControllingWellOfMana()
+    const playerControllingWellOfMana: PlayerColor | undefined = this.getPlayerControllingWellOfMana()
 
     let highscore = playerScores[0]
     if (playerScores[1] > highscore) highscore = playerScores[1]
@@ -123,7 +122,7 @@ export class RivalityRules extends SecretMaterialRules<PlayerId, MaterialType, L
   }
 
   // Do not use getScore() in order to rank players according to the rules of the game
-  computeScore(player: PlayerId) {
+  computeScore(player: PlayerColor) {
     return score.playerScore(
       player,
       this.material(MaterialType.Tile).location(LocationType.Board),
@@ -132,19 +131,18 @@ export class RivalityRules extends SecretMaterialRules<PlayerId, MaterialType, L
     )
   }
 
-  getPlayerControllingWellOfMana(): PlayerId | undefined {
+  getPlayerControllingWellOfMana(): PlayerColor | undefined {
     return score.playerControllingWellOfMana(
       this.material(MaterialType.Golem).location(LocationType.Board)
     )
   }
 
   // To get the value of the tile occupied by the wizard of the given player
-  computeWizardTileScore(player: PlayerId) {
-    const playerWizard = wizardTools.playerWizard(player)
+  computeWizardTileScore(player: PlayerColor) {
 
     const wizardLocation = this.material(MaterialType.Wizard)
       .location(LocationType.Board)
-      .filter(item => item.id === playerWizard)
+      .filter(item => item.id === player)
       .getItem()!
       .location!
 

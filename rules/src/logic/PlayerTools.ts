@@ -1,7 +1,7 @@
-import { PlayerId } from '../PlayerId'
+import { PlayerColor } from '../PlayerColor'
 
 export class PlayerTools {
-  opponentsOf(player:PlayerId, nbPlayers:number) : PlayerId[] {
+  opponentsOf(player:PlayerColor, nbPlayers:number) : PlayerColor[] {
     if (nbPlayers==2){
       if (player==1) return [2]
       if (player==2) return [1]

@@ -1,13 +1,11 @@
 import { MaterialGameSetup } from '@gamepark/rules-api'
 import { tileTools } from './logic/TileTools'
 import { BoardSpace } from './material/BoardSpace'
-import { Golem, golems } from './material/Golem'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { Tile, tiles } from './material/Tile'
-import { Wizard, wizards } from './material/Wizard'
 import { Orientation } from './Orientation'
-import { PlayerId } from './PlayerId'
+import { PlayerColor } from './PlayerColor'
 import { RivalityOptions } from './RivalityOptions'
 import { RivalityRules } from './RivalityRules'
 import { Memory } from './rules/Memory'
@@ -16,24 +14,24 @@ import { RuleId } from './rules/RuleId'
 /**
  * This class creates a new Game based on the game options
  */
-export class RivalitySetup extends MaterialGameSetup<PlayerId, MaterialType, LocationType, RivalityOptions> {
+export class RivalitySetup extends MaterialGameSetup<PlayerColor, MaterialType, LocationType, RivalityOptions> {
   Rules = RivalityRules
 
   setupMaterial(options: RivalityOptions) {
     // Global parameters
     this.memorize(Memory.RealTimeScore, options.realTimeScore ?? false)
 
-    this.setupTiles(options)
-    this.setupGolems(options)
-    this.setupWizards(options)
+    this.setupTiles()
+    this.setupGolems()
+    this.setupWizards()
 
-    this.setupPlayerHands(options)
+    this.setupPlayerHands()
   }
 
-  setupTiles(options: RivalityOptions) {
+  setupTiles() {
     const newTiles = []
 
-    if (options.players == 2) {
+    if (this.game.players.length === 2) {
       newTiles.push(...tiles
         .filter(tile => tile == Tile.WellOfMana)
         .map((tile) => ({
@@ -48,7 +46,7 @@ export class RivalitySetup extends MaterialGameSetup<PlayerId, MaterialType, Loc
         })))
 
       // In 2 players mode, the deck are predefined
-      for (let player = 1; player <= 2; player++) {
+      for (const player of this.game.players) {
         newTiles.push(...tiles
           .filter(tile => tileTools.tileDeck(tile) == player) // || tileTools.tileDeck(tile)==-1)
           .map((tile) => ({
@@ -63,7 +61,7 @@ export class RivalitySetup extends MaterialGameSetup<PlayerId, MaterialType, Loc
       this.material(MaterialType.Tile).createItems(newTiles)
 
       // Shuffle and ensure that the last card for each player is NOT a fortress
-      for (let player = 1; player <= 2; player++) {
+      for (const player of this.game.players) {
         let lastPlayerCardIsAFortress = true
         do {
           this.material(MaterialType.Tile).player(player).shuffle()
@@ -71,7 +69,7 @@ export class RivalitySetup extends MaterialGameSetup<PlayerId, MaterialType, Loc
           lastPlayerCardIsAFortress = tileTools.isFortress(cards[cards.length - 1].id)
         } while (lastPlayerCardIsAFortress)
       }
-    } else if (options.players == 3) {
+    } else if (this.game.players.length === 3) {
       // In 3 players mode, the fortress cards are fairly dispatched among players
       // 1. Create all tiles and shuffle them
       newTiles.push(...tiles
@@ -112,7 +110,7 @@ export class RivalitySetup extends MaterialGameSetup<PlayerId, MaterialType, Loc
         .deck()
 
       // 3. Dispatch 2 fortress tile to each player
-      for (let player = 1; player <= 3; player++) {
+      for (const player of this.game.players) {
         fortressDeck.deal({ type: LocationType.PlayerDeck, player: player }, 2)
       }
 
@@ -129,7 +127,7 @@ export class RivalitySetup extends MaterialGameSetup<PlayerId, MaterialType, Loc
       }
 
       // 6. Shuffle each player's deck until their last card is not a fortress
-      for (let player = 1; player <= 3; player++) {
+      for (const player of this.game.players) {
         let lastPlayerCardIsAFortress = true
         do {
           this.material(MaterialType.Tile).player(player).shuffle()
@@ -142,158 +140,44 @@ export class RivalitySetup extends MaterialGameSetup<PlayerId, MaterialType, Loc
     }
   }
 
-  setupGolems(options: RivalityOptions) {
-    const newGolems = []
-
-    let nbGolemsPlayer1 = 0
-    let nbGolemsPlayer2 = 0
-    let nbGolemsPlayer3 = 0
-
-    if (options.players == 2) {
-      nbGolemsPlayer1 = 30
-      nbGolemsPlayer2 = 30
-      nbGolemsPlayer3 = 0
-    } else if (options.players == 3) {
-      nbGolemsPlayer1 = 20
-      nbGolemsPlayer2 = 20
-      nbGolemsPlayer3 = 20
-    } else {
-      console.log('*** ERROR - Unsupported nb of players')
-    }
-
-    // Player 1
-    for (let i = 0; i < nbGolemsPlayer1; i++) {
-      newGolems.push(...golems
-        .filter(golem => golem == Golem.Golem1)
-        .map((golem) => ({
-          id: golem,
+  setupGolems() {
+    const golems = this.game.players.length === 2 ? 30 : 20
+    for (const player of this.game.players) {
+      for (let i = 0; i < golems; i++) {
+        this.material(MaterialType.Golem).createItem({
+          id: player,
           location: {
             type: LocationType.PlayerGolemStack,
-            player: 1
+            player: player
           }
-        })))
-    }
-
-    // Player 2
-    for (let i = 0; i < nbGolemsPlayer2; i++) {
-      newGolems.push(...golems
-        .filter(golem => golem == Golem.Golem2)
-        .map((golem) => ({
-          id: golem,
-          location: {
-            type: LocationType.PlayerGolemStack,
-            player: 2
-          }
-        })))
-    }
-
-    // Player 3
-    for (let i = 0; i < nbGolemsPlayer3; i++) {
-      newGolems.push(...golems
-        .filter(golem => golem == Golem.Golem3)
-        .map((golem) => ({
-          id: golem,
-          location: {
-            type: LocationType.PlayerGolemStack,
-            player: 3
-          }
-        })))
-    }
-
-    this.material(MaterialType.Golem).createItems(newGolems)
-  }
-
-  setupWizards(options: RivalityOptions) {
-    const newWizards = []
-
-    let wizard1X = 3
-    let wizard1Y = 1
-    let wizard2X = 3
-    let wizard2Y = -1
-    let wizard3X: number | undefined = undefined
-    let wizard3Y: number | undefined = undefined
-
-    if (options.players == 2) {
-      // OK - default values
-    } else if (options.players == 3) {
-      wizard2X = -3
-      wizard2Y = 0
-      wizard3X = 3
-      wizard3Y = -1
-    } else {
-      console.log('*** ERROR - Unsupported nb of players')
-    }
-
-    // Player 1
-    newWizards.push(...wizards
-      .filter(wizard => wizard == Wizard.Wizard1)
-      .map((wizard) => ({
-        id: wizard,
-        location: {
-          type: LocationType.Board,
-          id: BoardSpace.Wizard,
-          x: wizard1X,
-          y: wizard1Y
-        }
-      })))
-
-    // Player 2
-    newWizards.push(...wizards
-      .filter(wizard => wizard == Wizard.Wizard2)
-      .map((wizard) => ({
-        id: wizard,
-        location: {
-          type: LocationType.Board,
-          id: BoardSpace.Wizard,
-          x: wizard2X,
-          y: wizard2Y
-        }
-      })))
-
-    // Player 3
-    if (wizard3X !== undefined) {
-      newWizards.push(...wizards
-        .filter(wizard => wizard == Wizard.Wizard3)
-        .map((wizard) => ({
-          id: wizard,
-          location: {
-            type: LocationType.Board,
-            id: BoardSpace.Wizard,
-            x: wizard3X,
-            y: wizard3Y
-          }
-        })))
-    }
-
-    this.material(MaterialType.Wizard).createItems(newWizards)
-  }
-
-  setupPlayerHands(options: RivalityOptions) {
-    let nbPlayers = options.players
-    for (let player = 1; player <= nbPlayers; player++) {
-      let defaultOrientation = Orientation.North
-      if (nbPlayers == 2) {
-        if (player == 1) {
-          defaultOrientation = Orientation.North
-        } else if (player == 2) {
-          defaultOrientation = Orientation.South
-        }
-      } else if (nbPlayers == 3) {
-        if (player == 1) {
-          defaultOrientation = Orientation.North
-        } else if (player == 2) {
-//          defaultOrientation=Orientation.East
-          defaultOrientation = Orientation.South
-        } else if (player == 3) {
-          defaultOrientation = Orientation.South
-        }
+        })
       }
+    }
+  }
 
+  setupWizards() {
+    const nbPlayers = this.game.players.length
+    const wizardsXY = nbPlayers === 2 ? [{x: 3, y: 1}, {x: 3, y: -1}] : [{x: 3, y: 1}, {x: -3, y: 0}, {x: 3, y: -1}]
+    for (let i = 0; i < nbPlayers; i++){
+      const player = this.game.players[i]
+      this.material(MaterialType.Wizard).createItem({
+        id: player,
+        location: {
+          type: LocationType.Board,
+          id: BoardSpace.Wizard,
+          ...wizardsXY[i]
+        }
+      })
+    }
+  }
+
+  setupPlayerHands() {
+    for (const player of this.game.players) {
       const deck = this.material(MaterialType.Tile).location(LocationType.PlayerDeck).player(player).deck()
       deck.deal({
         type: LocationType.PlayerHand,
         player: player,
-        rotation: defaultOrientation
+        rotation: Orientation.North
       }, 2)
     }
   }

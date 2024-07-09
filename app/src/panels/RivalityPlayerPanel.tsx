@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { RivalityRules } from '@gamepark/rivality/RivalityRules'
-import { PlayerId } from '@gamepark/rivality/PlayerId'
+import { PlayerColor } from '@gamepark/rivality/PlayerColor'
 import { Avatar, PlayerTimer, SpeechBubbleDirection, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
 import { FC, HTMLAttributes } from 'react'
 import Player1 from '../images/Panel_pink.png'
@@ -18,7 +18,7 @@ import Player3 from '../images/Panel_green.png'
 import { Memory } from '@gamepark/rivality/rules/Memory'
 
 type RivalityPlayerPanelProps = {
-  playerId: PlayerId
+  playerId: PlayerColor
 } & HTMLAttributes<HTMLDivElement>
 
 export const RivalityPlayerPanel: FC<RivalityPlayerPanelProps> = (props) => {
@@ -155,7 +155,7 @@ const ImageDelta = [
   "-7em -6em"
 ]
 
-const panelStyle = (playerId: PlayerId) => css`
+const panelStyle = (playerId: PlayerColor) => css`
   cursor: pointer;
 
   background: rgba(0, 0, 0, 0.8) url(${PlayerBackground[playerId - 1]}) no-repeat ${ImageDelta[playerId - 1]};
