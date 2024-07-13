@@ -2,6 +2,7 @@
 import { getRelativePlayerIndex, LocationContext, MaterialContext } from '@gamepark/react-game'
 import { LocationType } from '@gamepark/rivality/material/LocationType'
 import { MaterialType } from '@gamepark/rivality/material/MaterialType'
+import { Memory } from '@gamepark/rivality/rules/Memory'
 import { Location, MaterialRules } from '@gamepark/rules-api'
 import { spaceBetweenTiles, tileDescription } from '../../material/TileDescription'
 
@@ -52,7 +53,23 @@ export class TableDesign {
       .location(LocationType.Board)
       .getItems()
 
+    const tilePreview=(rules.remind(Memory.TilePreview)!==undefined)
+    let tilePreviewX:number|undefined=undefined
+    let tilePreviewY:number|undefined=undefined
+
+    if (tilePreview){
+      // Tile preview
+      const tileId=rules.remind(Memory.TilePreview)
+      const tile=rules.material(MaterialType.Tile).getItem(tileId)!
+      tilePreviewX=tile.location.x
+      tilePreviewY=tile.location.y
+    }
+
     tiles.forEach(item => {
+        // Skip the temporary tile to avoid table resizing before validation
+        if (item.location.x===tilePreviewX && item.location.y===tilePreviewY)
+          return
+
         if (item.location.x!<boardXMin) boardXMin=item.location.x!
         if (item.location.x!>boardXMax) boardXMax=item.location.x!
         if (item.location.y!<boardYMin) boardYMin=item.location.y!
