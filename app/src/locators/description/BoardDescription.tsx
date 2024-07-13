@@ -48,10 +48,10 @@ export class BoardDescription extends LocationDescription {
       return false
     const tutoStep=context.rules.game.tutorialStep
     return (
-      (tutoStep==15 && location.x==-2 && location.y==0) ||
-      (tutoStep==19 && location.x==-1 && location.y==1) ||
-      (tutoStep==23 && location.x==1 && location.y==1) ||
-      (tutoStep==27 && location.x==-1 && location.y==0)
+      (tutoStep===15 && location.x===-2 && location.y===0) ||
+      (tutoStep===19 && location.x===-1 && location.y===1) ||
+      (tutoStep===23 && location.x===1 && location.y===1) ||
+      (tutoStep===27 && location.x===-1 && location.y===0)
     )
   }
 
