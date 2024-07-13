@@ -42,6 +42,19 @@ export class BoardDescription extends LocationDescription {
     return hasOccupiedNeighboors
   }
 
+  highlight(location: Location, context: MaterialContext): boolean {
+    const isTutorial = context.rules!==undefined && context.rules.game.tutorialStep!==undefined
+    if (!isTutorial)
+      return false
+    const tutoStep=context.rules.game.tutorialStep
+    return (
+      (tutoStep==15 && location.x==-2 && location.y==0) ||
+      (tutoStep==19 && location.x==-1 && location.y==1) ||
+      (tutoStep==23 && location.x==1 && location.y==1) ||
+      (tutoStep==27 && location.x==-1 && location.y==0)
+    )
+  }
+
   getLocations(context: MaterialContext) : Location[]  {
     const locations : Location[] = []
     let boardDimensions=tableDesign.getBoardDimensions(context.rules)

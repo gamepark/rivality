@@ -90,7 +90,6 @@ export class TutorialSetup extends RivalitySetup {
         player: opponent
       })
 
-//    this.material(MaterialType.KingdomCard).location(LocationType.KingdomDeck).deck().dealOne({ type: LocationType.KingdomDiscard, rotation:true })
     this.startPlayerTurn(RuleId.Start, this.game.players[0])
   }
 }
