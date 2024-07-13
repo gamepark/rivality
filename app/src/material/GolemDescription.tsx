@@ -39,10 +39,8 @@ export class GolemDescription extends TokenDescription  {
 const emptyCss=css``
 
 const haloCss=css`
-  @supports not (-moz-appearance:none) {
+  > div {
     filter: drop-shadow(0 -0.5em 0.25em white);
-  }
-  @-moz-document url-prefix() {
   }
 `
 

@@ -74,29 +74,16 @@ export class TileDescription extends CardDescription {
       uiTileTools.isActiveWizardSquare(location, context)
     ) {
       return css`
-      @supports not (-moz-appearance:none) {
-        filter: contrast(1.5);
-      }
-      @-moz-document url-prefix() {
-        box-shadow:
-          rgba(46, 255, 46, 0.3)  0.5em  0.5em,
-          rgba(46, 255, 46, 0.3) -0.5em  0.5em,
-          rgba(46, 255, 46, 0.3) -0.5em -0.5em,
-          rgba(46, 255, 46, 0.3)  0.5em -0.5em;
-      }
+        > div {
+          filter: contrast(1.5);
+        }
       `
     }
     if (uiTileTools.isUnderAttackSquare(location, context)) {
+      // The coordinates must NOT be exactly zero to work on Firefox
       return css`
-        @supports not (-moz-appearance:none) {
-          filter: opacity(0.5) drop-shadow(0 0 0 red);
-        }
-        @-moz-document url-prefix() {
-          box-shadow:
-            rgba(255, 46, 46, 0.3)  0.5em  0.5em,
-            rgba(255, 46, 46, 0.3) -0.5em  0.5em,
-            rgba(255, 46, 46, 0.3) -0.5em -0.5em,
-            rgba(255, 46, 46, 0.3)  0.5em -0.5em;
+        > div {
+          filter: opacity(0.5) drop-shadow(0 -0.01em 0em red);
         }
       `
     }
