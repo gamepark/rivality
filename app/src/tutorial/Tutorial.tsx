@@ -18,11 +18,13 @@ const me = 1
 const opponent = 2
 
 export class Tutorial extends MaterialTutorial<PlayerColor, MaterialType, LocationType> {
-  version = 4
+  opponentName = 'Rincevent' // i18next.t("tuto.opponent")
+
+  version = 5
   options = { players: 2 }
   setup = new TutorialSetup()
 
-  players = [{ id: me }, { id: opponent }]
+  players = [{ id: me }, { id: opponent, name: this.opponentName }]
 
   steps: TutorialStep[] = [
     {

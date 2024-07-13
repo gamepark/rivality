@@ -1,20 +1,14 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { faStar } from '@fortawesome/free-solid-svg-icons/faStar'
-import { useTranslation } from 'react-i18next'
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { RivalityRules } from '@gamepark/rivality/RivalityRules'
 import { PlayerColor } from '@gamepark/rivality/PlayerColor'
-import { Avatar, PlayerTimer, SpeechBubbleDirection, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
+import { Avatar, PlayerTimer, SpeechBubbleDirection, /*usePlayerId,*/ usePlayerName, useRules } from '@gamepark/react-game'
 import { FC, HTMLAttributes } from 'react'
 import Player1 from '../images/Panel_pink.png'
 import Player2 from '../images/Panel_orange.png'
 import Player3 from '../images/Panel_green.png'
-
-//import Day from '../images/time/day.png'
-//import Night from '../images/time/night.png'
-
 import { Memory } from '@gamepark/rivality/rules/Memory'
 
 type RivalityPlayerPanelProps = {
@@ -23,20 +17,8 @@ type RivalityPlayerPanelProps = {
 
 export const RivalityPlayerPanel: FC<RivalityPlayerPanelProps> = (props) => {
   const { playerId, ...rest } = props
-  const { t } = useTranslation()
-  const rules = useRules<RivalityRules>()!
   let playerName = usePlayerName(playerId)
-//  const turnToPlay = rules.isTurnToPlay(playerId)
-
-  // Tweak names for the tutorial
-  const me = usePlayerId()
-  const itsMe = me && playerId === me
-  const isTutorial = !rules || rules.game.tutorialStep !== undefined
-  if (isTutorial && !itsMe){
-    playerName=t('tuto.opponent')
-  }
-
-//  <div css={turnToPlay ? day : night}></div>
+  console.log(playerName)
 
   return (
     <>
