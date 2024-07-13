@@ -6,7 +6,7 @@ import { MaterialType } from '@gamepark/rivality/material/MaterialType'
 import { Orientation } from '@gamepark/rivality/Orientation'
 import { Memory } from '@gamepark/rivality/rules/Memory'
 import { RuleId } from '@gamepark/rivality/rules/RuleId'
-import { Location, XYCoordinates } from '@gamepark/rules-api'
+import { Location, MaterialRules, XYCoordinates } from '@gamepark/rules-api'
 
 export class UITileTools {
   isHighlightedSquare(location:Location, context: MaterialContext){
@@ -173,6 +173,19 @@ export class UITileTools {
       .location(LocationType.Board)
       .filter(item => item.location.x===coords.x && item.location.y===coords.y)
       .getIndex()
+  }
+
+  tilePreviewCoordinates(rules:MaterialRules) : XYCoordinates|undefined {
+    const tilePreview=(rules.remind(Memory.TilePreview)!==undefined)
+    if (!tilePreview)
+      return undefined
+
+    // Tile preview
+    const tileId=rules.remind(Memory.TilePreview)
+    const tile=rules.material(MaterialType.Tile).getItem(tileId)!
+    if (tile.location.x===undefined || tile.location.y===undefined)
+      return undefined
+    return {x:tile.location.x, y:tile.location.y}
   }
 }
 
