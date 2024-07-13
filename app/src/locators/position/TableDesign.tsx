@@ -24,7 +24,7 @@ export class TableDesign {
     return rules.players.length
   }
 
-  playerCorner(player:number, context: MaterialContext){
+  playerCorner(player:number, context: MaterialContext) : Corner {
     const relativeIndex = getRelativePlayerIndex(context, player)
     if (context.rules.players.length===2){
       if (relativeIndex===0)
@@ -306,6 +306,23 @@ export class TableDesign {
       y:handCoords.y-(tileDescription.height/2),
       z:handCoords.z+2
     }
+  }
+
+  rotateZforPlayer(player:number|undefined, context: MaterialContext) : number {
+    if (player===undefined)
+      return 0
+
+    const corner=tableDesign.playerCorner(player, context)
+    switch (corner){
+      case Corner.TopLeft:
+      case Corner.TopRight:
+        return 180
+      case Corner.BottomLeft:
+      case Corner.BottomRight:
+        return 0
+    }
+    console.log("*** ERROR - Unsupported corner")
+    return 0
   }
 }
 

@@ -3,6 +3,7 @@ import { HandLocator, ItemContext, /* LocationDescription, MaterialContext*/ } f
 import { Location, MaterialItem } from '@gamepark/rules-api'
 import { Orientation } from '@gamepark/rivality/Orientation'
 import { PlayerHandDescription } from './description/PlayerHandDescription'
+import { tableDesign } from './position/TableDesign'
 
 export class PlayerHandLocator extends HandLocator {
   locationDescription = new PlayerHandDescription()
@@ -21,50 +22,13 @@ export class PlayerHandLocator extends HandLocator {
   }
 
   getBaseAngle(item: MaterialItem, context: ItemContext): number {
-    let res=3
-    const nbPlayers=context.rules.game.players.length
-    if (nbPlayers===2){
-      if (item.location.player===1){
-        res=0
-      }
-      if (item.location.player===2){
-        res=180
-      }
-    } else if (nbPlayers===3){
-      if (item.location.player===1){
-        res=0
-      }
-      if (item.location.player===2){
-//        res=90
-        res=180
-      }
-      if (item.location.player===3){
-        res=180
-      }
-    }
-    return res
+    return tableDesign.rotateZforPlayer(item.location.player, context)
   }
 
   getRotateZ(item: MaterialItem, context: ItemContext): number {
-    const nbPlayers=context.rules.game.players.length
-
     // Tiles in opponents'hand are not rotated
     if (item.location.player !== context.player){
-      if (nbPlayers===2){
-        if (item.location.player===1)
-          return 0
-        if (item.location.player===2)
-          return 180
-      } else if (nbPlayers===3){
-        if (item.location.player===1)
-          return 0
-        if (item.location.player===2)
-//          return 90
-          return 180
-        if (item.location.player===3)
-          return 180
-      }
-      return 0
+      return tableDesign.rotateZforPlayer(item.location.player, context)
     }
 
     // Tiles in active player's hand are rotated
