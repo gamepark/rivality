@@ -84,22 +84,6 @@ export class RivalitySetup extends MaterialGameSetup<PlayerColor, MaterialType, 
           }
         })))
 
-      /*
-            // 2 specimens for specific cards
-            newTiles.push(...tiles
-              .filter(tile => tileTools.tileDeck(tile)==-1)
-              .map((tile) => ({
-                id: tile,
-                location: {
-                  type: LocationType.Board,
-                  id: BoardSpace.Tile,
-                  x: 0,
-                  y: 0,
-                  rotation: Orientation.North
-                }
-              })))
-      */
-
       this.material(MaterialType.Tile).createItems(newTiles)
       this.material(MaterialType.Tile).shuffle()
 
@@ -157,15 +141,13 @@ export class RivalitySetup extends MaterialGameSetup<PlayerColor, MaterialType, 
 
   setupWizards() {
     const nbPlayers = this.game.players.length
-    const wizardsXY = nbPlayers === 2 ? [{x: 3, y: 1}, {x: 3, y: -1}] : [{x: 3, y: 1}, {x: -3, y: 0}, {x: 3, y: -1}]
     for (let i = 0; i < nbPlayers; i++){
       const player = this.game.players[i]
       this.material(MaterialType.Wizard).createItem({
         id: player,
         location: {
-          type: LocationType.Board,
-          id: BoardSpace.Wizard,
-          ...wizardsXY[i]
+          type: LocationType.PlayerWizardStart,
+          player: player
         }
       })
     }

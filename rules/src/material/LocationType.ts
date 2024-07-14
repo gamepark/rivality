@@ -6,5 +6,6 @@ export enum LocationType {
   // Reserved = 5
   TileButton         = 6,
   PlayerDeckQuantity = 7,
-  TileScore          = 8
+  TileScore          = 8,
+  PlayerWizardStart  = 9
 }
