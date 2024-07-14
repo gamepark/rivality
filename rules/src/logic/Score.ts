@@ -1,4 +1,4 @@
-import { Material } from '@gamepark/rules-api'
+import { Material, MaterialItem } from '@gamepark/rules-api'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { Tile } from '../material/Tile'
@@ -6,6 +6,28 @@ import { PlayerColor } from '../PlayerColor'
 import { tileTools } from './TileTools'
 
 export class Score {
+  tileScore(
+    playerId:PlayerColor,
+    tile:MaterialItem,
+    golems:Material<number, MaterialType, LocationType>,
+    wizards:Material<number, MaterialType, LocationType>,
+    wellController:PlayerColor|undefined):number {
+    let tileId:Tile=tile.id
+    let x=tile.location.x!
+    let y=tile.location.y!
+
+    // No points for tiles with a wizard
+    let hasWizards=wizards.filter(item => item.location.x==x && item.location.y==y).length > 0
+    if (hasWizards)
+      return 0
+
+    if (this.playerControllingTile(golems, x, y, wellController)===playerId){
+      // The tile is controlled by the current player
+      return tileTools.tileScore(tileId)
+    }
+    return 0
+  }
+
   playerScore(
     playerId:PlayerColor,
     tiles:Material<number, MaterialType, LocationType>,
@@ -17,19 +39,7 @@ export class Score {
 
     // Loop on tiles
     tiles.location(LocationType.Board).getItems().forEach(item => {
-      let tile:Tile=item.id
-      let x=item.location.x!
-      let y=item.location.y!
-
-      // No points for tiles with a wizard
-      let hasWizards=wizards.filter(item => item.location.x==x && item.location.y==y).length > 0
-      if (hasWizards)
-        return
-
-      if (this.playerControllingTile(golems, x, y, wellController)===playerId){
-        // The tile is controlled by the current player
-        res+=tileTools.tileScore(tile)
-      }
+      res+=this.tileScore(playerId, item, golems, wizards, wellController)
     })
     return res
   }

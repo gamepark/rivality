@@ -4,6 +4,7 @@ import { Coordinates, Location, XYCoordinates } from '@gamepark/rules-api'
 import { LocationType } from '@gamepark/rivality/material/LocationType'
 import { MaterialType } from '@gamepark/rivality/material/MaterialType'
 import { LocationContext, LocationDescription, MaterialContext } from '@gamepark/react-game'
+import { score } from '@gamepark/rivality/logic/Score'
 import { spaceBetweenTiles, tileDescription } from '../../material/TileDescription'
 import { tableDesign } from '../position/TableDesign'
 import { uiTileTools } from '../../material/UITileTools'
@@ -58,6 +59,11 @@ export class BoardDescription extends LocationDescription {
   getLocations(context: MaterialContext) : Location[]  {
     const locations : Location[] = []
     let boardDimensions=tableDesign.getBoardDimensions(context.rules)
+    const gameIsOver=context.rules.isOver()
+    const golems=context.rules.material(MaterialType.Golem).location(LocationType.Board)
+    const wizards=context.rules.material(MaterialType.Wizard).location(LocationType.Board)
+    const wellController=score.playerControllingWellOfMana(golems)
+
     for (let i=boardDimensions.boardXMin-1; i<=boardDimensions.boardXMax+1; i++){
       for (let j=boardDimensions.boardYMin-1; j<=boardDimensions.boardYMax+1; j++){
         locations.push({
@@ -65,6 +71,34 @@ export class BoardDescription extends LocationDescription {
           x: i,
           y: j
         })
+
+        // Score for the tile
+        if (gameIsOver){
+          const tile=context.rules
+            .material(MaterialType.Tile)
+            .location(LocationType.Board)
+            .filter(item => item.location.x===i && item.location.y===j)
+            .getItem()
+          if (tile!==undefined){
+            let highScore=0
+            let highScorePlayer=0
+            context.rules.players.forEach(p => {
+              const playerScore=score.tileScore(p, tile, golems, wizards, wellController)
+              if (playerScore>highScore){
+                highScore=playerScore
+                highScorePlayer=p
+              }
+            })
+            if (highScore>0){
+              locations.push({
+                type: LocationType.TileScore,
+                x: i,
+                y: j,
+                id: {score:highScore, player:highScorePlayer}
+              })
+            }
+          }
+        }
       }
     }
     return locations
