@@ -4,6 +4,7 @@ import { MaterialType } from '@gamepark/rivality/material/MaterialType'
 import { PlayerColor } from '@gamepark/rivality/PlayerColor'
 import { boardLocator } from './BoardLocator'
 import { playerDeckLocator } from './PlayerDeckLocator'
+import { playerDeckQuantityLocator } from './PlayerDeckQuantityLocator'
 import { playerGolemStackLocator } from './PlayerGolemStackLocator'
 import { playerHandLocator } from './PlayerHandLocator'
 import { tileButtonLocator } from './TileButtonLocator'
@@ -14,4 +15,5 @@ export const Locators: Partial<Record<LocationType, ItemLocator<PlayerColor, Mat
   [LocationType.Board]: boardLocator,
   [LocationType.PlayerGolemStack]: playerGolemStackLocator,
   [LocationType.TileButton]: tileButtonLocator,
+  [LocationType.PlayerDeckQuantity]: playerDeckQuantityLocator
 }

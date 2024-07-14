@@ -3,6 +3,7 @@ import { css } from '@emotion/react'
 import { LocationType } from '@gamepark/rivality/material/LocationType'
 import { LocationContext, LocationDescription, MaterialContext } from '@gamepark/react-game'
 import { Location } from '@gamepark/rules-api'
+import { MaterialType } from '@gamepark/rivality/material/MaterialType'
 import { tileDescription } from '../../material/TileDescription'
 import { tableDesign } from '../position/TableDesign'
 
@@ -24,6 +25,12 @@ export class PlayerDeckDescription extends LocationDescription {
       locations.push({
         type: LocationType.PlayerDeck,
         player: p
+        })
+      const nbTiles=rules.material(MaterialType.Tile).location(LocationType.PlayerDeck).player(p).length
+      locations.push({
+        type: LocationType.PlayerDeckQuantity,
+        player: p,
+        id: nbTiles
         })
       })
     return locations

@@ -18,7 +18,6 @@ type RivalityPlayerPanelProps = {
 export const RivalityPlayerPanel: FC<RivalityPlayerPanelProps> = (props) => {
   const { playerId, ...rest } = props
   let playerName = usePlayerName(playerId)
-  console.log(playerName)
 
   return (
     <>
