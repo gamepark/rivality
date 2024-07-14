@@ -336,7 +336,7 @@
       "tuto.shield.1": "Certaines tuiles disposent de Boucliers magiques <0/>.",
       "tuto.shield.2": "Dans ce cas, lors d'une attaque de tuile contrôlée par un adversaire, l'attaquant perd un nombre de golems égal au nombre de boucliers.",
       "tuto.shield.3": "Vous venez d'attaquer une tuile adverse protégée par 1 bouclier.",
-      "tuto.shield.4": "A cause de ce bouclier, vous n'a posé que 2 golems sur la tuile au-lieu de 3.",
+      "tuto.shield.4": "A cause de ce bouclier, vous n'avez posé que 2 golems sur la tuile au-lieu de 3.",
       "tuto.broken.shield.1": "Lors d'une attaque à une distance de 3, les golems gagnent la propriété bouclier brisé <0/> et ne sont pas affectés par les boucliers.",
       "tuto.round.4b": "Il est possible de tourner une tuile après l'avoir posé et avant de valider le coup.",
       "tuto.round.5": "Tournez vos tuiles vers le bas",
