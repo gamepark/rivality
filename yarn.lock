@@ -1771,10 +1771,10 @@
     pusher-js "^7.0.0"
     redux "^4.2.1"
 
-"@gamepark/react-client@~6.23.1":
-  version "6.23.1"
-  resolved "https://registry.yarnpkg.com/@gamepark/react-client/-/react-client-6.23.1.tgz#d0726752203cd24793f1bb826a63d5be8d7bdfa8"
-  integrity sha512-wSGNtpznC+RfMLF5s5YoLYD1T5DWxjUJDJ8v1tf/yH4neQg9Lc63F1LXKsg/hHf9fs3NUfpGseAEsZmiezWHGw==
+"@gamepark/react-client@~6.23.2":
+  version "6.23.2"
+  resolved "https://registry.yarnpkg.com/@gamepark/react-client/-/react-client-6.23.2.tgz#1502d0f7afcd0afb85fc8c2995a42edaba926453"
+  integrity sha512-o5WR11eniE3+EfQb4jx8G02QGML09j+FD0pWorqwhMAwJji66PFg1aD62fAVwOUMjCoO/eJXCM1/EVNiLTJgFw==
   dependencies:
     "@harelpls/use-pusher" "^7.2.1"
     assert "^2.0.0"
