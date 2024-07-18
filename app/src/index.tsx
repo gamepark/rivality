@@ -11,6 +11,7 @@ import { rivalityAnimations } from './RivalityAnimations'
 import { RivalityTestSetup } from './tests/RivalityTestSetup'
 import translations from './translations.json'
 import { Tutorial } from './tutorial/Tutorial'
+import { ai } from './tutorial/TutorialAi'
 
 setupTranslation(translations, { debug: false })
 
@@ -25,6 +26,7 @@ ReactDOM.render(
       locators={Locators}
       animations={rivalityAnimations}
       tutorial={new Tutorial()}
+      ai={ai}
     >
       <App/>
     </GameProvider>
