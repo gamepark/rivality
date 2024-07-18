@@ -17,8 +17,9 @@ export class StartRule extends PlayerTurnRule {
   }
 
   firstPlayerMayPlaceAGolem(){
+    const activePlayer=this.getActivePlayer()
     let foundSpellWithDistance1=false
-    this.material(MaterialType.Tile).location(LocationType.PlayerHand).player(1)
+    this.material(MaterialType.Tile).location(LocationType.PlayerHand).player(activePlayer)
       .getItems()
       .forEach(item => {
         const tile:Tile=item.id
@@ -43,25 +44,26 @@ export class StartRule extends PlayerTurnRule {
   }
 
   onCustomMove(move: CustomMove): MaterialMove[] {
+    const activePlayer=this.getActivePlayer()
     if (move.type === CustomMoveType.KeepHand) {
-      return [this.startPlayerTurn(RuleId.ChooseTile, this.getActivePlayer())]
+      return [this.startPlayerTurn(RuleId.ChooseTile, activePlayer)]
     } else if (move.type === CustomMoveType.NewHand) {
       let moves:MaterialMove[]=[]
 
-      const initialDeck = this.material(MaterialType.Tile).location(LocationType.PlayerDeck).player(1).deck()
+      const initialDeck = this.material(MaterialType.Tile).location(LocationType.PlayerDeck).player(activePlayer).deck()
 
       // Discard hand
       moves.push(
-        this.material(MaterialType.Tile).location(LocationType.PlayerHand).player(1)
+        this.material(MaterialType.Tile).location(LocationType.PlayerHand).player(activePlayer)
           .moveItemsAtOnce({
             type: LocationType.PlayerDeck,
-            player: 1
+            player: activePlayer
           })
         )
 
         moves.push(...initialDeck.deal({
           type: LocationType.PlayerHand,
-          player:1,
+          player:activePlayer,
           rotation: Orientation.North
           }, 2)
         )
@@ -71,7 +73,7 @@ export class StartRule extends PlayerTurnRule {
 
       // Shuffle deck then Start game
       // Note: The shuffle is delayed to ensure that the hiding strategy for all cards is the same
-      moves.push(this.startPlayerTurn(RuleId.ShufflePlayer1Deck, this.getActivePlayer()))
+      moves.push(this.startPlayerTurn(RuleId.ShufflePlayer1Deck, activePlayer))
       return moves
     }
     return []
