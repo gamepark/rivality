@@ -49,7 +49,6 @@ export class GolemCount {
 }
 
 export class GolemTools {
-
   golemCount(golems:Material, activePlayer:PlayerColor) : GolemCount {
     return new GolemCount(golems, activePlayer)
   }

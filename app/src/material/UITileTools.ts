@@ -54,6 +54,12 @@ export class UITileTools {
   }
 
   isUnderAttackSquare(location:Location, context: MaterialContext){
+    if (location.x===undefined || location.y===undefined)
+      return false
+    return this.isUnderAttackSquareXY({x:location.x, y:location.y}, context)
+  }
+
+  isUnderAttackSquareXY(coords:XYCoordinates, context: MaterialContext){
     const activePlayer=context.player
     if (activePlayer!==undefined){
       const ruleId=context.rules.state.rule?.id
@@ -61,8 +67,8 @@ export class UITileTools {
       const isSpellOrderSelection=(ruleId===RuleId.AskSpellOrientation)
 
       if (tilePreview || isSpellOrderSelection){
-        const thisX=location.x!
-        const thisY=location.y!
+        const thisX=coords.x!
+        const thisY=coords.y!
 
         // 1 - Find location of the tile with wizard
         const wizardLocation=this.activePlayerWizardLocation(context)
