@@ -139,12 +139,15 @@ export class RivalityRules extends SecretMaterialRules<PlayerColor, MaterialType
 
   // To get the value of the tile occupied by the wizard of the given player
   computeWizardTileScore(player: PlayerColor) {
-
-    const wizardLocation = this.material(MaterialType.Wizard)
+    const wizard = this.material(MaterialType.Wizard)
       .location(LocationType.Board)
       .filter(item => item.id === player)
-      .getItem()!
-      .location!
+      .getItem()
+
+    if (wizard===undefined)
+      return 0
+
+    const wizardLocation = wizard!.location!
 
     if (wizardLocation !== undefined) {
       const tileAtWizardLocation = this.material(MaterialType.Tile)
