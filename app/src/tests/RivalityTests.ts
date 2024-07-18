@@ -10,7 +10,7 @@ import { RivalityTestSetup } from './RivalityTestSetup'
 /**
  * To test specific positions
  *
- * game.new({'test':1})
+ * game.new({test:1, players:[{id:1},{id:2}]})
  */
 
 class Square {
