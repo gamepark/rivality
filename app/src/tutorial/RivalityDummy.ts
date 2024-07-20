@@ -74,38 +74,5 @@ export class RivalityDummy extends Dummy<MaterialGame<PlayerColor, MaterialType,
     }
 
     return legalMoves
-
-    /*
-    if (game.rule?.id === RuleId.GuardianAnimals) {
-      const playerState = new PlayerState(game, player)
-      const lastHelpCard = rules
-        .material(MaterialType.GuardianAnimalCard)
-        .location(LocationType.HelpLine)
-        .player(player)
-        .maxBy((item) => item.location.x!).getItem()
-
-      if (lastHelpCard && isVaran(lastHelpCard.id)) {
-        const moves = legalMoves.filter((move) => isMoveItemType<SpiritOfNature, MaterialType, LocationType>(MaterialType.FragmentTile)(move) && move.location.type === LocationType.FragmentStack)
-        if (moves.length) return moves
-      }
-
-      const remainingMoves = legalMoves.filter((move) => !isMoveItemType<SpiritOfNature, MaterialType, LocationType>(MaterialType.FragmentTile)(move))
-      const diff = playerState.solidarityGregariousDifference
-      if (diff < 3) {
-        if (diff === 2) {
-          return remainingMoves.filter((move) => isEndPlayerTurn(move))
-        }
-        const moves = remainingMoves.filter((move) => isMoveItemType<SpiritOfNature, MaterialType, LocationType>(MaterialType.GuardianAnimalCard)(move) && move.location.type === LocationType.HelpLine)
-        if (moves.length) return moves
-      }
-    }
-
-    if (game.rule?.id === RuleId.Action && game.rule.player === player) {
-      const moves = legalMoves.filter((move) => !isMoveItemType<SpiritOfNature, MaterialType, LocationType>(MaterialType.FragmentTile)(move))
-      if (moves.length) return moves
-    }
-
-    return legalMoves
-    */
   }
 }
