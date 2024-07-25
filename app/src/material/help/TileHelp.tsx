@@ -9,7 +9,6 @@ import { Tile } from '@gamepark/rivality/material/Tile'
 import { PlayerColor } from '@gamepark/rivality/PlayerColor'
 import { RivalityRules } from '@gamepark/rivality/RivalityRules'
 import { useTranslation } from 'react-i18next'
-import { GPTrans } from '../../Translator'
 import { SpellHelp, SymbolShield } from './HelpTools'
 
 export const TileHelp = (props: MaterialHelpProps) => {
@@ -34,14 +33,14 @@ export const TileHelp = (props: MaterialHelpProps) => {
         return <>
           <h2>{t('help.deck.you')}</h2>
           <p>
-            <GPTrans defaults="help.nb.cards" suffix=":"></GPTrans> {nbCards}
+            {t('help.nb.cards')} {nbCards}
           </p>
         </>
       } else {
         return <>
           <h2>{t('help.deck.player', {player:playerLocationName})}</h2>
           <p>
-            <GPTrans defaults="help.nb.cards" suffix=":"></GPTrans> {nbCards}
+            {t('help.nb.cards')} {nbCards}
           </p>
         </>
       }
