@@ -117,8 +117,8 @@ export class BoardDescription extends LocationDescription {
             const hasOpponentWizard=context.rules.material(MaterialType.Wizard)
               .location(LocationType.Board)
               .filter(item =>
-                item.location.x==i &&
-                item.location.y==j &&
+                item.location.x===i &&
+                item.location.y===j &&
                 item.id!==activePlayer
               )
               .length > 0
@@ -186,7 +186,7 @@ export class BoardDescription extends LocationDescription {
               type: LocationType.TileScore,
               x: i,
               y: j,
-              id: {score:String(nbAddedGolems), player:activePlayer}
+              id: {golems:nbAddedGolems, player:activePlayer}
             })
           }
         }

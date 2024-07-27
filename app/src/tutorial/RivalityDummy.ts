@@ -39,9 +39,10 @@ export class RivalityDummy extends Dummy<MaterialGame<PlayerColor, MaterialType,
         const targetY=move.location.y
         const tileOrientation=move.location.rotation
         if (targetX===undefined || targetY===undefined || tileOrientation===undefined)
-          return
+          return false
 
-        [Orientation.North, Orientation.East, Orientation.South, Orientation.West].forEach(spellOrientation => {
+        const orientations:Orientation[]=[Orientation.North, Orientation.East, Orientation.South, Orientation.West]
+        orientations.forEach(spellOrientation => {
           const tileSide:Direction=tileTools.tileSideFromOrientations(spellOrientation, tileOrientation)
           const spell=tileSpells.spell(tile, tileSide)
           if (spell.nbGolems<=0)
