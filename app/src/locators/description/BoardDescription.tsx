@@ -64,7 +64,8 @@ export class BoardDescription extends LocationDescription {
   getLocations(context: MaterialContext) : Location[]  {
     const locations : Location[] = []
     let boardDimensions=tableDesign.getBoardDimensions(context.rules)
-    const activePlayer=context.player
+    const activePlayer=context.rules.getActivePlayer()
+    const currentPlayer=context.player
     const gameIsOver=context.rules.isOver()
     const pendingTileValidation=context.rules.state.rule?.id===RuleId.ChooseTile
     const golems=context.rules.material(MaterialType.Golem).location(LocationType.Board)
@@ -109,6 +110,9 @@ export class BoardDescription extends LocationDescription {
           }
         } else if (pendingTileValidation){
           if (activePlayer===undefined)
+            continue
+
+          if (activePlayer!==currentPlayer)
             continue
 
           // Nb golems on this target tile if the current tile is validated
