@@ -8,7 +8,8 @@ import {
   MaterialGame,
   MaterialMove,
   PositiveSequenceStrategy,
-  SecretMaterialRules
+  SecretMaterialRules,
+  TimeLimit
 } from '@gamepark/rules-api'
 import isEqual from 'lodash/isEqual'
 import { score } from './logic/Score'
@@ -35,7 +36,8 @@ import { StartRule } from './rules/StartRule'
  */
 export class RivalityRules extends SecretMaterialRules<PlayerColor, MaterialType, LocationType>
   implements CompetitiveRank<MaterialGame<PlayerColor, MaterialType, LocationType>, MaterialMove<PlayerColor, MaterialType, LocationType>, PlayerColor>,
-    LocalMovePreview<MaterialMove<PlayerColor, MaterialType, LocationType>> {
+    LocalMovePreview<MaterialMove<PlayerColor, MaterialType, LocationType>>,
+    TimeLimit<MaterialGame<PlayerColor, MaterialType, LocationType>, MaterialMove<PlayerColor, MaterialType, LocationType>, PlayerColor> {
   rules = {
     [RuleId.Start]: StartRule,
     [RuleId.ChooseTile]: ChooseTileRule,
@@ -160,5 +162,9 @@ export class RivalityRules extends SecretMaterialRules<PlayerColor, MaterialType
     }
     // No tile => score = 0
     return 0
+  }
+
+  giveTime() {
+    return 45
   }
 }
