@@ -65,7 +65,14 @@ export class RivalityTests {
     if (nbPlayers!==expectedNbPlayers){
       console.log("Wrong nb of players for this test")
       console.log("Please retry with:")
-      console.log("game.new({'test':"+testId+", 'players':"+expectedNbPlayers+"})")
+      let cmd="game.new({'test':"+testId+", 'players':["
+      for (let i=1; i<=expectedNbPlayers; i++){
+        cmd+="{id:"+i+"}"
+        if (i<expectedNbPlayers)
+          cmd+=","
+      }
+      cmd+="]})"
+      console.log(cmd)
       return
     }
 
