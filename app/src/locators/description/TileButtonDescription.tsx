@@ -157,6 +157,8 @@ export class TileButtonDescription extends LocationDescription {
   transformOwnLocation(location: Location, context: LocationContext): string[] {
     const { rules, locators } = context
     const tile = rules.material(MaterialType.Tile).getItem(location.parent!)!
+    if ((tile===undefined) || (tile.location===undefined))
+      return super.transformOwnLocation(location, context)
     return [
       locators[tile.location.type]!.getTranslate3d(tile, { ...context, type: MaterialType.Tile, index: location.parent!, displayIndex: 0 }),
       ...super.transformOwnLocation(location, context)
