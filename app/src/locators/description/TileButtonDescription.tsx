@@ -75,6 +75,7 @@ export class TileButtonDescription extends LocationDescription {
     const locations: Location[] = []
     const rules=context.rules
     const player=context.player
+    const activePlayer=context.rules.getActivePlayer()
 
     // Buttons around the tile being placed
     const tilePreview = rules.remind<number | undefined>(Memory.TilePreview)
@@ -96,7 +97,7 @@ export class TileButtonDescription extends LocationDescription {
     // Buttons around tile with golems to be removed
     const ruleId=rules.game.rule?.id
     if (ruleId===RuleId.AskGolemRemoval){
-      if (player!==undefined){
+      if ((player!==undefined) && (player===activePlayer)){
         const tileX = rules.remind<number | undefined>(Memory.SpellTileX)
         const tileY = rules.remind<number | undefined>(Memory.SpellTileY)
         const tileIndex = rules.material(MaterialType.Tile)
@@ -118,7 +119,7 @@ export class TileButtonDescription extends LocationDescription {
 
     // Buttons around target tile
     if (ruleId===RuleId.AskSpellOrientation){
-      if (player!==undefined){
+      if ((player!==undefined) && (player===activePlayer)){
         const hasSpellNorth = rules.remind(Memory.AppliedSpellNorth)!==true
         const hasSpellEast = rules.remind(Memory.AppliedSpellEast)!==true
         const hasSpellSouth = rules.remind(Memory.AppliedSpellSouth)!==true
