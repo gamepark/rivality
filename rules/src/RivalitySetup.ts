@@ -32,33 +32,32 @@ export class RivalitySetup extends MaterialGameSetup<PlayerColor, MaterialType, 
     const newTiles = []
 
     if (this.game.players.length === 2) {
-      newTiles.push(...tiles
-        .filter(tile => tile == Tile.WellOfMana)
-        .map((tile) => ({
-          id: tile,
-          location: {
-            type: LocationType.Board,
-            id: BoardSpace.Tile,
-            x: 0,
-            y: 0,
-            rotation: Orientation.North
-          }
-        })))
+      this.material(MaterialType.Tile).createItem({
+        id: Tile.WellOfMana,
+        location: {
+          type: LocationType.Board,
+          id: BoardSpace.Tile,
+          x: 0,
+          y: 0,
+          rotation: Orientation.North
+        }
+      })
 
       // In 2 players mode, the deck are predefined
-      for (const player of this.game.players) {
-        newTiles.push(...tiles
-          .filter(tile => tileTools.tileDeck(tile) == player) // || tileTools.tileDeck(tile)==-1)
-          .map((tile) => ({
-            id: tile,
-            location: {
-              type: LocationType.PlayerDeck,
-              player: player
-            }
-          })))
-      }
-
-      this.material(MaterialType.Tile).createItems(newTiles)
+      this.material(MaterialType.Tile).createItems(tileTools.player1Deck.map(tile => ({
+        id: tile,
+        location: {
+          type: LocationType.PlayerDeck,
+          player: this.game.players[0]
+        }
+      })))
+      this.material(MaterialType.Tile).createItems(tileTools.player2Deck.map(tile => ({
+        id: tile,
+        location: {
+          type: LocationType.PlayerDeck,
+          player: this.game.players[1]
+        }
+      })))
 
       // Shuffle and ensure that the last card for each player is NOT a fortress
       for (const player of this.game.players) {

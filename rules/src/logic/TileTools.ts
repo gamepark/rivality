@@ -54,48 +54,35 @@ export class TileTools {
     return 0
   }
 
-  // 0 means card out of deck (well of mana)
-  // 1 means 1st deck
-  // 2 means 2nd deck
-  tileDeck(tile:Tile){
-    if (tile==Tile.WellOfMana)
-      return 0
+  player1Deck = [
+    Tile.StoneCircle_32_11,
+    Tile.StoneCircle_31_12,
+    Tile.StoneCircle_31_11,
+    Tile.StoneCircle_21_22,
+    Tile.Cottage_11_23B_22,
+    Tile.Cottage_23B_31_x,
+    Tile.Cottage_23B_32_x,
+    Tile.Cottage_23B_12_21,
+    Tile.Fortress_22_22_23B,
+    Tile.Fortress_31_22_13B,
+    Tile.Fortress_21_23B_22,
+    Tile.StoneCircle_x_41
+  ]
 
-    // Non-star deck
-    if (
-        (tile==Tile.StoneCircle_32_11) ||
-        (tile==Tile.StoneCircle_31_12) ||
-        (tile==Tile.StoneCircle_31_11) ||
-        (tile==Tile.StoneCircle_21_22) ||
-        (tile==Tile.Cottage_11_23B_22) ||
-        (tile==Tile.Cottage_23B_31_x) ||
-        (tile==Tile.Cottage_23B_32_x) ||
-        (tile==Tile.Cottage_23B_12_21) ||
-        (tile==Tile.Fortress_22_22_23B) ||
-        (tile==Tile.Fortress_31_22_13B) ||
-        (tile==Tile.Fortress_21_23B_22) ||
-        (tile==Tile.StoneCircle_x_41)
-      ) return 1
-
-    // Star deck
-    if (
-        (tile==Tile.StoneCircle_11_32) ||
-        (tile==Tile.StoneCircle_12_31) ||
-        (tile==Tile.StoneCircle_11_31) ||
-        (tile==Tile.StoneCircle_22_21) ||
-        (tile==Tile.Cottage_32_23B_x) ||
-        (tile==Tile.Cottage_12_21_23B) ||
-        (tile==Tile.Cottage_22_23B_11) ||
-        (tile==Tile.Cottage_31_23B_x) ||
-        (tile==Tile.Fortress_22_13B_31) ||
-        (tile==Tile.Fortress_23B_22_22) ||
-        (tile==Tile.Fortress_22_23B_21) ||
-        (tile==Tile.StoneCircle_x_41_star)
-      ) return 2
-
-    console.log("*** ERROR - Unsupported tile - "+tile)
-    return 0
-  }
+  player2Deck = [
+    Tile.StoneCircle_11_32,
+    Tile.StoneCircle_12_31,
+    Tile.StoneCircle_11_31,
+    Tile.StoneCircle_22_21,
+    Tile.Cottage_32_23B_x,
+    Tile.Cottage_12_21_23B,
+    Tile.Cottage_22_23B_11,
+    Tile.Cottage_31_23B_x,
+    Tile.Fortress_22_13B_31,
+    Tile.Fortress_23B_22_22,
+    Tile.Fortress_22_23B_21,
+    Tile.StoneCircle_x_41_star
+  ]
 
   isCottage(tile:Tile){
     if (
