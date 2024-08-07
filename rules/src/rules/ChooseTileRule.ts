@@ -10,42 +10,23 @@ import { RuleId } from './RuleId'
 
 export class ChooseTileRule extends PlayerTurnRule {
   onRuleStart(): MaterialMove[] {
-    const nbPlayers = this.game.players.length
-
-    // End of game ?
-    let nbUnplayedTiles = this
-      .material(MaterialType.Tile)
-      .filter(item => item.location.type != LocationType.Board)
-      .length
-
-    let nbUnplayedGolems1 = this
-      .material(MaterialType.Golem)
-      .location(LocationType.PlayerGolemStack)
-      .filter(item => item.id == PlayerColor.Purple)
-      .length
-
-    let nbUnplayedGolems2 = this
-      .material(MaterialType.Golem)
-      .location(LocationType.PlayerGolemStack)
-      .filter(item => item.id == PlayerColor.Orange)
-      .length
-
-    let nbUnplayedGolems3 = this
-      .material(MaterialType.Golem)
-      .location(LocationType.PlayerGolemStack)
-      .filter(item => item.id == PlayerColor.Green)
-      .length
-
-    if (
-      nbUnplayedTiles == 0
-      || nbUnplayedGolems1 == 0
-      || nbUnplayedGolems2 == 0
-      || (nbPlayers == 3 && nbUnplayedGolems3 == 0)
-    )
+    if (this.allTilesArePlayed() || this.game.players.some(player => this.allGolemsArePlayed(player)))
       return [this.endGame()]
-
     // The game goes on
     return []
+  }
+
+  allTilesArePlayed() {
+    return this.material(MaterialType.Tile)
+      .filter(item => item.location.type !== LocationType.Board)
+      .length === 0
+  }
+
+  allGolemsArePlayed(player: PlayerColor) {
+    return this.material(MaterialType.Golem)
+      .location(LocationType.PlayerGolemStack)
+      .filter(item => item.id === player)
+      .length === 0
   }
 
   getPlayerMoves(): MaterialMove[] {
