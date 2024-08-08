@@ -1,6 +1,5 @@
 import { MaterialMove } from '@gamepark/rules-api'
 import { golemTools } from '../logic/GolemTools'
-import { playerTools } from '../logic/PlayerTools'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { PlayerColor } from '../PlayerColor'
@@ -47,7 +46,6 @@ export class RemoveGolemRule extends SpellRule {
   removeGolems() : MaterialMove[] {
     let moves:MaterialMove[]=[]
 
-    const nbPlayers=this.game.players.length
     const tileX:number = this.remind(Memory.SpellTileX)
     const tileY:number = this.remind(Memory.SpellTileY)
 
@@ -57,7 +55,7 @@ export class RemoveGolemRule extends SpellRule {
       .filter(item => item.location.x==tileX && item.location.y==tileY)
 
     const activePlayer:PlayerColor = this.getActivePlayer()
-    let opponentsId:PlayerColor[]=playerTools.opponentsOf(activePlayer, nbPlayers)
+    let opponentsId:PlayerColor[] = this.game.players.filter(p => p !== activePlayer)
 
     let golemCount = golemTools.golemCount(golemsOnTarget, activePlayer)
 
