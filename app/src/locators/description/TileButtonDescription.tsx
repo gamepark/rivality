@@ -155,27 +155,26 @@ export class TileButtonDescription extends LocationDescription {
     return locations
   }
 
-  transformOwnLocation(location: Location, context: LocationContext): string[] {
-    const { rules, locators } = context
-    const tile = rules.material(MaterialType.Tile).getItem(location.parent!)!
-    if ((tile===undefined) || (tile.location===undefined))
-      return super.transformOwnLocation(location, context)
-    return [
-      locators[tile.location.type]!.getTranslate3d(tile, { ...context, type: MaterialType.Tile, index: location.parent!, displayIndex: 0 }),
-      ...super.transformOwnLocation(location, context)
-    ]
+  getParentTileCoordinates(location: Location, context: LocationContext) {
+    if (location.parent === undefined) return { x: 0, y: 0 }
+    const tile = context.rules.material(MaterialType.Tile).getItem(location.parent)
+    if (!tile) return {x: 0, y: 0}
+    const locator = context.locators[tile.location.type]!
+    const itemContext = {...context, type: MaterialType.Tile, index: location.parent, displayIndex: 0 }
+    return locator.getPosition(tile, itemContext)
   }
 
-  getCoordinates(location: Location) {
+  getCoordinates(location: Location, context: LocationContext) {
+    const { x, y } = this.getParentTileCoordinates(location, context)
     switch (location.id) {
       // Top left
       case TileButtonId.Cancel:
       case TileButtonId.RemoveGolem2:
-        return { x: -tileDescription.width / 2, y: -tileDescription.height / 2, z: 10 }
+        return { x: x - tileDescription.width / 2, y: y - tileDescription.height / 2, z: 10 }
       // Top right
       case TileButtonId.Rotate:
       case TileButtonId.RemoveGolem3:
-        return { x: tileDescription.width / 2, y: -tileDescription.height / 2, z: 10 }
+        return { x: x + tileDescription.width / 2, y: y - tileDescription.height / 2, z: 10 }
       // Bottom right
       case TileButtonId.Validate:
       case TileButtonId.RemoveGolem1:
@@ -183,10 +182,10 @@ export class TileButtonDescription extends LocationDescription {
       case TileButtonId.SelectSpellEast:
       case TileButtonId.SelectSpellSouth:
       case TileButtonId.SelectSpellWest:
-        return { x: tileDescription.width / 2, y: tileDescription.height / 2, z: 10 }
+        return { x: x + tileDescription.width / 2, y: y + tileDescription.height / 2, z: 10 }
       default:
-        console.log("*** ERROR - Unsupported button")
-        return { x: tileDescription.width / 2, y: tileDescription.height / 2, z: 10 }
+        console.log('*** ERROR - Unsupported button')
+        return { x: x + tileDescription.width / 2, y: y + tileDescription.height / 2, z: 10 }
     }
   }
 
