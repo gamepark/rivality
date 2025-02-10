@@ -27,7 +27,7 @@ export class PlayerHandLocator extends HandLocator {
   clockwise = false
 
   getCoordinates(location: Location, context: ItemContext) {
-    const baseCoordinates = this.locationDescription.getCoordinates(location, context)
+    const baseCoordinates = tableDesign.playerHandCoordinates(location, context)
     return { x: baseCoordinates.x, y: baseCoordinates.y, z: 1 }
   }
 

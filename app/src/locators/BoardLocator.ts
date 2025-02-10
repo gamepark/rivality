@@ -34,140 +34,140 @@ class BoardLocator extends Locator {
     for (let x = boardDimensions.boardXMin - 1; x <= boardDimensions.boardXMax + 1; x++) {
       for (let y = boardDimensions.boardYMin - 1; y <= boardDimensions.boardYMax + 1; y++) {
         const occupied = boardTiles.filter(item => item.location.x === x && item.location.y === y).length > 0
-        if (occupied) continue
-        const hasOccupiedNeighbors = boardTiles
-          .filter(item =>
-            (item.location.x === x! - 1 && item.location.y === y) ||
-            (item.location.x === x && item.location.y === y! - 1) ||
-            (item.location.x === x! + 1 && item.location.y === y) ||
-            (item.location.x === x && item.location.y === y! + 1)
-          )
-          .filter(item =>
-            (tilePreviewCoords === undefined ||
-              item.location.x !== tilePreviewCoords.x ||
-              item.location.y !== tilePreviewCoords.y)
-          )
-          .length > 0
-        if (hasOccupiedNeighbors) {
-          locations.push({
-            type: LocationType.Board,
-            x: x,
-            y: y
-          })
-        }
-
-        // Only write on top of occupied tiles
-        const tile = context.rules
-          .material(MaterialType.Tile)
-          .location(LocationType.Board)
-          .filter(item => item.location.x === x && item.location.y === y)
-          .getItem()
-        if (tile === undefined)
-          continue
-
-        // Score for the tile
-        if (gameIsOver) {
-          let highScore = 0
-          let highScorePlayer = 0
-          context.rules.players.forEach(p => {
-            const playerScore = score.tileScore(p, tile, golems, wizards, wellController)
-            if (playerScore > highScore) {
-              highScore = playerScore
-              highScorePlayer = p
-            }
-          })
-          if (highScore > 0) {
+        if (!occupied) {
+          const hasOccupiedNeighbors = boardTiles
+            .filter(item =>
+              (item.location.x === x! - 1 && item.location.y === y) ||
+              (item.location.x === x && item.location.y === y! - 1) ||
+              (item.location.x === x! + 1 && item.location.y === y) ||
+              (item.location.x === x && item.location.y === y! + 1)
+            )
+            .filter(item =>
+              (tilePreviewCoords === undefined ||
+                item.location.x !== tilePreviewCoords.x ||
+                item.location.y !== tilePreviewCoords.y)
+            )
+            .length > 0
+          if (hasOccupiedNeighbors) {
             locations.push({
-              type: LocationType.TileScore,
+              type: LocationType.Board,
               x: x,
-              y: y,
-              id: { score: highScore, player: highScorePlayer }
+              y: y
             })
           }
-        } else if (pendingTileValidation) {
-          if (activePlayer === undefined)
+        } else {
+          // Only write on top of occupied tiles
+          const tile = context.rules
+            .material(MaterialType.Tile)
+            .location(LocationType.Board)
+            .filter(item => item.location.x === x && item.location.y === y)
+            .getItem()
+          if (tile === undefined)
             continue
+          // Score for the tile
+          if (gameIsOver) {
+            let highScore = 0
+            let highScorePlayer = 0
+            context.rules.players.forEach(p => {
+              const playerScore = score.tileScore(p, tile, golems, wizards, wellController)
+              if (playerScore > highScore) {
+                highScore = playerScore
+                highScorePlayer = p
+              }
+            })
+            if (highScore > 0) {
+              locations.push({
+                type: LocationType.TileScore,
+                x: x,
+                y: y,
+                id: { score: highScore, player: highScorePlayer }
+              })
+            }
+          } else if (pendingTileValidation) {
+            if (activePlayer === undefined)
+              continue
 
-          if (activePlayer !== currentPlayer)
-            continue
+            if (activePlayer !== currentPlayer)
+              continue
 
-          // Nb golems on this target tile if the current tile is validated
-          if (uiTileTools.isUnderAttackSquareXY({ x: x, y: y }, context)) {
-            let nbAddedGolems = 0
-            const hasOpponentWizard = context.rules.material(MaterialType.Wizard)
-              .location(LocationType.Board)
-              .filter(item =>
-                item.location.x === x &&
-                item.location.y === y &&
-                item.id !== activePlayer
-              )
-              .length > 0
-
-            if (!hasOpponentWizard) {
-              // Look for the spell tile
-              const spellLocation = uiTileTools.activePlayerWizardLocation(context)
-              if (spellLocation === undefined || spellLocation.x === undefined || spellLocation.y === undefined)
-                continue
-
-              const spellTileItem = context.rules.material(MaterialType.Tile)
+            // Nb golems on this target tile if the current tile is validated
+            if (uiTileTools.isUnderAttackSquareXY({ x: x, y: y }, context)) {
+              let nbAddedGolems = 0
+              const hasOpponentWizard = context.rules.material(MaterialType.Wizard)
                 .location(LocationType.Board)
-                .filter(item => item.location.x === spellLocation.x && item.location.y === spellLocation.y)
-                .getItem()
-              if (spellTileItem === undefined)
-                continue
-              const spellTileId = spellTileItem.id
+                .filter(item =>
+                  item.location.x === x &&
+                  item.location.y === y &&
+                  item.id !== activePlayer
+                )
+                .length > 0
 
-              // Look for the spell targeting the current tile
-              const spellTileOrientation = spellLocation.rotation
-              let spellOrientation = Orientation.North
-              if (spellLocation.x < x)
-                spellOrientation = Orientation.East
-              else if (spellLocation.x > x)
-                spellOrientation = Orientation.West
-              else if (spellLocation.y < y)
-                spellOrientation = Orientation.South
+              if (!hasOpponentWizard) {
+                // Look for the spell tile
+                const spellLocation = uiTileTools.activePlayerWizardLocation(context)
+                if (spellLocation === undefined || spellLocation.x === undefined || spellLocation.y === undefined)
+                  continue
 
-              const spellSide = tileTools.tileSideFromOrientations(spellOrientation, spellTileOrientation)
-              const spell = tileSpells.spell(spellTileId, spellSide)
+                const spellTileItem = context.rules.material(MaterialType.Tile)
+                  .location(LocationType.Board)
+                  .filter(item => item.location.x === spellLocation.x && item.location.y === spellLocation.y)
+                  .getItem()
+                if (spellTileItem === undefined)
+                  continue
+                const spellTileId = spellTileItem.id
 
-              // Look for the nb of golems sent by the spell
-              const nbSpellGolems = spell.nbGolems
-              const stackSize = context.rules.material(MaterialType.Golem)
-                .location(LocationType.PlayerGolemStack)
-                .player(activePlayer)
-                .length
-              const nbSpellGolemsOrStackMinusOne = (stackSize > (nbSpellGolems + 1)) ? nbSpellGolems : stackSize - 1
+                // Look for the spell targeting the current tile
+                const spellTileOrientation = spellLocation.rotation
+                let spellOrientation = Orientation.North
+                if (spellLocation.x < x)
+                  spellOrientation = Orientation.East
+                else if (spellLocation.x > x)
+                  spellOrientation = Orientation.West
+                else if (spellLocation.y < y)
+                  spellOrientation = Orientation.South
 
-              // Clarify the control of the current tile by golems
-              const golemsOnCurrentTile = context.rules.material(MaterialType.Golem)
-                .location(LocationType.Board)
-                .filter(item => item.location.x === x && item.location.y === y)
-              const golemCountOnCurrentTile = golemTools.golemCount(golemsOnCurrentTile, activePlayer)
+                const spellSide = tileTools.tileSideFromOrientations(spellOrientation, spellTileOrientation)
+                const spell = tileSpells.spell(spellTileId, spellSide)
 
-              // Look for the nb of active shields on the current tile
-              let nbShields = 0
-              if (golemCountOnCurrentTile.isTileControlledByOpponent &&
-                !spell.breakShields) {
-                nbShields = tileTools.nbProtectionShields(tile.id)
+                // Look for the nb of golems sent by the spell
+                const nbSpellGolems = spell.nbGolems
+                const stackSize = context.rules.material(MaterialType.Golem)
+                  .location(LocationType.PlayerGolemStack)
+                  .player(activePlayer)
+                  .length
+                const nbSpellGolemsOrStackMinusOne = (stackSize > (nbSpellGolems + 1)) ? nbSpellGolems : stackSize - 1
 
-                // Extra shield for 5 golems
-                if (golemCountOnCurrentTile.hasFiveGolemsOfASingleOpponent)
-                  nbShields += 1
+                // Clarify the control of the current tile by golems
+                const golemsOnCurrentTile = context.rules.material(MaterialType.Golem)
+                  .location(LocationType.Board)
+                  .filter(item => item.location.x === x && item.location.y === y)
+                const golemCountOnCurrentTile = golemTools.golemCount(golemsOnCurrentTile, activePlayer)
+
+                // Look for the nb of active shields on the current tile
+                let nbShields = 0
+                if (golemCountOnCurrentTile.isTileControlledByOpponent &&
+                  !spell.breakShields) {
+                  nbShields = tileTools.nbProtectionShields(tile.id)
+
+                  // Extra shield for 5 golems
+                  if (golemCountOnCurrentTile.hasFiveGolemsOfASingleOpponent)
+                    nbShields += 1
+                }
+
+                // Total nb of added golems
+                nbAddedGolems = nbSpellGolemsOrStackMinusOne - nbShields
+
+                if (nbAddedGolems < 0)
+                  nbAddedGolems = 0
               }
 
-              // Total nb of added golems
-              nbAddedGolems = nbSpellGolemsOrStackMinusOne - nbShields
-
-              if (nbAddedGolems < 0)
-                nbAddedGolems = 0
+              locations.push({
+                type: LocationType.TileScore,
+                x: x,
+                y: y,
+                id: { golems: nbAddedGolems, player: activePlayer }
+              })
             }
-
-            locations.push({
-              type: LocationType.TileScore,
-              x: x,
-              y: y,
-              id: { golems: nbAddedGolems, player: activePlayer }
-            })
           }
         }
       }
@@ -206,7 +206,10 @@ class BoardLocator extends Locator {
   }
 
   getCoordinates(location: Location, context: MaterialContext) {
-    let baseCoordinates = this.locationDescription.getCoordinates(location, context)
+    const baseCoordinates = this.locationDescription.getCoordinatesFromXY(
+      { x: location.x!, y: location.y! },
+      context
+    )
     let delta = { x: 0, y: 0, z: 0 }
 
     switch (location.id) {

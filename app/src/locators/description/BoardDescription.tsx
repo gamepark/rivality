@@ -24,23 +24,12 @@ export class BoardDescription extends DropAreaDescription {
     )
   }
 
-  getCoordinates(location: Location, context: LocationContext): Coordinates {
-    return this.getCoordinatesFromXY(
-      { x: location.x!, y: location.y! },
-      context
-    )
-  }
-
   getCoordinatesFromXY(coords: XYCoordinates, context: LocationContext): Coordinates {
-    const baseCoordinates = this.getRegionCoordinates(context)
+    const baseCoordinates = tableDesign.boardCoordinates(context)
     return {
       x: baseCoordinates.x + (tileDescription.width + spaceBetweenTiles) * coords.x,
       y: baseCoordinates.y + (tileDescription.height + spaceBetweenTiles) * coords.y,
       z: 0
     }
-  }
-
-  getRegionCoordinates(context: LocationContext) {
-    return tableDesign.boardCoordinates(context)
   }
 }
