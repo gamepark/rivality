@@ -81,10 +81,16 @@ export class TileDescription extends CardDescription {
       `
     }
     if (uiTileTools.isUnderAttackSquare(location, context)) {
-      // The coordinates must NOT be exactly zero to work on Firefox
       return css`
-        > div {
-          filter: opacity(0.5) drop-shadow(0 -0.01em 0em red);
+        &:after {
+          content: '';
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          top: 0;
+          left: 0;
+          background-color: rgba(255, 0, 0, 0.2);
+          border-radius: 0.5em;
         }
       `
     }
