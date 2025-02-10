@@ -1,5 +1,6 @@
 import { css } from '@emotion/react'
 import { CardDescription, ItemContext } from '@gamepark/react-game'
+import { LocationType } from '@gamepark/rivality/material/LocationType'
 import { Tile } from '@gamepark/rivality/material/Tile'
 import { MaterialItem } from '@gamepark/rules-api'
 import Cottage_11_23B_22 from '../images/Cottage_11_23b_22.jpg'
@@ -88,6 +89,14 @@ export class TileDescription extends CardDescription {
       `
     }
     return css``
+  }
+
+  getItemTransform(item: MaterialItem, context: ItemContext) {
+    const transform = super.getItemTransform(item, context)
+    if (item.location.type === LocationType.PlayerHand || item.location.type === LocationType.Board) {
+      transform.push(`rotateZ(${(item.location.rotation - 1) * 90}deg)`)
+    }
+    return transform
   }
 }
 

@@ -9,6 +9,7 @@ import {
   MaterialMove,
   PositiveSequenceStrategy,
   SecretMaterialRules,
+  StakingStrategy,
   TimeLimit
 } from '@gamepark/rules-api'
 import isEqual from 'lodash/isEqual'
@@ -58,7 +59,7 @@ export class RivalityRules extends SecretMaterialRules<PlayerColor, MaterialType
     },
     [MaterialType.Wizard]: {},
     [MaterialType.Golem]: {
-      [LocationType.Board]: new PositiveSequenceStrategy('z'), // sequence on Z
+      [LocationType.Board]: new StakingStrategy(), // sequence on Z
       [LocationType.PlayerGolemStack]: new FillGapStrategy()
     }
   }

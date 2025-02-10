@@ -1,23 +1,23 @@
-import { Dummy, isMoveItemType, MaterialGame, MaterialMove } from '@gamepark/rules-api'
-import { RivalityRules } from '@gamepark/rivality/RivalityRules'
 import { Direction } from '@gamepark/rivality/logic/Direction'
-import { LocationType } from '@gamepark/rivality/material/LocationType'
-import { MaterialType } from '@gamepark/rivality/material/MaterialType'
-import { Orientation } from '@gamepark/rivality/Orientation'
-import { PlayerColor } from '@gamepark/rivality/PlayerColor'
-import { RuleId } from '@gamepark/rivality/rules/RuleId'
-import { Tile } from '@gamepark/rivality/material/Tile'
 import { tileSpells } from '@gamepark/rivality/logic/TileSpells'
 import { tileTools } from '@gamepark/rivality/logic/TileTools'
+import { LocationType } from '@gamepark/rivality/material/LocationType'
+import { MaterialType } from '@gamepark/rivality/material/MaterialType'
+import { Tile } from '@gamepark/rivality/material/Tile'
+import { Orientation } from '@gamepark/rivality/Orientation'
+import { PlayerColor } from '@gamepark/rivality/PlayerColor'
+import { RivalityRules } from '@gamepark/rivality/RivalityRules'
+import { RuleId } from '@gamepark/rivality/rules/RuleId'
+import { isMoveItemType, MaterialGame, MaterialMove, RandomBot } from '@gamepark/rules-api'
 
-export class RivalityDummy extends Dummy<MaterialGame<PlayerColor, MaterialType, LocationType>, MaterialMove<PlayerColor, MaterialType, LocationType>, PlayerColor> {
-  constructor() {
-    super(RivalityRules)
+export class RivalityBot extends RandomBot<MaterialGame<PlayerColor, MaterialType, LocationType>, MaterialMove<PlayerColor, MaterialType, LocationType>, PlayerColor> {
+  constructor(player: PlayerColor) {
+    super(RivalityRules, player)
   }
 
-  getLegalMoves(game: MaterialGame<PlayerColor, MaterialType, LocationType>, player: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+  getLegalMoves(game: MaterialGame<PlayerColor, MaterialType, LocationType>): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     const rules = new RivalityRules(game)
-    const legalMoves = super.getLegalMoves(game, player)
+    const legalMoves = super.getLegalMoves(game)
 
     // Only consider tiles at locations with an active spell
     // AI level: No strategy, no tactic, just avoid silly moves

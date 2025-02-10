@@ -1,18 +1,34 @@
 /** @jsxImportSource @emotion/react */
-import { ItemLocator, ItemContext } from '@gamepark/react-game'
-import { MaterialItem } from '@gamepark/rules-api'
-import { PlayerGolemStackDescription } from './description/PlayerGolemStackDescription'
+import { FlexLocator, LocationContext, MaterialContext } from '@gamepark/react-game'
+import { Location } from '@gamepark/rules-api'
+import { golemDescription, spaceBetweenGolems } from '../material/GolemDescription'
 import { tableDesign } from './position/TableDesign'
 
-export class PlayerGolemStackLocator extends ItemLocator {
-  locationDescription = new PlayerGolemStackDescription()
+class PlayerGolemStackLocator extends FlexLocator {
 
-  getPosition(item: MaterialItem, context: ItemContext) {
-    return this.locationDescription.getCoordinates(item.location, context)
+  getLineSize(_: Location, { rules: { players } }: MaterialContext) {
+    return players.length === 2 ? 10 : 5
   }
 
-  getRotateZ(item: MaterialItem, context: ItemContext): number {
-    return tableDesign.rotateZforPlayer(item.location.player, context)
+  getMaxLines(_: Location, { rules: { players } }: MaterialContext) {
+    return players.length === 2 ? 3 : 4
+  }
+
+  gap = { x: golemDescription.width + spaceBetweenGolems }
+  lineGap = { y: golemDescription.height + spaceBetweenGolems }
+
+  getCoordinates(location: Location, context: LocationContext) {
+    const baseCoordinates = tableDesign.playerGolemStackCoordinates(location, context)
+    const nbGolemsPerLine = this.getLineSize(location, context)
+    const nbGolemsLines = this.getMaxLines(location, context)
+    return {
+      x: baseCoordinates.x - (nbGolemsPerLine / 2) * (golemDescription.width + spaceBetweenGolems) + spaceBetweenGolems * 1.5,
+      y: baseCoordinates.y - (nbGolemsLines / 2) * (golemDescription.height + spaceBetweenGolems) + spaceBetweenGolems * 1.5
+    }
+  }
+
+  getRotateZ(location: Location, context: MaterialContext): number {
+    return tableDesign.rotateZForPlayer(location.player, context)
   }
 }
 

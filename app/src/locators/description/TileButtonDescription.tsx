@@ -1,22 +1,18 @@
 /** @jsxImportSource @emotion/react */
 import { css, Interpolation, Theme } from '@emotion/react'
-import { LocationContext, LocationDescription, MaterialContext } from '@gamepark/react-game'
+import { DropAreaDescription, LocationContext, MaterialContext } from '@gamepark/react-game'
 import { LocationType } from '@gamepark/rivality/material/LocationType'
 import { MaterialType } from '@gamepark/rivality/material/MaterialType'
 import { Tile } from '@gamepark/rivality/material/Tile'
 import { Orientation } from '@gamepark/rivality/Orientation'
 import { CustomMoveType } from '@gamepark/rivality/rules/CustomMoveType'
-import { Memory } from '@gamepark/rivality/rules/Memory'
-import { RuleId } from '@gamepark/rivality/rules/RuleId'
-import { isCustomMoveType, Location, MaterialMoveBuilder, MaterialRules } from '@gamepark/rules-api'
+import { Location, MaterialMoveBuilder, MaterialRules } from '@gamepark/rules-api'
 import Cancel from '../../images/icon/cancel.png'
 import RemoveGolem1 from '../../images/icon/no_golem1.png'
 import RemoveGolem2 from '../../images/icon/no_golem2.png'
 import RemoveGolem3 from '../../images/icon/no_golem3.png'
 import Rotator from '../../images/icon/rotator.png'
 import Validate from '../../images/icon/validate.png'
-import { tileDescription } from '../../material/TileDescription'
-import { uiTileTools } from '../../material/UITileTools'
 
 export enum TileButtonId {
   Cancel,
@@ -31,11 +27,10 @@ export enum TileButtonId {
   RemoveGolem3
 }
 
-export class TileButtonDescription extends LocationDescription {
+export class TileButtonDescription extends DropAreaDescription {
   height = 3
   width = 3
   borderRadius = 1.5
-  alwaysVisible = true
 
   getExtraCss(location: Location, { rules }: LocationContext): Interpolation<Theme> {
     if (this.isDisabled(location, rules)) {
@@ -71,124 +66,6 @@ export class TileButtonDescription extends LocationDescription {
     return
   }
 
-  getLocations(context: MaterialContext): Location[] {
-    const locations: Location[] = []
-    const rules=context.rules
-    const player=context.player
-    const activePlayer=context.rules.getActivePlayer()
-
-    // Buttons around the tile being placed
-    const tilePreview = rules.remind<number | undefined>(Memory.TilePreview)
-    if (tilePreview !== undefined) {
-      locations.push(
-        { type: LocationType.TileButton, id: TileButtonId.Cancel, parent: tilePreview },
-        { type: LocationType.TileButton, id: TileButtonId.Rotate, parent: tilePreview },
-        { type: LocationType.TileButton, id: TileButtonId.Validate, parent: tilePreview }
-      )
-    }
-
-    // Buttons around tiles in player's hand
-    if (player !== undefined) {
-      for (const index of rules.material(MaterialType.Tile).location(LocationType.PlayerHand).player(player).getIndexes()) {
-        locations.push({ type: LocationType.TileButton, id: TileButtonId.Rotate, parent: index })
-      }
-    }
-
-    // Buttons around tile with golems to be removed
-    const ruleId=rules.game.rule?.id
-    if (ruleId===RuleId.AskGolemRemoval){
-      if ((player!==undefined) && (player===activePlayer)){
-        const tileX = rules.remind<number | undefined>(Memory.SpellTileX)
-        const tileY = rules.remind<number | undefined>(Memory.SpellTileY)
-        const tileIndex = rules.material(MaterialType.Tile)
-          .location(LocationType.Board)
-          .filter(item => item.location.x===tileX && item.location.y===tileY)
-          .getIndex()
-
-        rules.getLegalMoves(player).forEach(move => {
-          if (isCustomMoveType(CustomMoveType.ChoosePlayer)(move)){
-            locations.push({
-              type: LocationType.TileButton,
-              id: move.data === 1 ? TileButtonId.RemoveGolem1 : move.data === 2 ? TileButtonId.RemoveGolem2 : TileButtonId.RemoveGolem3,
-              parent: tileIndex
-            })
-          }
-        })
-      }
-    }
-
-    // Buttons around target tile
-    if (ruleId===RuleId.AskSpellOrientation){
-      if ((player!==undefined) && (player===activePlayer)){
-        const hasSpellNorth = rules.remind(Memory.AppliedSpellNorth)!==true
-        const hasSpellEast = rules.remind(Memory.AppliedSpellEast)!==true
-        const hasSpellSouth = rules.remind(Memory.AppliedSpellSouth)!==true
-        const hasSpellWest = rules.remind(Memory.AppliedSpellWest)!==true
-
-        if (hasSpellNorth){
-          const tileIndex=uiTileTools.activeSpellTargetItemIndex(context, Orientation.North)
-          if (tileIndex!==undefined){
-            locations.push({ type: LocationType.TileButton, id: TileButtonId.SelectSpellNorth, parent: tileIndex })
-          }
-        }
-        if (hasSpellEast){
-          const tileIndex=uiTileTools.activeSpellTargetItemIndex(context, Orientation.East)
-          if (tileIndex!==undefined){
-            locations.push({ type: LocationType.TileButton, id: TileButtonId.SelectSpellEast, parent: tileIndex })
-          }
-        }
-        if (hasSpellSouth){
-          const tileIndex=uiTileTools.activeSpellTargetItemIndex(context, Orientation.South)
-          if (tileIndex!==undefined){
-            locations.push({ type: LocationType.TileButton, id: TileButtonId.SelectSpellSouth, parent: tileIndex })
-          }
-        }
-        if (hasSpellWest){
-          const tileIndex=uiTileTools.activeSpellTargetItemIndex(context, Orientation.West)
-          if (tileIndex!==undefined){
-            locations.push({ type: LocationType.TileButton, id: TileButtonId.SelectSpellWest, parent: tileIndex })
-          }
-        }
-      }
-    }
-
-    return locations
-  }
-
-  getParentTileCoordinates(location: Location, context: LocationContext) {
-    if (location.parent === undefined) return { x: 0, y: 0 }
-    const tile = context.rules.material(MaterialType.Tile).getItem(location.parent)
-    if (!tile) return {x: 0, y: 0}
-    const locator = context.locators[tile.location.type]!
-    const itemContext = {...context, type: MaterialType.Tile, index: location.parent, displayIndex: 0 }
-    return locator.getPosition(tile, itemContext)
-  }
-
-  getCoordinates(location: Location, context: LocationContext) {
-    const { x, y } = this.getParentTileCoordinates(location, context)
-    switch (location.id) {
-      // Top left
-      case TileButtonId.Cancel:
-      case TileButtonId.RemoveGolem2:
-        return { x: x - tileDescription.width / 2, y: y - tileDescription.height / 2, z: 10 }
-      // Top right
-      case TileButtonId.Rotate:
-      case TileButtonId.RemoveGolem3:
-        return { x: x + tileDescription.width / 2, y: y - tileDescription.height / 2, z: 10 }
-      // Bottom right
-      case TileButtonId.Validate:
-      case TileButtonId.RemoveGolem1:
-      case TileButtonId.SelectSpellNorth:
-      case TileButtonId.SelectSpellEast:
-      case TileButtonId.SelectSpellSouth:
-      case TileButtonId.SelectSpellWest:
-        return { x: x + tileDescription.width / 2, y: y + tileDescription.height / 2, z: 10 }
-      default:
-        console.log('*** ERROR - Unsupported button')
-        return { x: x + tileDescription.width / 2, y: y + tileDescription.height / 2, z: 10 }
-    }
-  }
-
   getShortClickMove(location: Location, { rules }: MaterialContext) {
     if (this.isDisabled(location, rules)) return
     if (location.id === TileButtonId.Validate) {
@@ -222,7 +99,7 @@ export class TileButtonDescription extends LocationDescription {
 
   isDisabled(location: Location, rules: MaterialRules) {
     // Filter moves for the tutorial only
-    if (rules.game.tutorialStep === undefined || location.id !== TileButtonId.Validate) return false
+    if (rules.game.tutorial === undefined || location.id !== TileButtonId.Validate) return false
     const tile = rules.material(MaterialType.Tile).index(location.parent!).getItem()!
     switch (tile.id) {
       case Tile.StoneCircle_32_11:

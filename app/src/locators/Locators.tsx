@@ -1,4 +1,4 @@
-import { ItemLocator } from '@gamepark/react-game'
+import { Locator } from '@gamepark/react-game'
 import { LocationType } from '@gamepark/rivality/material/LocationType'
 import { MaterialType } from '@gamepark/rivality/material/MaterialType'
 import { PlayerColor } from '@gamepark/rivality/PlayerColor'
@@ -11,7 +11,7 @@ import { playerWizardStartLocator } from './PlayerWizardStartLocator'
 import { tileButtonLocator } from './TileButtonLocator'
 import { tileScoreLocator } from './TileScoreLocator'
 
-export const Locators: Partial<Record<LocationType, ItemLocator<PlayerColor, MaterialType, LocationType>>> = {
+export const Locators: Partial<Record<LocationType, Locator<PlayerColor, MaterialType, LocationType>>> = {
   [LocationType.PlayerHand]: playerHandLocator,
   [LocationType.PlayerDeck]: playerDeckLocator,
   [LocationType.Board]: boardLocator,

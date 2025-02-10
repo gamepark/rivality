@@ -1,8 +1,8 @@
 /** @jsxImportSource @emotion/react */
-import { ItemLocator /*, ItemContext*/ } from '@gamepark/react-game'
+import { Locator /*, ItemContext*/ } from '@gamepark/react-game'
 import { TileScoreDescription } from './description/TileScoreDescription'
 
-export class TileScoreLocator extends ItemLocator {
+export class TileScoreLocator extends Locator {
   locationDescription = new TileScoreDescription()
 }
 
