@@ -75,7 +75,7 @@ export class TileDescription extends CardDescription {
       uiTileTools.isActiveWizardSquare(location, context)
     ) {
       return css`
-        > div {
+        > div > div {
           filter: contrast(1.5);
         }
       `
