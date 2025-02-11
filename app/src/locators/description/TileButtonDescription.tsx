@@ -90,7 +90,7 @@ export class TileButtonDescription extends DropAreaDescription {
 
   getShortClickLocalMove(location: Location, { rules, player }: MaterialContext) {
     if (location.id === TileButtonId.Cancel) {
-      return rules.material(MaterialType.Tile).index(location.parent!).moveItem({ type: LocationType.PlayerHand, player })
+      return rules.material(MaterialType.Tile).index(location.parent!).moveItem(item => ({ type: LocationType.PlayerHand, player, rotation: item.location.rotation }))
     } else if (location.id === TileButtonId.Rotate) {
       return rules.material(MaterialType.Tile).index(location.parent!).moveItem(item => ({ ...item.location, rotation: item.location.rotation % 4 + 1 }))
     }
