@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { MaterialHelpProps, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
 import { Direction } from '@gamepark/rivality/logic/Direction'
 import { tileSpells } from '@gamepark/rivality/logic/TileSpells'
@@ -49,9 +48,9 @@ export const TileHelp = (props: MaterialHelpProps) => {
     return <></>
   }
 
-  let tileType="unknown"
-  let nbPoints=666
-  let tileProtection=0
+  let tileType: string
+  let nbPoints: number
+  let tileProtection: number
   if (item.id===Tile.WellOfMana){
     tileType=t('help.well.of.mana')
     nbPoints=3

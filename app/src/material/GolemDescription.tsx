@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { ItemContext, TokenDescription } from '@gamepark/react-game'
 import { LocationType } from '@gamepark/rivality/material/LocationType'
@@ -13,6 +12,7 @@ import { GolemHelp } from './help/GolemHelp'
 export class GolemDescription extends TokenDescription  {
   width=1.5
   height=1.5
+  transparency = true
   help = GolemHelp
   images = {
     [PlayerColor.Purple]: Golem1,

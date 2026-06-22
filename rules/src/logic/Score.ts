@@ -12,12 +12,12 @@ export class Score {
     golems:Material<number, MaterialType, LocationType>,
     wizards:Material<number, MaterialType, LocationType>,
     wellController:PlayerColor|undefined):number {
-    let tileId:Tile=tile.id
-    let x=tile.location.x!
-    let y=tile.location.y!
+    const tileId:Tile=tile.id
+    const x=tile.location.x!
+    const y=tile.location.y!
 
     // No points for tiles with a wizard
-    let hasWizards=wizards.filter(item => item.location.x==x && item.location.y==y).length > 0
+    const hasWizards=wizards.filter(item => item.location.x==x && item.location.y==y).length > 0
     if (hasWizards)
       return 0
 
@@ -35,7 +35,7 @@ export class Score {
     wizards:Material<number, MaterialType, LocationType>):number {
     let res = 0
 
-    let wellController=this.playerControllingWellOfMana(golems)
+    const wellController=this.playerControllingWellOfMana(golems)
 
     // Loop on tiles
     tiles.location(LocationType.Board).getItems().forEach(item => {
@@ -53,9 +53,9 @@ export class Score {
     x:number,
     y:number,
     wellController:PlayerColor|undefined):PlayerColor | undefined {
-    let nbGolems1=golems.filter(item => item.id==PlayerColor.Purple && item.location.x==x && item.location.y==y).length
-    let nbGolems2=golems.filter(item => item.id==PlayerColor.Orange && item.location.x==x && item.location.y==y).length
-    let nbGolems3=golems.filter(item => item.id==PlayerColor.Green && item.location.x==x && item.location.y==y).length
+    const nbGolems1=golems.filter(item => item.id==PlayerColor.Purple && item.location.x==x && item.location.y==y).length
+    const nbGolems2=golems.filter(item => item.id==PlayerColor.Orange && item.location.x==x && item.location.y==y).length
+    const nbGolems3=golems.filter(item => item.id==PlayerColor.Green && item.location.x==x && item.location.y==y).length
 
     // For tests: there must be at least one golem to control the tile
     if (nbGolems1+nbGolems2+nbGolems3 <= 0)

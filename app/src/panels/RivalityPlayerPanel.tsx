@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { faStar } from '@fortawesome/free-solid-svg-icons/faStar'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -17,7 +16,7 @@ type RivalityPlayerPanelProps = {
 
 export const RivalityPlayerPanel: FC<RivalityPlayerPanelProps> = (props) => {
   const { playerId, ...rest } = props
-  let playerName = usePlayerName(playerId)
+  const playerName = usePlayerName(playerId)
 
   return (
     <>

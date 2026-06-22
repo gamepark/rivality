@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { RivalityRules } from '@gamepark/rivality/RivalityRules'
 import { usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
 import { useTranslation } from 'react-i18next'

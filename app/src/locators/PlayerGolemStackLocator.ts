@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { FlexLocator, LocationContext, MaterialContext } from '@gamepark/react-game'
 import { Location } from '@gamepark/rules-api'
 import { golemDescription, spaceBetweenGolems } from '../material/GolemDescription'
@@ -16,6 +15,11 @@ class PlayerGolemStackLocator extends FlexLocator {
 
   gap = { x: golemDescription.width + spaceBetweenGolems }
   lineGap = { y: golemDescription.height + spaceBetweenGolems }
+
+  getPositionDependencies(_location: Location, context: MaterialContext) {
+    // The player areas reposition when the board (and thus the table size) grows
+    return tableDesign.getBoardDimensions(context.rules)
+  }
 
   getCoordinates(location: Location, context: LocationContext) {
     const baseCoordinates = tableDesign.playerGolemStackCoordinates(location, context)

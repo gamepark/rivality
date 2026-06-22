@@ -1,10 +1,14 @@
-/** @jsxImportSource @emotion/react */
 import { Locator, MaterialContext } from '@gamepark/react-game'
 import { Location } from '@gamepark/rules-api'
 import { golemDescription, spaceBetweenGolems } from '../material/GolemDescription'
 import { Corner, tableDesign } from './position/TableDesign'
 
 export class PlayerWizardStartLocator extends Locator {
+  getPositionDependencies(_location: Location, context: MaterialContext) {
+    // The player areas reposition when the board (and thus the table size) grows
+    return tableDesign.getBoardDimensions(context.rules)
+  }
+
   getCoordinates(location: Location, context: MaterialContext) {
     const player = location.player
     if (player === undefined)

@@ -194,7 +194,7 @@ export class SelectCastSpellOrientationRule extends SpellRule {
 
     if (candidate!==undefined && !enforceAskPlayer){
       // Automatically apply one of the remaining orientation if the total number of (attacking golems-killed ones) is greater or equal to the number of golems in the player's stack
-      let nbAvailableGolems=this
+      const nbAvailableGolems=this
         .material(MaterialType.Golem)
         .location(LocationType.PlayerGolemStack)
         .player(this.getActivePlayer())

@@ -155,13 +155,13 @@ export class TileTools {
   }
 
   possibleTileLocations(boardTiles:MaterialItem[]):XYCoordinates[]{
-    let candidates=new CoordSet()
-    let occupied=new CoordSet()
+    const candidates=new CoordSet()
+    const occupied=new CoordSet()
 
     for (let i=0; i<boardTiles.length; i++){
-      let coord=boardTiles[i].location
-      let coordX=coord.x!
-      let coordY=coord.y!
+      const coord=boardTiles[i].location
+      const coordX=coord.x!
+      const coordY=coord.y!
       occupied.add(coordX, coordY)
       candidates.add(coordX-1, coordY)
       candidates.add(coordX,   coordY-1)
@@ -169,9 +169,9 @@ export class TileTools {
       candidates.add(coordX,   coordY+1)
     }
 
-    let res:XYCoordinates[]=[]
+    const res:XYCoordinates[]=[]
     for (let i=0; i<candidates.coords.length; i++){
-      let coord:XYCoordinates=candidates.coords[i]
+      const coord:XYCoordinates=candidates.coords[i]
       if (!occupied.contains(coord.x, coord.y))
         res.push(coord)
     }

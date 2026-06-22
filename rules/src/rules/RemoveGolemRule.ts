@@ -14,7 +14,7 @@ import { SpellRule } from './SpellRule'
 
 export class RemoveGolemRule extends SpellRule {
   onRuleStart(): MaterialMove[] {
-    let moves:MaterialMove[]=[]
+    const moves:MaterialMove[]=[]
 
     moves.push(...this.removeGolems())
 
@@ -44,7 +44,7 @@ export class RemoveGolemRule extends SpellRule {
   }
 
   removeGolems() : MaterialMove[] {
-    let moves:MaterialMove[]=[]
+    const moves:MaterialMove[]=[]
 
     const tileX:number = this.remind(Memory.SpellTileX)
     const tileY:number = this.remind(Memory.SpellTileY)
@@ -55,14 +55,14 @@ export class RemoveGolemRule extends SpellRule {
       .filter(item => item.location.x==tileX && item.location.y==tileY)
 
     const activePlayer:PlayerColor = this.getActivePlayer()
-    let opponentsId:PlayerColor[] = this.game.players.filter(p => p !== activePlayer)
+    const opponentsId:PlayerColor[] = this.game.players.filter(p => p !== activePlayer)
 
-    let golemCount = golemTools.golemCount(golemsOnTarget, activePlayer)
+    const golemCount = golemTools.golemCount(golemsOnTarget, activePlayer)
 
     // 0. Count golems per player
     const nbActivePlayerGolems=golemCount.nbPlayerGolems(this.getActivePlayer())
     let initialTotalNbGolems=nbActivePlayerGolems
-    let nbOpponentGolems:number[]=[]
+    const nbOpponentGolems:number[]=[]
     for (let i=0; i<opponentsId.length; i++){
       const opponent=opponentsId[i]
       const nbGolems=golemCount.nbPlayerGolems(opponent)
@@ -96,7 +96,7 @@ export class RemoveGolemRule extends SpellRule {
     const maxNbOpponentGolems=5-nbActivePlayerGolems
 
     // 3. Dispatch fairly the nb of golems between nbOpponents
-    let toBeRemoved:number[] = []
+    const toBeRemoved:number[] = []
     for (let i=0; i<opponentsId.length; i++){
       toBeRemoved.push(0)
     }
@@ -147,7 +147,7 @@ export class RemoveGolemRule extends SpellRule {
       } else {
         // Remove 1 golem to each player with the max nb of golems
         for (let i=0; i<opponentsId.length; i++){
-          let oppGolems = nbOpponentGolems[i]
+          const oppGolems = nbOpponentGolems[i]
           if (oppGolems == maxNbGolems){
             toBeRemoved[i]=toBeRemoved[i]+1
             nbOpponentGolems[i]=nbOpponentGolems[i]-1

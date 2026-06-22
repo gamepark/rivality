@@ -48,7 +48,7 @@ export class StartRule extends PlayerTurnRule {
     if (move.type === CustomMoveType.KeepHand) {
       return [this.startPlayerTurn(RuleId.ChooseTile, activePlayer)]
     } else if (move.type === CustomMoveType.NewHand) {
-      let moves:MaterialMove[]=[]
+      const moves:MaterialMove[]=[]
 
       const initialDeck = this.material(MaterialType.Tile).location(LocationType.PlayerDeck).player(activePlayer).deck()
 

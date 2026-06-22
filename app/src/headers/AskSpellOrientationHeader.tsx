@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { PlayMoveButton, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
 import { Orientation, orientations } from '@gamepark/rivality/Orientation'
 import { RivalityRules } from '@gamepark/rivality/RivalityRules'
@@ -14,7 +13,7 @@ export const AskSpellOrientationHeader = () => {
 
   if (playerId !== undefined && activePlayer === playerId) {
     return <>
-      <Trans defaults="header.choose.spell.orientation.you"></Trans>
+      <Trans i18nKey="header.choose.spell.orientation.you"></Trans>
       {orientations.map(orientation => <>
         &nbsp;
         <PlayMoveButton

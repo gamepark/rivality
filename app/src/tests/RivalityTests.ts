@@ -612,7 +612,7 @@ export class RivalityTests {
       }, nbTilesForPlayer2)
     } else if (nbPlayers===3){
       // 3 players
-      let nbTilesForPlayer1=Math.floor(nbTilesInDeck/3)
+      const nbTilesForPlayer1=Math.floor(nbTilesInDeck/3)
       let nbTilesForPlayer2=nbTilesForPlayer1
       let nbTilesForPlayer3=nbTilesForPlayer1
       if (nbTilesForPlayer1+nbTilesForPlayer2+nbTilesForPlayer3 < nbTilesInDeck)
@@ -819,7 +819,7 @@ export class RivalityTests {
         title+=" - tile with 5 opponent golems"
       }
 
-      let expected=""
+      let expected: string
       if (expectedNbGolems>0){
         expected=expectedNbGolems+" extra golem"
         if (expectedNbGolems>1)
@@ -1077,7 +1077,7 @@ export class RivalityTests {
       if (nbShields>1)
         title+="s"
 
-      let expected=""
+      let expected: string
       if (expectedNbGolems>0){
         expected=expectedNbGolems+" extra golem"
         if (expectedNbGolems>1)
@@ -1175,7 +1175,7 @@ export class RivalityTests {
     nbGolems3: number,
     expectedAskPlayer: boolean
     ){
-      let title="golems "+nbGolems2+"+"+nbGolems3
+      const title="golems "+nbGolems2+"+"+nbGolems3
       let expected="Equalize nb golems up to 5 max"
       if (expectedAskPlayer){
         expected="Ask which golem must be removed"

@@ -1,6 +1,5 @@
-/** @jsxImportSource @emotion/react */
 import { Trans } from 'react-i18next'
 
 export const SelectCastSpellOrientationHeader = () => {
-  return <><Trans defaults="header.cast.spell"></Trans></>
+  return <><Trans i18nKey="header.cast.spell"></Trans></>
 }

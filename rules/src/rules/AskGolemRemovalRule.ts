@@ -14,7 +14,7 @@ export class AskGolemRemovalRule extends PlayerTurnRule {
     const tileX=this.remind(Memory.SpellTileX)
     const tileY=this.remind(Memory.SpellTileY)
 
-    let moves:MaterialMove[]=[]
+    const moves:MaterialMove[]=[]
     moves.push(...this
       .material(MaterialType.Golem)
       .location(LocationType.Board)

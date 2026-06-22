@@ -10,8 +10,8 @@ import { Location, MaterialRules, XYCoordinates } from '@gamepark/rules-api'
 
 export class UITileTools {
   isHighlightedSquare(location:Location, context: MaterialContext){
-    let spellX=context.rules.remind(Memory.SpellTileX)
-    let spellY=context.rules.remind(Memory.SpellTileY)
+    const spellX=context.rules.remind(Memory.SpellTileX)
+    const spellY=context.rules.remind(Memory.SpellTileY)
     return (spellX!==undefined && spellY!==undefined && location.x===spellX && location.y===spellY)
   }
 
@@ -93,11 +93,12 @@ export class UITileTools {
           const tileOrientation=tileItem.location.rotation
 
           // 3 - Find spell distances in all 4 directions
-          let distances={}
-          distances[Orientation.North]=0
-          distances[Orientation.East]=0
-          distances[Orientation.South]=0
-          distances[Orientation.West]=0
+          const distances: Record<Orientation, number> = {
+            [Orientation.North]: 0,
+            [Orientation.East]: 0,
+            [Orientation.South]: 0,
+            [Orientation.West]: 0
+          }
 
           const orientations=[Orientation.North, Orientation.East, Orientation.South, Orientation.West]
           orientations.forEach(orientation => {

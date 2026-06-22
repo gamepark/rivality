@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { Locator, MaterialContext } from '@gamepark/react-game'
 import { golemTools } from '@gamepark/rivality/logic/GolemTools'
 import { score } from '@gamepark/rivality/logic/Score'
@@ -20,7 +19,7 @@ class BoardLocator extends Locator {
 
   getLocations(context: MaterialContext): Location[] {
     const locations: Location[] = []
-    let boardDimensions = tableDesign.getBoardDimensions(context.rules)
+    const boardDimensions = tableDesign.getBoardDimensions(context.rules)
     const activePlayer = context.rules.getActivePlayer()
     const currentPlayer = context.player
     const gameIsOver = context.rules.isOver()
@@ -181,19 +180,19 @@ class BoardLocator extends Locator {
   }
 
   getPositionDeltaGolem(location: Location, context: MaterialContext) {
-    let indexOnCard = context.rules
+    const indexOnCard = context.rules
       .material(MaterialType.Golem)
       .location(LocationType.Board)
       .filter(a => a.location.x === location.x && a.location.y === location.y && a.location.z! <= location.z!)
       .length
 
-    let nbGolemsOnCard = context.rules
+    const nbGolemsOnCard = context.rules
       .material(MaterialType.Golem)
       .location(LocationType.Board)
       .filter(a => a.location.x === location.x && a.location.y === location.y)
       .length
 
-    let radius = 2
+    const radius = 2
     return {
       x: -radius * Math.cos(2 * Math.PI / nbGolemsOnCard * indexOnCard + (Math.PI / 2)),
       y: -radius * Math.sin(2 * Math.PI / nbGolemsOnCard * indexOnCard + (Math.PI / 2)),
@@ -203,6 +202,15 @@ class BoardLocator extends Locator {
 
   getPositionDeltaWizard() {
     return { x: 0, y: 0, z: 1 }
+  }
+
+  getPositionDependencies(_location: Location, context: MaterialContext) {
+    // Golem positions depend on the other golems stacked on the same board tile
+    return context.rules
+      .material(MaterialType.Golem)
+      .location(LocationType.Board)
+      .getItems()
+      .map(golem => ({ x: golem.location.x, y: golem.location.y, z: golem.location.z, id: golem.id }))
   }
 
   getCoordinates(location: Location, context: MaterialContext) {

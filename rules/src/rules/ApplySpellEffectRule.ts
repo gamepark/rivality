@@ -17,7 +17,7 @@ import { SpellRule } from './SpellRule'
 export class ApplySpellEffectRule extends SpellRule {
   onRuleStart(): MaterialMove[] {
     // Default orientation is not set
-    let spellOrientation=this.remind(Memory.SpellOrientation)
+    const spellOrientation=this.remind(Memory.SpellOrientation)
     if (spellOrientation===undefined){
       console.log("*** ERROR - unknown spell orientation => The game is stuck")
       return []
@@ -28,7 +28,7 @@ export class ApplySpellEffectRule extends SpellRule {
   }
 
   castEffectsOrGoToNextOrientation(spellOrientation:Orientation):MaterialMove[] {
-    let moves=this.castEffects(spellOrientation)
+    const moves=this.castEffects(spellOrientation)
     if (moves.length>0)
       return moves
 
@@ -133,7 +133,7 @@ export class ApplySpellEffectRule extends SpellRule {
       return []
     }
 
-    let nbAvailableGolems=this
+    const nbAvailableGolems=this
       .material(MaterialType.Golem)
       .location(LocationType.PlayerGolemStack)
       .player(this.getActivePlayer())
@@ -148,7 +148,7 @@ export class ApplySpellEffectRule extends SpellRule {
     }
 
     // Golem addition moves
-    let moves:MaterialMove[]=[]
+    const moves:MaterialMove[]=[]
     moves.push(this.
       material(MaterialType.Golem)
       .location(LocationType.PlayerGolemStack)

@@ -30,16 +30,16 @@ export class ChooseTileRule extends PlayerTurnRule {
   }
 
   getPlayerMoves(): MaterialMove[] {
-    let moves: MaterialMove[] = []
+    const moves: MaterialMove[] = []
 
     if (this.remind(Memory.TilePreview) !== undefined) return []
 
-    let handTiles = this
+    const handTiles = this
       .material(MaterialType.Tile)
       .location(LocationType.PlayerHand)
       .player(this.getActivePlayer())
 
-    let availableBoardCoords = tileTools.possibleTileLocations(
+    const availableBoardCoords = tileTools.possibleTileLocations(
       this.material(MaterialType.Tile)
         .location(LocationType.Board)
         .getItems()
@@ -47,7 +47,7 @@ export class ChooseTileRule extends PlayerTurnRule {
 
     for (const orientation of orientations) {
       for (let i = 0; i < availableBoardCoords.length; i++) {
-        let coord = availableBoardCoords[i]
+        const coord = availableBoardCoords[i]
         moves.push(...handTiles.moveItems({
           type: LocationType.Board,
           id: BoardSpace.Tile,

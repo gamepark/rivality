@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { DeckLocator, MaterialContext } from '@gamepark/react-game'
 import { LocationType } from '@gamepark/rivality/material/LocationType'
 import { MaterialType } from '@gamepark/rivality/material/MaterialType'
@@ -26,6 +25,11 @@ class PlayerDeckLocator extends DeckLocator {
       })
     })
     return locations
+  }
+
+  getPositionDependencies(_location: Location, context: MaterialContext) {
+    // The player areas reposition when the board (and thus the table size) grows
+    return tableDesign.getBoardDimensions(context.rules)
   }
 
   getCoordinates(location: Location, context: MaterialContext) {

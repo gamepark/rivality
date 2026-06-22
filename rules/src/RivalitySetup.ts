@@ -61,10 +61,10 @@ export class RivalitySetup extends MaterialGameSetup<PlayerColor, MaterialType, 
 
       // Shuffle and ensure that the last card for each player is NOT a fortress
       for (const player of this.game.players) {
-        let lastPlayerCardIsAFortress = true
+        let lastPlayerCardIsAFortress: boolean
         do {
           this.material(MaterialType.Tile).player(player).shuffle()
-          let cards = this.material(MaterialType.Tile).player(player).getItems()
+          const cards = this.material(MaterialType.Tile).player(player).getItems()
           lastPlayerCardIsAFortress = tileTools.isFortress(cards[cards.length - 1].id)
         } while (lastPlayerCardIsAFortress)
       }
@@ -87,9 +87,9 @@ export class RivalitySetup extends MaterialGameSetup<PlayerColor, MaterialType, 
       this.material(MaterialType.Tile).shuffle()
 
       // 2. Create a deck with all fortress tiles
-      let fortressDeck = this
+      const fortressDeck = this
         .material(MaterialType.Tile)
-        .filter(tile => tileTools.isFortress(tile.id))
+        .filter<Tile>(tile => tileTools.isFortress(tile.id))
         .deck()
 
       // 3. Dispatch 2 fortress tile to each player
@@ -98,9 +98,9 @@ export class RivalitySetup extends MaterialGameSetup<PlayerColor, MaterialType, 
       }
 
       // 4. Create a deck with all non-wellOfMana and non-fortress tiles
-      let nonWellNonFortressDeck = this
+      const nonWellNonFortressDeck = this
         .material(MaterialType.Tile)
-        .filter(tile => tile.id != Tile.WellOfMana && !tileTools.isFortress(tile.id))
+        .filter<Tile>(tile => tile.id != Tile.WellOfMana && !tileTools.isFortress(tile.id))
         .deck()
 
       // 5. Dispatch those tiles into 3 decks - 1 per player
@@ -111,10 +111,10 @@ export class RivalitySetup extends MaterialGameSetup<PlayerColor, MaterialType, 
 
       // 6. Shuffle each player's deck until their last card is not a fortress
       for (const player of this.game.players) {
-        let lastPlayerCardIsAFortress = true
+        let lastPlayerCardIsAFortress: boolean
         do {
           this.material(MaterialType.Tile).player(player).shuffle()
-          let cards = this.material(MaterialType.Tile).player(player).getItems()
+          const cards = this.material(MaterialType.Tile).player(player).getItems()
           lastPlayerCardIsAFortress = tileTools.isFortress(cards[cards.length - 1].id)
         } while (lastPlayerCardIsAFortress)
       }

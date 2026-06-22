@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { LocationDescription, Picture } from '@gamepark/react-game'
 import { PlayerColor } from '@gamepark/rivality/PlayerColor'

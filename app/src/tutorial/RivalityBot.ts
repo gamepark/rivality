@@ -25,7 +25,7 @@ export class RivalityBot extends RandomBot<MaterialGame<PlayerColor, MaterialTyp
       const allBoardTiles=rules.material(MaterialType.Tile).location(LocationType.Board)
 
       const moves = legalMoves.filter((move) => {
-        if (!(isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.Tile)(move) &&
+        if (!(isMoveItemType(MaterialType.Tile)(move) &&
               move.location.type === LocationType.Board))
           return false
 
@@ -48,7 +48,7 @@ export class RivalityBot extends RandomBot<MaterialGame<PlayerColor, MaterialTyp
           if (spell.nbGolems<=0)
             return
           const distance=spell.distance
-          let targetCoords={x:targetX, y:targetY}
+          const targetCoords={x:targetX, y:targetY}
           switch (spellOrientation){
             case Orientation.North:
               targetCoords.y-=distance

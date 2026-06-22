@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css, Interpolation, Theme } from '@emotion/react'
 import { DropAreaDescription, LocationContext, MaterialContext } from '@gamepark/react-game'
 import { LocationType } from '@gamepark/rivality/material/LocationType'

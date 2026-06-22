@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { DropAreaDescription, LocationContext, MaterialContext } from '@gamepark/react-game'
 import { Coordinates, Location, XYCoordinates } from '@gamepark/rules-api'

@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { Picture, PlayMoveButton, useLegalMoves, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
 import { PlayerColor } from '@gamepark/rivality/PlayerColor'
@@ -19,10 +18,10 @@ export const AskGolemRemovalHeader = () => {
   const player = usePlayerName(activePlayer)
 
   if (playerId !== undefined && activePlayer === playerId) {
-    return <><Trans defaults="header.ask.golem.removal.you"></Trans>&nbsp;
+    return <><Trans i18nKey="header.ask.golem.removal.you"></Trans>&nbsp;
     {choosePlayerMoves.map(move =>
       <PlayMoveButton move={move}>
-        <Picture css={iconCss} src={playerGolemRemoveIcon[move.data]}/>
+        <Picture css={iconCss} src={playerGolemRemoveIcon[move.data as PlayerColor]}/>
       </PlayMoveButton>
     )}
     </>

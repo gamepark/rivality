@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { MaterialTutorial, Picture, TutorialStep } from '@gamepark/react-game'
 import { Spell } from '@gamepark/rivality/logic/TileSpells'
@@ -30,7 +29,7 @@ export class Tutorial extends MaterialTutorial<PlayerColor, MaterialType, Locati
     {
       popup: {
         text: () => (
-          <Trans defaults="tuto.welcome"></Trans>
+          <Trans i18nKey="tuto.welcome"></Trans>
         )
       }
     },
@@ -38,9 +37,9 @@ export class Tutorial extends MaterialTutorial<PlayerColor, MaterialType, Locati
       popup: {
         text: () => (
           <>
-          <Trans defaults="tuto.goal.1"></Trans><br/>
+          <Trans i18nKey="tuto.goal.1"></Trans><br/>
           &nbsp;<br/>
-          <Trans defaults="tuto.goal.2"></Trans>
+          <Trans i18nKey="tuto.goal.2"></Trans>
           </>
         ),
         size: { width: 120 }
@@ -50,7 +49,7 @@ export class Tutorial extends MaterialTutorial<PlayerColor, MaterialType, Locati
       popup: {
         text: () => (
           <>
-          <Trans defaults="tuto.basics.1"></Trans><br/>
+          <Trans i18nKey="tuto.basics.1"></Trans><br/>
           </>
         )
       },
@@ -74,7 +73,7 @@ export class Tutorial extends MaterialTutorial<PlayerColor, MaterialType, Locati
       popup: {
         text: () => (
           <>
-          <Trans defaults="tuto.basics.2"></Trans><br/>
+          <Trans i18nKey="tuto.basics.2"></Trans><br/>
           </>
         ),
         position: { x: 50, y: 0 },
@@ -96,9 +95,9 @@ export class Tutorial extends MaterialTutorial<PlayerColor, MaterialType, Locati
       popup: {
         text: () => (
           <>
-          <Trans defaults="tuto.basics.3"></Trans><br/>
+          <Trans i18nKey="tuto.basics.3"></Trans><br/>
           &nbsp;<br/>
-          <Trans defaults="tuto.basics.4"></Trans><br/>
+          <Trans i18nKey="tuto.basics.4"></Trans><br/>
           </>
         ),
         position: { x: 40, y: -10 },
@@ -109,7 +108,7 @@ export class Tutorial extends MaterialTutorial<PlayerColor, MaterialType, Locati
       popup: {
         text: () => (
           <>
-          <Trans defaults="tuto.basics.5"></Trans><br/>
+          <Trans i18nKey="tuto.basics.5"></Trans><br/>
           </>
         ),
         position: { x: 40, y: -10 },
@@ -120,12 +119,12 @@ export class Tutorial extends MaterialTutorial<PlayerColor, MaterialType, Locati
       popup: {
         text: () => (
           <>
-          <Trans defaults="tuto.basics.6"></Trans><br/>
+          <Trans i18nKey="tuto.basics.6"></Trans><br/>
           &nbsp;<br/>
-          <Trans defaults="tuto.basics.7"></Trans><br/>
+          <Trans i18nKey="tuto.basics.7"></Trans><br/>
           &nbsp;<br/>
-          <Trans defaults="tuto.basics.8"></Trans><br/>
-          <Trans defaults="tuto.basics.9"></Trans>
+          <Trans i18nKey="tuto.basics.8"></Trans><br/>
+          <Trans i18nKey="tuto.basics.9"></Trans>
           </>
         ),
         position: { x: 40, y: -15 },
@@ -136,11 +135,11 @@ export class Tutorial extends MaterialTutorial<PlayerColor, MaterialType, Locati
       popup: {
         text: () => (
           <>
-          <Trans defaults="tuto.tiles.1"></Trans><br/>
+          <Trans i18nKey="tuto.tiles.1"></Trans><br/>
           &nbsp;<br/>
-          <Trans defaults="tuto.tiles.2"></Trans><br/>
+          <Trans i18nKey="tuto.tiles.2"></Trans><br/>
           &nbsp;<br/>
-          <Trans defaults="tuto.tiles.3"></Trans>
+          <Trans i18nKey="tuto.tiles.3"></Trans>
           </>
         ),
         position: { x: 40, y: -15 },
@@ -151,11 +150,11 @@ export class Tutorial extends MaterialTutorial<PlayerColor, MaterialType, Locati
       popup: {
         text: () => (
           <>
-          <Trans defaults="tuto.tiles.4a"></Trans><br/>
-          <Trans defaults="tuto.tiles.4b"></Trans><br/>
-          <Trans defaults="tuto.tiles.4c"></Trans><br/>
+          <Trans i18nKey="tuto.tiles.4a"></Trans><br/>
+          <Trans i18nKey="tuto.tiles.4b"></Trans><br/>
+          <Trans i18nKey="tuto.tiles.4c"></Trans><br/>
           &nbsp;<br/>
-          <b><Trans defaults="tuto.tiles.4d"></Trans></b>
+          <b><Trans i18nKey="tuto.tiles.4d"></Trans></b>
           &nbsp;<Picture css={iconCss} src={validateIcon}/>
           </>
         ),
@@ -181,9 +180,9 @@ export class Tutorial extends MaterialTutorial<PlayerColor, MaterialType, Locati
       popup: {
         text: () => (
           <>
-          <Trans defaults="tuto.wizard.1"></Trans><br/>
+          <Trans i18nKey="tuto.wizard.1"></Trans><br/>
           &nbsp;<br/>
-          <Trans defaults="tuto.wizard.2"></Trans>
+          <Trans i18nKey="tuto.wizard.2"></Trans>
           </>
         ),
         position: { x: 50, y: -15 },
@@ -213,14 +212,14 @@ export class Tutorial extends MaterialTutorial<PlayerColor, MaterialType, Locati
       popup: {
         text: () => (
           <>
-          <Trans defaults="tuto.spells.1"></Trans><br/>
+          <Trans i18nKey="tuto.spells.1"></Trans><br/>
           <ul>
           <li>
-            <Trans defaults="tuto.spells.2"></Trans><br/>
+            <Trans i18nKey="tuto.spells.2"></Trans><br/>
             <SpellSymbols spell={new Spell(3,2,false)}/>
           </li>
           <li>
-            <Trans defaults="tuto.spells.3"></Trans><br/>
+            <Trans i18nKey="tuto.spells.3"></Trans><br/>
             <SpellSymbols spell={new Spell(1,1,false)}/>
           </li>
           </ul>
@@ -253,9 +252,9 @@ export class Tutorial extends MaterialTutorial<PlayerColor, MaterialType, Locati
       popup: {
         text: () => (
           <>
-          <Trans defaults="tuto.spells.5"></Trans><br/>
+          <Trans i18nKey="tuto.spells.5"></Trans><br/>
           &nbsp;<br/>
-          <Trans defaults="tuto.spells.6"></Trans>
+          <Trans i18nKey="tuto.spells.6"></Trans>
           </>
         ),
         position: { x: 40, y: -15 },
@@ -282,9 +281,9 @@ export class Tutorial extends MaterialTutorial<PlayerColor, MaterialType, Locati
       popup: {
         text: () => (
           <>
-          <Trans defaults="tuto.end.turn.1"></Trans><br/>
+          <Trans i18nKey="tuto.end.turn.1"></Trans><br/>
           &nbsp;<br/>
-          <Trans defaults="tuto.end.turn.2"></Trans>
+          <Trans i18nKey="tuto.end.turn.2"></Trans>
           </>
         ),
         position: { x: 40, y: -15 },
@@ -311,7 +310,7 @@ export class Tutorial extends MaterialTutorial<PlayerColor, MaterialType, Locati
       popup: {
         text: () => (
           <>
-          <Trans defaults="tuto.round.1"></Trans>
+          <Trans i18nKey="tuto.round.1"></Trans>
           </>
         ),
         position: { x: 40, y: -15 },
@@ -323,10 +322,10 @@ export class Tutorial extends MaterialTutorial<PlayerColor, MaterialType, Locati
         text: () => (
           <>
           <ul>
-          <li><b><Trans defaults="tuto.turn.tile.3"></Trans></b></li>
-          <li><b><Trans defaults="tuto.turn.tile.4"></Trans></b></li>
+          <li><b><Trans i18nKey="tuto.turn.tile.3"></Trans></b></li>
+          <li><b><Trans i18nKey="tuto.turn.tile.4"></Trans></b></li>
           &nbsp;<Picture css={iconCss} src={rotateIcon}/>
-          <li><b><Trans defaults="tuto.turn.tile.5"></Trans></b>
+          <li><b><Trans i18nKey="tuto.turn.tile.5"></Trans></b>
           &nbsp;<Picture css={iconCss} src={validateIcon}/>
           </li>
           </ul>
@@ -356,7 +355,7 @@ export class Tutorial extends MaterialTutorial<PlayerColor, MaterialType, Locati
       popup: {
         text: () => (
           <>
-          <Trans defaults="tuto.round.2"></Trans>
+          <Trans i18nKey="tuto.round.2"></Trans>
           </>
         ),
         position: { x: 40, y: -15 },
@@ -383,11 +382,11 @@ export class Tutorial extends MaterialTutorial<PlayerColor, MaterialType, Locati
       popup: {
         text: () => (
           <>
-          <Trans defaults="tuto.shield.1">
+          <Trans i18nKey="tuto.shield.1">
             <SymbolShield nb={1}/>
           </Trans><br/>
           &nbsp;<br/>
-          <Trans defaults="tuto.shield.2"></Trans><br/>
+          <Trans i18nKey="tuto.shield.2"></Trans><br/>
           </>
         ),
         position: { x: 40, y: -15 },
@@ -398,7 +397,7 @@ export class Tutorial extends MaterialTutorial<PlayerColor, MaterialType, Locati
       popup: {
         text: () => (
           <>
-          <b><Trans defaults="tuto.round.4"></Trans></b>
+          <b><Trans i18nKey="tuto.round.4"></Trans></b>
           </>
         ),
         position: { x: 40, y: -15 },
@@ -423,9 +422,9 @@ export class Tutorial extends MaterialTutorial<PlayerColor, MaterialType, Locati
       popup: {
         text: () => (
           <>
-          <Trans defaults="tuto.shield.3"></Trans><br/>
+          <Trans i18nKey="tuto.shield.3"></Trans><br/>
           &nbsp;<br/>
-          <Trans defaults="tuto.shield.4"></Trans>
+          <Trans i18nKey="tuto.shield.4"></Trans>
           </>
         ),
         position: { x: 40, y: -15 },
@@ -452,7 +451,7 @@ export class Tutorial extends MaterialTutorial<PlayerColor, MaterialType, Locati
       popup: {
         text: () => (
           <>
-          <Trans defaults="tuto.broken.shield.1">
+          <Trans i18nKey="tuto.broken.shield.1">
             <SymbolBreakShields value={true}/>
           </Trans>
           </>
@@ -465,7 +464,7 @@ export class Tutorial extends MaterialTutorial<PlayerColor, MaterialType, Locati
       popup: {
         text: () => (
           <>
-          <b><Trans defaults="tuto.round.6"></Trans></b>
+          <b><Trans i18nKey="tuto.round.6"></Trans></b>
           </>
         ),
         position: { x: 40, y: -15 },
@@ -490,9 +489,9 @@ export class Tutorial extends MaterialTutorial<PlayerColor, MaterialType, Locati
       popup: {
         text: () => (
           <>
-          <Trans defaults="tuto.broken.shield.3"></Trans><br/>
+          <Trans i18nKey="tuto.broken.shield.3"></Trans><br/>
           &nbsp;<br/>
-          <Trans defaults="tuto.broken.shield.4"></Trans>
+          <Trans i18nKey="tuto.broken.shield.4"></Trans>
           </>
         ),
         position: { x: 40, y: -15 },
@@ -519,11 +518,11 @@ export class Tutorial extends MaterialTutorial<PlayerColor, MaterialType, Locati
       popup: {
         text: () => (
           <>
-          <Trans defaults="tuto.5.golems.1"></Trans><br/>
+          <Trans i18nKey="tuto.5.golems.1"></Trans><br/>
           &nbsp;<br/>
-          <Trans defaults="tuto.5.golems.2"></Trans><br/>
+          <Trans i18nKey="tuto.5.golems.2"></Trans><br/>
           &nbsp;<br/>
-          <Trans defaults="tuto.5.golems.3"></Trans><br/>
+          <Trans i18nKey="tuto.5.golems.3"></Trans><br/>
           </>
         ),
         position: { x: 40, y: -15 },
@@ -534,7 +533,7 @@ export class Tutorial extends MaterialTutorial<PlayerColor, MaterialType, Locati
       popup: {
         text: () => (
           <>
-          <b><Trans defaults="tuto.5.golems.4"></Trans></b>
+          <b><Trans i18nKey="tuto.5.golems.4"></Trans></b>
           </>
         ),
         position: { x: 40, y: -15 },
@@ -559,7 +558,7 @@ export class Tutorial extends MaterialTutorial<PlayerColor, MaterialType, Locati
       popup: {
         text: () => (
           <>
-          <Trans defaults="tuto.5.golems.5">
+          <Trans i18nKey="tuto.5.golems.5">
             <SymbolShield nb={1}/>
           </Trans><br/>
           </>
@@ -572,13 +571,13 @@ export class Tutorial extends MaterialTutorial<PlayerColor, MaterialType, Locati
       popup: {
         text: () => (
           <>
-          <Trans defaults="tuto.game.over.1"></Trans><br/>
+          <Trans i18nKey="tuto.game.over.1"></Trans><br/>
           <ul>
-          <li><Trans defaults="tuto.game.over.2"></Trans><br/></li>
+          <li><Trans i18nKey="tuto.game.over.2"></Trans><br/></li>
           </ul>
-          <Trans defaults="tuto.game.over.3"></Trans><br/>
+          <Trans i18nKey="tuto.game.over.3"></Trans><br/>
           <ul>
-          <li><Trans defaults="tuto.game.over.4"></Trans></li>
+          <li><Trans i18nKey="tuto.game.over.4"></Trans></li>
           </ul>
           </>
         )
@@ -588,9 +587,9 @@ export class Tutorial extends MaterialTutorial<PlayerColor, MaterialType, Locati
       popup: {
         text: () => (
           <>
-          <Trans defaults="tuto.score.1"></Trans><br/>
+          <Trans i18nKey="tuto.score.1"></Trans><br/>
           &nbsp;<br/>
-          <Trans defaults="tuto.score.2"></Trans><br/>
+          <Trans i18nKey="tuto.score.2"></Trans><br/>
           </>
         )
       }
@@ -599,9 +598,9 @@ export class Tutorial extends MaterialTutorial<PlayerColor, MaterialType, Locati
       popup: {
         text: () => (
           <>
-          <Trans defaults="tuto.score.3"></Trans><br/>
+          <Trans i18nKey="tuto.score.3"></Trans><br/>
           &nbsp;<br/>
-          <Trans defaults="tuto.score.4"></Trans>
+          <Trans i18nKey="tuto.score.4"></Trans>
           </>
         )
       }
@@ -610,9 +609,9 @@ export class Tutorial extends MaterialTutorial<PlayerColor, MaterialType, Locati
       popup: {
         text: () => (
           <>
-          <Trans defaults="tuto.good.luck.1"></Trans><br/>
+          <Trans i18nKey="tuto.good.luck.1"></Trans><br/>
           <p style={{textAlign: "center"}}>
-          <Trans defaults="tuto.good.luck.2"></Trans>
+          <Trans i18nKey="tuto.good.luck.2"></Trans>
           </p>
           </>
         )

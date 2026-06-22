@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { HandLocator, ItemContext, MaterialContext } from '@gamepark/react-game'
 import { LocationType } from '@gamepark/rivality/material/LocationType'
 import { Location } from '@gamepark/rules-api'
@@ -25,6 +24,11 @@ export class PlayerHandLocator extends HandLocator {
   }
 
   clockwise = false
+
+  getPositionDependencies(_location: Location, context: MaterialContext) {
+    // The player areas reposition when the board (and thus the table size) grows
+    return tableDesign.getBoardDimensions(context.rules)
+  }
 
   getCoordinates(location: Location, context: ItemContext) {
     const baseCoordinates = tableDesign.playerHandCoordinates(location, context)

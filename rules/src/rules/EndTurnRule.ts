@@ -7,7 +7,7 @@ import { Memory } from './Memory'
 
 export class EndTurnRule extends PlayerTurnRule {
   onRuleStart(): MaterialMove[] {
-    let moves:MaterialMove[]=[]
+    const moves:MaterialMove[]=[]
 
     // Clean game state
     this.forget(Memory.SpellOrientation)

@@ -12,7 +12,7 @@ import {
   StakingStrategy,
   TimeLimit
 } from '@gamepark/rules-api'
-import isEqual from 'lodash/isEqual'
+import { isEqual } from 'es-toolkit'
 import { score } from './logic/Score'
 import { tileTools } from './logic/TileTools'
 import { LocationType } from './material/LocationType'

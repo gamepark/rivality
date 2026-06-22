@@ -6,7 +6,7 @@ import { RuleId } from './RuleId'
 
 export class AskSpellOrientationRule extends PlayerTurnRule {
   getPlayerMoves(): MaterialMove[] {
-    let moves:MaterialMove[]=[]
+    const moves:MaterialMove[]=[]
 
     if (!this.remind(Memory.AppliedSpellNorth))
       moves.push(this.customMove(CustomMoveType.ChooseOrientation, Orientation.North))

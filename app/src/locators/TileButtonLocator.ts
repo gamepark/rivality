@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { LocationContext, Locator, MaterialContext } from '@gamepark/react-game'
 import { LocationType } from '@gamepark/rivality/material/LocationType'
 import { MaterialType } from '@gamepark/rivality/material/MaterialType'

@@ -1,6 +1,5 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
-import { GameTable, GameTableNavigation, useRules } from '@gamepark/react-game'
+import { DevToolsHub, GameTable, GameTableNavigation, useRules } from '@gamepark/react-game'
 import { RivalityRules } from '@gamepark/rivality/RivalityRules'
 import { FC } from 'react'
 import { PlayerPanels } from './panels/PlayerPanels'
@@ -22,6 +21,7 @@ export const GameDisplay: FC<GameDisplayProps> = ({players}) => {
                margin={{ top: 7, left: 0, right: 0, bottom: 0 }}>
       <GameTableNavigation css={navigation}/>
       <PlayerPanels players={players}/>
+      {process.env.NODE_ENV === 'development' && <DevToolsHub fabBottom="calc(5em)" />}
     </GameTable>
   </>
 }

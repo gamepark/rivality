@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { getRelativePlayerIndex, LocationContext, MaterialContext } from '@gamepark/react-game'
 import { LocationType } from '@gamepark/rivality/material/LocationType'
 import { MaterialType } from '@gamepark/rivality/material/MaterialType'
@@ -109,19 +108,16 @@ export class TableDesign {
   }
 
   getBoardSize(rules: MaterialRules): TableDimensions {
-    let width = 60
-    let height = 60
-
     const nbSurroundingSquares = 2
-    let boardDim = this.getBoardDimensions(rules)
-    width = (boardDim.boardXMax - boardDim.boardXMin + 1 + nbSurroundingSquares) * (tileDescription.width + spaceBetweenTiles) - spaceBetweenTiles
-    height = (boardDim.boardYMax - boardDim.boardYMin + 1 + nbSurroundingSquares) * (tileDescription.height + spaceBetweenTiles) - spaceBetweenTiles
+    const boardDim = this.getBoardDimensions(rules)
+    const width = (boardDim.boardXMax - boardDim.boardXMin + 1 + nbSurroundingSquares) * (tileDescription.width + spaceBetweenTiles) - spaceBetweenTiles
+    const height = (boardDim.boardYMax - boardDim.boardYMin + 1 + nbSurroundingSquares) * (tileDescription.height + spaceBetweenTiles) - spaceBetweenTiles
 
     // The mana tile at (0,0) must never move
-    let xMin = -((1 - boardDim.boardXMin) * (tileDescription.width + spaceBetweenTiles) + (tileDescription.width / 2))
-    let yMin = -((1 - boardDim.boardYMin) * (tileDescription.height + spaceBetweenTiles) + (tileDescription.height / 2))
-    let xMax = xMin + width
-    let yMax = yMin + height
+    const xMin = -((1 - boardDim.boardXMin) * (tileDescription.width + spaceBetweenTiles) + (tileDescription.width / 2))
+    const yMin = -((1 - boardDim.boardYMin) * (tileDescription.height + spaceBetweenTiles) + (tileDescription.height / 2))
+    const xMax = xMin + width
+    const yMax = yMin + height
 
     return { xMin, xMax, yMin, yMax }
   }
@@ -141,10 +137,10 @@ export class TableDesign {
         const extraY = 5
         const golemStackWidth = 22
 
-        let xMin = boardSize.xMin - extraX / 2
-        let xMax = boardSize.xMax + extraX / 2 + golemStackWidth
-        let yMin = boardSize.yMin - extraY / 2
-        let yMax = boardSize.yMax + extraY / 2
+        const xMin = boardSize.xMin - extraX / 2
+        const xMax = boardSize.xMax + extraX / 2 + golemStackWidth
+        const yMin = boardSize.yMin - extraY / 2
+        const yMax = boardSize.yMax + extraY / 2
 
         return { xMin, xMax, yMin, yMax }
       }
@@ -164,10 +160,10 @@ export class TableDesign {
         const extraY = 5
         const golemStackWidth = 15
 
-        let xMin = boardSize.xMin - extraX / 2 - golemStackWidth
-        let xMax = boardSize.xMax + extraX / 2 + golemStackWidth
-        let yMin = boardSize.yMin - extraY / 2
-        let yMax = boardSize.yMax + extraY / 2
+        const xMin = boardSize.xMin - extraX / 2 - golemStackWidth
+        const xMax = boardSize.xMax + extraX / 2 + golemStackWidth
+        const yMin = boardSize.yMin - extraY / 2
+        const yMax = boardSize.yMax + extraY / 2
 
         return { xMin, xMax, yMin, yMax }
       }
@@ -193,7 +189,7 @@ export class TableDesign {
   playerDeckCoordinates(location: Location, context: LocationContext) {
     const locationPlayer = location.player!
 
-    let handCoords = this.playerHandCoordinates(location, context)
+    const handCoords = this.playerHandCoordinates(location, context)
     const corner = this.playerCorner(locationPlayer, context)
 
     let x = 0
@@ -226,11 +222,11 @@ export class TableDesign {
 
   playerHandCoordinatesForPlayer(player: number, context: LocationContext) {
     const { rules } = context
-    let nbPlayers = rules.players.length
+    const nbPlayers = rules.players.length
 
     const corner = this.playerCorner(player, context)
 
-    let tableSize = this.getTableSize(nbPlayers, rules)
+    const tableSize = this.getTableSize(nbPlayers, rules)
 
     let x = 0
     let y = 0
@@ -258,9 +254,9 @@ export class TableDesign {
   playerGolemStackCoordinates(location: Location, context: LocationContext) {
     const locationPlayer = location.player!
     const { rules } = context
-    let nbPlayers = rules.players.length
+    const nbPlayers = rules.players.length
 
-    let handCoords = this.playerHandCoordinates(location, context)
+    const handCoords = this.playerHandCoordinates(location, context)
 
     const corner = this.playerCorner(locationPlayer, context)
 

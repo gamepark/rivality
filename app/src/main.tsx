@@ -1,21 +1,17 @@
-/** @jsxImportSource @emotion/react */
-import { GameProvider, setupTranslation } from '@gamepark/react-game'
+import { GameProvider } from '@gamepark/react-game'
 import { RivalityOptionsSpec } from '@gamepark/rivality/RivalityOptions'
 import { RivalityRules } from '@gamepark/rivality/RivalityRules'
 import { StrictMode } from 'react'
-import ReactDOM from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import App from './App'
 import { Locators } from './locators/Locators'
 import { Material } from './material/Material'
 import { rivalityAnimations } from './RivalityAnimations'
 import { RivalityTestSetup } from './tests/RivalityTestSetup'
-import translations from './translations.json'
 import { Tutorial } from './tutorial/Tutorial'
 import { ai } from './tutorial/TutorialAi'
 
-setupTranslation(translations, { debug: false })
-
-ReactDOM.render(
+createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <GameProvider
       game="rivality"
@@ -28,8 +24,7 @@ ReactDOM.render(
       tutorial={new Tutorial()}
       ai={ai}
     >
-      <App/>
+      <App />
     </GameProvider>
-  </StrictMode>,
-  document.getElementById('root')
+  </StrictMode>
 )

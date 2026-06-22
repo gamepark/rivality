@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
 import { Memory } from '@gamepark/rivality/rules/Memory'
 import { RivalityRules } from '@gamepark/rivality/RivalityRules'

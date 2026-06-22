@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { PlayMoveButton, useLegalMove, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
 import { isCustomMoveType } from '@gamepark/rules-api'
 import { CustomMoveType } from '@gamepark/rivality/rules/CustomMoveType'
