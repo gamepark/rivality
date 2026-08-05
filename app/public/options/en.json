@@ -1,0 +1,8 @@
+{
+  "identities": "Player color",
+  "identities.1": "Purple",
+  "identities.2": "Orange",
+  "identities.3": "Green",
+  "option.realTimeScore": "Real-time scores",
+  "option.realTimeScore.help": "This option lets you see each player's score on screen during the game."
+}

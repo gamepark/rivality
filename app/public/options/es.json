@@ -1,0 +1,8 @@
+{
+  "identities": "Color del jugador",
+  "identities.1": "Morado",
+  "identities.2": "Naranja",
+  "identities.3": "Verde",
+  "option.realTimeScore": "Puntuación en tiempo real",
+  "option.realTimeScore.help": "Esta opción permite ver en pantalla la puntuación de cada jugador durante la partida."
+}

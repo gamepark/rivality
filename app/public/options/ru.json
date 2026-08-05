@@ -1,0 +1,8 @@
+{
+  "identities": "Цвет игрока",
+  "identities.1": "Фиолетовый",
+  "identities.2": "Оранжевый",
+  "identities.3": "Зелёный",
+  "option.realTimeScore": "Счёт в реальном времени",
+  "option.realTimeScore.help": "Эта опция показывает на экране очки каждого игрока во время партии."
+}

@@ -1,0 +1,8 @@
+{
+  "identities": "Spielerfarbe",
+  "identities.1": "Lila",
+  "identities.2": "Orange",
+  "identities.3": "Grün",
+  "option.realTimeScore": "Punkte in Echtzeit",
+  "option.realTimeScore.help": "Mit dieser Option siehst du während der Partie die Punktzahl jedes Spielers auf dem Bildschirm."
+}
