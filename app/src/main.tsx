@@ -1,5 +1,5 @@
 import { GameProvider } from '@gamepark/react-game'
-import { RivalityOptionsSpec } from '@gamepark/rivality/RivalityOptions'
+import { RivalityOptionsSpecV2 } from '@gamepark/rivality/RivalityOptions'
 import { RivalityRules } from '@gamepark/rivality/RivalityRules'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
@@ -16,7 +16,7 @@ createRoot(document.getElementById('root')!).render(
     <GameProvider
       game="rivality"
       Rules={RivalityRules}
-      optionsSpec={RivalityOptionsSpec}
+      optionsSpec={RivalityOptionsSpecV2}
       GameSetup={RivalityTestSetup}
       material={Material}
       locators={Locators}

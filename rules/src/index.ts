@@ -1,3 +1,3 @@
 export { RivalityRules } from './RivalityRules'
-export { RivalityOptionsSpec } from './RivalityOptions'
+export { RivalityOptionsSpecV2 } from './RivalityOptions'
 export { RivalitySetup } from './RivalitySetup'

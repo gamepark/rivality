@@ -1,4 +1,4 @@
-import { OptionsSpec, TFunction } from '@gamepark/rules-api'
+import { TFunction, OptionsSpecV2 } from '@gamepark/rules-api'
 import { PlayerColor, playerColors } from './PlayerColor'
 
 /**
@@ -11,21 +11,20 @@ export type RivalityOptions = {
 }
 
 /**
- * This object describes all the options a game can have, and will be used by GamePark website to create automatically forms for you game
- * (forms for friendly games, or forms for matchmaking preferences, for instance).
+ * The option space of rivality: structure only.
+ *
+ * Labels live in the game's presentation document, published beside its translations at
+ * `/options/<locale>.json` and keyed by convention. Subscription and competitive gates live in
+ * the platform database, so they can change without releasing the game again.
+ *
+ * That is where the competitive settings went.
  */
-export const RivalityOptionsSpec: OptionsSpec<RivalityOptions> = {
-  players: {
-    id: {
-      label: (t: TFunction) => t('Player color'),
-      values: playerColors,
-      valueSpec: color => ({ label: t => getPlayerName(color, t) })
-    }
-  },
-  realTimeScore: {
-    label: (t: TFunction) => t('real-time-scores'),
-    help: (t: TFunction) => t('real-time-scores.help'),
-    competitiveDisabled: true
+export const RivalityOptionsSpecV2: OptionsSpecV2 = {
+  specVersion: 2,
+  players: { min: 2, max: 3 },
+  identities: { values: playerColors },
+  options: {
+    realTimeScore: { kind: 'boolean' }
   }
 }
 
