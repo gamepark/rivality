@@ -12,8 +12,7 @@ export class GolemCount {
     if (player==1) return this.nbGolems1
     if (player==2) return this.nbGolems2
     if (player==3) return this.nbGolems3
-    console.log("*** ERROR - Unsupported player number")
-    return this.nbGolems1
+    throw new Error(`Unsupported player number: ${player}`)
   }
 
   constructor(golems:Material, activePlayer:PlayerColor){

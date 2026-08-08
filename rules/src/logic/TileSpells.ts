@@ -123,8 +123,7 @@ export class TileSpells {
         if (direction==Direction.Right)  return new Spell(2,3,true)
         return noSpell
     }
-  console.log("*** ERROR - Unsupported tile spell")
-  return noSpell
+  throw new Error(`Unsupported tile spell: ${tile}`)
   }
 }
 

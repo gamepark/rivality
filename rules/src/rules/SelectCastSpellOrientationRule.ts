@@ -65,8 +65,7 @@ export class SelectCastSpellOrientationRule extends SpellRule {
     }
 
     if (spellOrientation===undefined){
-      console.log("*** ERROR - No selected spell orientation => Game is stuck")
-      return []
+      throw new Error('No selected spell orientation')
     }
 
     // Apply spell effects
@@ -148,8 +147,7 @@ export class SelectCastSpellOrientationRule extends SpellRule {
     const tileCoords=this.getActiveTileCoordinates()
     const tile=this.getTile(tileCoords)
     if (tile===undefined){
-      console.log("*** ERROR - Unknown active tile")
-      return OrientationChoice.AskPlayer
+      throw new Error('Unknown active tile')
     }
 
     // Automatically apply the orientations without spell

@@ -119,7 +119,7 @@ export class RivalitySetup extends MaterialGameSetup<PlayerColor, MaterialType, 
         } while (lastPlayerCardIsAFortress)
       }
     } else {
-      console.log('*** ERROR - Unsupported nb of players')
+      throw new Error(`Unsupported nb of players: ${this.game.players.length}`)
     }
   }
 

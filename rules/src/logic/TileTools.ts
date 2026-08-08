@@ -115,8 +115,7 @@ export class TileTools {
         (tile==Tile.StoneCircle_11_31)
       ) return false
 
-    console.log("*** ERROR - Unsupported tile")
-    return false
+    throw new Error(`Unsupported tile: ${tile}`)
   }
 
   isFortress(tile:Tile){
@@ -150,8 +149,7 @@ export class TileTools {
         (tile==Tile.Cottage_31_23B_x)
       ) return false
 
-    console.log("*** ERROR - Unsupported tile")
-    return false
+    throw new Error(`Unsupported tile: ${tile}`)
   }
 
   possibleTileLocations(boardTiles:MaterialItem[]):XYCoordinates[]{

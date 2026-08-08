@@ -19,8 +19,7 @@ export class ApplySpellEffectRule extends SpellRule {
     // Default orientation is not set
     const spellOrientation=this.remind(Memory.SpellOrientation)
     if (spellOrientation===undefined){
-      console.log("*** ERROR - unknown spell orientation => The game is stuck")
-      return []
+      throw new Error('Unknown spell orientation')
     }
 
     // Apply spell effects
@@ -64,8 +63,7 @@ export class ApplySpellEffectRule extends SpellRule {
     // Get the active tile
     const tile=this.getActiveTile()
     if (tile===undefined){
-      console.log("*** ERROR - Missing active tile")
-      return []
+      throw new Error('Missing active tile')
     }
     const spell=this.getSpell(tile, spellOrientation)
 
